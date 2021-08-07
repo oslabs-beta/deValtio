@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "module": "CommonJS", // sets module system for the program
+        "jsx": "react-jsx", // supports jsx in tsx files
+        "target": "ES6", // ECMAScript version code will be compiled down to
+        "sourceMap": true, // generates sourcemap files to see original ts source code
+        "lib": [
+            "dom" //includes type definitions for libraries within array
+        ],
+        "moduleResolution": "node", // how modules dependencies get resolved
+        "noImplicitAny": true,
+    },
+    "include": [
+        "./src/**/*" // specifies files for type checking (checks all files in src folder)
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

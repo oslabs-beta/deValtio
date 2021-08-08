@@ -6,5 +6,6 @@
     "action": {
         "default_title": "deValtio",
         "default_popup": "index.html"
-    }
+    },
+    "devtools_page": "devToolPanel.html"
 }

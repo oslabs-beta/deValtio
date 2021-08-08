@@ -2,8 +2,8 @@
     "name": "DelVatio",
     "version": "1.0.1",
     "description": " A developer tool for Valtio",
-    "manifest_version": 2,
-    "browser_action": {
+    "manifest_version": 3,
+    "action": {
         "default_title": "deValtio",
         "default_popup": "index.html"
     }

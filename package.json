@@ -4,7 +4,7 @@
   "description": "State management dev tool for Valtio",
   "main": "./src/frontend/index.tsx",
   "scripts": {
-    "dev": "cross-env NODE_ENV=production webpack",
+    "build": "cross-env NODE_ENV=production webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

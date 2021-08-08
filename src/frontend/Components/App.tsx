@@ -1,7 +1,7 @@
 const App = (): JSX.Element => {
     return (
         <div>
-            Hello World
+            Hello World! Using React to build a Chrome extension!
         </div>
     )
 }

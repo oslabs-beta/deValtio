@@ -31068,10 +31068,86 @@ if (false) {} else {
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+const SideBarContainer_1 = __webpack_require__(/*! ./SideBar/SideBarContainer */ "./src/frontend/Components/SideBar/SideBarContainer.tsx");
 const App = () => {
-    return (jsx_runtime_1.jsx("div", { children: "Hello World! Using React to build a Chrome extension!" }, void 0));
+    return (jsx_runtime_1.jsx("div", { children: jsx_runtime_1.jsx(SideBarContainer_1.SideBarContainer, {}, void 0) }, void 0));
 };
 exports.default = App;
+
+
+/***/ }),
+
+/***/ "./src/frontend/Components/SideBar/CurrentState.tsx":
+/*!**********************************************************!*\
+  !*** ./src/frontend/Components/SideBar/CurrentState.tsx ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.CurrentState = void 0;
+const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+const CurrentState = () => {
+    return (jsx_runtime_1.jsx("div", { children: "Current State" }, void 0));
+};
+exports.CurrentState = CurrentState;
+
+
+/***/ }),
+
+/***/ "./src/frontend/Components/SideBar/HamburgerMenu.tsx":
+/*!***********************************************************!*\
+  !*** ./src/frontend/Components/SideBar/HamburgerMenu.tsx ***!
+  \***********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.HamburgerMenu = void 0;
+const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+const HamburgerMenu = () => {
+    return (jsx_runtime_1.jsx("div", { children: "Hamburger Menu" }, void 0));
+};
+exports.HamburgerMenu = HamburgerMenu;
+
+
+/***/ }),
+
+/***/ "./src/frontend/Components/SideBar/NextPrevButton.tsx":
+/*!************************************************************!*\
+  !*** ./src/frontend/Components/SideBar/NextPrevButton.tsx ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.NextPrevButton = void 0;
+const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+const NextPrevButton = () => {
+    return (jsx_runtime_1.jsx("div", { children: "Next and Prev Buttons go here" }, void 0));
+};
+exports.NextPrevButton = NextPrevButton;
+
+
+/***/ }),
+
+/***/ "./src/frontend/Components/SideBar/SideBarContainer.tsx":
+/*!**************************************************************!*\
+  !*** ./src/frontend/Components/SideBar/SideBarContainer.tsx ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.SideBarContainer = void 0;
+const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+const HamburgerMenu_1 = __webpack_require__(/*! ./HamburgerMenu */ "./src/frontend/Components/SideBar/HamburgerMenu.tsx");
+const CurrentState_1 = __webpack_require__(/*! ./CurrentState */ "./src/frontend/Components/SideBar/CurrentState.tsx");
+const NextPrevButton_1 = __webpack_require__(/*! ./NextPrevButton */ "./src/frontend/Components/SideBar/NextPrevButton.tsx");
+const SideBarContainer = () => {
+    return (jsx_runtime_1.jsxs("div", Object.assign({ className: 'sideBarContainer' }, { children: [jsx_runtime_1.jsx(HamburgerMenu_1.HamburgerMenu, {}, void 0), jsx_runtime_1.jsx(CurrentState_1.CurrentState, {}, void 0), jsx_runtime_1.jsx(NextPrevButton_1.NextPrevButton, {}, void 0)] }), void 0));
+};
+exports.SideBarContainer = SideBarContainer;
 
 
 /***/ }),

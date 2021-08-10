@@ -1,5 +1,5 @@
 {
-    "name": "DeValtio DevTools",
+    "name": "DeValtio",
     "version": "1.0.1",
     "description": " A developer tool for Valtio",
     "manifest_version": 3,
@@ -7,5 +7,20 @@
         "default_title": "deValtio",
         "default_popup": "index.html"
     },
-    "devtools_page": "./src/chrome-extension/devTools.html"
+    "devtools_page": "./src/chrome-extension/devTools.html",
+    // "background": {
+    //     "service_worker": "src/backend/background.js"
+    // },
+    "permissions": [
+        "activeTab"
+    ],
+    "content_scripts": [
+        {
+            "matches": ["http://*/*", "https://*/*"],
+            "match_about_blank": true,
+            "js": ["src/content_scripts/proxyHugger.js"],
+            "all_frames": true,
+            "run_at": "document_idle"
+        }
+    ]
 }

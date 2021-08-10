@@ -9,6 +9,8 @@
         ],
         "moduleResolution": "node", // how modules dependencies get resolved
         "noImplicitAny": true,
+        "allowSyntheticDefaultImports": true, // allows for import syntax like "import ReactDOM from 'react-dom'"
+        "esModuleInterop": true
     },
     "include": [
         "./src/**/*" // specifies files for type checking (checks all files in src folder)

@@ -3,5 +3,6 @@
 chrome.devtools.panels.create(
     "deValtio",
     null,
-    "devToolPanel.html"
+    "devTools.html",
+    () => console.log('devtool created')
 );

@@ -5,10 +5,13 @@
         "target": "ES6", // ECMAScript version code will be compiled down to
         "sourceMap": true, // generates sourcemap files to see original ts source code
         "lib": [
-            "dom" //includes type definitions for libraries within array
+            "dom", //includes type definitions for libraries within array
+            "ES6"
         ],
         "moduleResolution": "node", // how modules dependencies get resolved
         "noImplicitAny": true,
+        "noImplicitThis": true,
+        "strictNullChecks": true,
         "allowSyntheticDefaultImports": true, // allows for import syntax like "import ReactDOM from 'react-dom'"
         "esModuleInterop": true
     },

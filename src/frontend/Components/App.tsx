@@ -1,9 +1,11 @@
+import { SideBarContainer } from './SideBar/SideBarContainer';
+
 const App = (): JSX.Element => {
     return (
         <div>
-            Hello World! Using React to build a Chrome extension!
+            <SideBarContainer />
         </div>
-    )
+    );
 }
 
 export default App;

@@ -1,7 +1,9 @@
+import Grid from '@material-ui/core/Grid';
+
 export const HamburgerMenu = (): JSX.Element => {
     return (
-        <div>
+        <Grid item>
             Hamburger Menu
-        </div>
+        </Grid>
     );
 }

@@ -1,11 +1,9 @@
-import { SideBarContainer } from './SideBar/SideBarContainer';
+import { MainContainer } from '../Containers/MainContainer';
 
 const App = (): JSX.Element => {
     return (
-        <div>
-            <SideBarContainer />
-        </div>
-    );
+        <MainContainer />
+    )
 }
 
 export default App;

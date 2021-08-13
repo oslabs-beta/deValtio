@@ -1,9 +1,10 @@
-import Grid from '@material-ui/core/Grid';
+import { useStyles } from '../styles'
 
 export const VisualContainer = (): JSX.Element => {
+    const classes = useStyles();
     return (
-        <Grid container item>
-            State Tree Goes here
-        </Grid>
+        <div className={classes.visualContainer}>
+            State Tree
+        </div>
     );
 }

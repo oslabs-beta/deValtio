@@ -1,11 +1,6 @@
 import Drawer from '@material-ui/core/Drawer';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles({
-    drawer: {
-        background: '#ED6476'
-    }
-})
+import Typography from '@material-ui/core/Typography';
+import { useStyles } from '../styles'
 
 export const SnapshotContainer = (): JSX.Element => {
     const classes = useStyles();
@@ -14,8 +9,11 @@ export const SnapshotContainer = (): JSX.Element => {
             className={classes.drawer}
             variant='permanent'
             anchor='left'
+            classes={{ paper: classes.drawerPaper }}
         >
-            Snapshots
+            <Typography variant='h4' component='h2'>
+                SnapShots
+            </Typography>
         </Drawer>
     );
 }

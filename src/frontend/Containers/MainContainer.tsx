@@ -1,15 +1,14 @@
 import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
 import { SnapshotContainer } from './SnapshotContainer';
 import { VisualContainer } from './VisualContainer';
+import { useStyles } from '../styles'
 
 export const MainContainer = (): JSX.Element => {
+    const classes = useStyles();
     return (
-        <Container>
-            <Grid container>
-                <SnapshotContainer />
-                <VisualContainer />
-            </Grid>
+        <Container className={classes.root}>
+            <SnapshotContainer />
+            <VisualContainer />
         </Container>
     );
 }

@@ -44231,7 +44231,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.MainContainer = void 0;
 const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 const SnapshotContainer_1 = __webpack_require__(/*! ./SnapshotContainer */ "./src/frontend/Containers/SnapshotContainer.tsx");
-const styles_1 = __webpack_require__(/*! ../styles */ "./src/frontend/styles.ts");
+const styles_1 = __webpack_require__(/*! ../Styling/styles */ "./src/frontend/Styling/styles.ts");
 // children needs to be of type JSX.Element[] because multiple children are being returned
 const MainContainer = ({ children }) => {
     const classes = styles_1.useStyles();
@@ -44258,7 +44258,7 @@ exports.SnapshotContainer = void 0;
 const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 const Drawer_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Drawer */ "./node_modules/@material-ui/core/esm/Drawer/index.js"));
 const Typography_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js"));
-const styles_1 = __webpack_require__(/*! ../styles */ "./src/frontend/styles.ts");
+const styles_1 = __webpack_require__(/*! ../Styling/styles */ "./src/frontend/Styling/styles.ts");
 const SnapshotContainer = () => {
     const classes = styles_1.useStyles();
     return (jsx_runtime_1.jsx(Drawer_1.default, Object.assign({ className: classes.drawer, variant: 'permanent', anchor: 'left', classes: { paper: classes.drawerPaper } }, { children: jsx_runtime_1.jsx("div", { children: jsx_runtime_1.jsx(Typography_1.default, Object.assign({ className: classes.snapText, variant: 'h4', component: 'h2' }, { children: "SnapShots" }), void 0) }, void 0) }), void 0));
@@ -44287,30 +44287,10 @@ exports.VisualContainer = VisualContainer;
 
 /***/ }),
 
-/***/ "./src/frontend/index.tsx":
-/*!********************************!*\
-  !*** ./src/frontend/index.tsx ***!
-  \********************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-const react_dom_1 = __importDefault(__webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js"));
-const App_1 = __importDefault(__webpack_require__(/*! ./Components/App */ "./src/frontend/Components/App.tsx"));
-react_dom_1.default.render(jsx_runtime_1.jsx(App_1.default, {}, void 0), document.getElementById('root'));
-
-
-/***/ }),
-
-/***/ "./src/frontend/styles.ts":
-/*!********************************!*\
-  !*** ./src/frontend/styles.ts ***!
-  \********************************/
+/***/ "./src/frontend/Styling/styles.ts":
+/*!****************************************!*\
+  !*** ./src/frontend/Styling/styles.ts ***!
+  \****************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
@@ -44339,6 +44319,26 @@ exports.useStyles = styles_1.makeStyles((theme) => styles_1.createStyles({
         padding: 8
     }
 }));
+
+
+/***/ }),
+
+/***/ "./src/frontend/index.tsx":
+/*!********************************!*\
+  !*** ./src/frontend/index.tsx ***!
+  \********************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+const react_dom_1 = __importDefault(__webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js"));
+const App_1 = __importDefault(__webpack_require__(/*! ./Components/App */ "./src/frontend/Components/App.tsx"));
+react_dom_1.default.render(jsx_runtime_1.jsx(App_1.default, {}, void 0), document.getElementById('root'));
 
 
 /***/ }),

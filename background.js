@@ -8,3 +8,5 @@ console.log(`background.js is running`);
 //       });
 //     }
 //   });
+
+console.log(pp(chrome.debugger.getTargets))

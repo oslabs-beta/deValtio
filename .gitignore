@@ -3,3 +3,5 @@ node_modules
 
 package-lock.json
 
+build/bundle.js
+build/bundle.js.map

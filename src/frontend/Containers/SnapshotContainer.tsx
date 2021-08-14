@@ -11,9 +11,11 @@ export const SnapshotContainer = (): JSX.Element => {
             anchor='left'
             classes={{ paper: classes.drawerPaper }}
         >
-            <Typography variant='h4' component='h2'>
-                SnapShots
-            </Typography>
+            <div>
+                <Typography className={classes.snapText} variant='h4' component='h2'>
+                    SnapShots
+                </Typography>
+            </div>
         </Drawer>
     );
 }

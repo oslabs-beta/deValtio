@@ -1,10 +1,40 @@
 import { useStyles } from '../styles'
 
 export const VisualContainer = (): JSX.Element => {
-    const classes = useStyles();
     return (
-        <div className={classes.visualContainer}>
+        <div>
+            State Tree jkldjdkflajdsklfkadsjfkladjslfjkadsjklfklsjadklfjkldasjklfdjkdsajlkfjsadkjfklasdjlkfjadsklfjadklsjfklajsdklfjkladsjfklasjdlfkljaslkjfjdskljfkldsjklfdjdaskljfkladsjklfjaklsjfkldj
+            <br />
+            test
+            <br />
             State Tree
+            <br />
+            test
+            <br />
+            State Tree
+            <br />
+            test
+            <br />
+            State Tree
+            <br />
+            test
+            <br />
+            State Tree
+            <br />
+            test
+            <br />
+            State Tree
+            <br />
+            test
+            <br />
+            State Tree
+            <br />
+            test
+            <br />
+            State Tree
+            <br />
+            test
+            <br />
         </div>
     );
 }

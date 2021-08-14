@@ -2,19 +2,22 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles((theme: Theme) => createStyles({
     drawer: {
-        minwidth: '12%',
-        background: '#4287f5'
+        width: '15rem'
     },
     drawerPaper: {
-        minWidth: '12%',
-        background: '#4287f5'
+        width: '15rem',
+        background: '#98C1D9',
+        border: '2px solid #293241'
     },
-    root: {
+    MainContainer: {
         display: 'flex',
-        background: '#8287f5'
+        background: '#98C1D9',
+        width: '100%',
+        height: '100%'
     },
-    visualContainer: {
-        minWidth: '88%',
-        background: '#2287f5'
+    snapText: {
+        color: '#293241',
+        textAlign: 'center',
+        padding: 8
     }
 }));

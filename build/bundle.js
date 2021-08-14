@@ -120,184 +120,6 @@ var Backdrop = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2__.forwardRef(functi
 
 /***/ }),
 
-/***/ "./node_modules/@material-ui/core/esm/Container/Container.js":
-/*!*******************************************************************!*\
-  !*** ./node_modules/@material-ui/core/esm/Container/Container.js ***!
-  \*******************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "styles": () => (/* binding */ styles),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/extends */ "./node_modules/@babel/runtime/helpers/esm/extends.js");
-/* harmony import */ var _babel_runtime_helpers_esm_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/esm/objectWithoutProperties */ "./node_modules/@babel/runtime/helpers/esm/objectWithoutProperties.js");
-/* harmony import */ var _babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/esm/defineProperty */ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var clsx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! clsx */ "./node_modules/clsx/dist/clsx.m.js");
-/* harmony import */ var _styles_withStyles__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../styles/withStyles */ "./node_modules/@material-ui/core/esm/styles/withStyles.js");
-/* harmony import */ var _utils_capitalize__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/capitalize */ "./node_modules/@material-ui/core/esm/utils/capitalize.js");
-
-
-
-
-
-
-
-
-var styles = function styles(theme) {
-  return {
-    /* Styles applied to the root element. */
-    root: (0,_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_2__.default)({
-      width: '100%',
-      marginLeft: 'auto',
-      boxSizing: 'border-box',
-      marginRight: 'auto',
-      paddingLeft: theme.spacing(2),
-      paddingRight: theme.spacing(2),
-      display: 'block'
-    }, theme.breakpoints.up('sm'), {
-      paddingLeft: theme.spacing(3),
-      paddingRight: theme.spacing(3)
-    }),
-
-    /* Styles applied to the root element if `disableGutters={true}`. */
-    disableGutters: {
-      paddingLeft: 0,
-      paddingRight: 0
-    },
-
-    /* Styles applied to the root element if `fixed={true}`. */
-    fixed: Object.keys(theme.breakpoints.values).reduce(function (acc, breakpoint) {
-      var value = theme.breakpoints.values[breakpoint];
-
-      if (value !== 0) {
-        acc[theme.breakpoints.up(breakpoint)] = {
-          maxWidth: value
-        };
-      }
-
-      return acc;
-    }, {}),
-
-    /* Styles applied to the root element if `maxWidth="xs"`. */
-    maxWidthXs: (0,_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_2__.default)({}, theme.breakpoints.up('xs'), {
-      maxWidth: Math.max(theme.breakpoints.values.xs, 444)
-    }),
-
-    /* Styles applied to the root element if `maxWidth="sm"`. */
-    maxWidthSm: (0,_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_2__.default)({}, theme.breakpoints.up('sm'), {
-      maxWidth: theme.breakpoints.values.sm
-    }),
-
-    /* Styles applied to the root element if `maxWidth="md"`. */
-    maxWidthMd: (0,_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_2__.default)({}, theme.breakpoints.up('md'), {
-      maxWidth: theme.breakpoints.values.md
-    }),
-
-    /* Styles applied to the root element if `maxWidth="lg"`. */
-    maxWidthLg: (0,_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_2__.default)({}, theme.breakpoints.up('lg'), {
-      maxWidth: theme.breakpoints.values.lg
-    }),
-
-    /* Styles applied to the root element if `maxWidth="xl"`. */
-    maxWidthXl: (0,_babel_runtime_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_2__.default)({}, theme.breakpoints.up('xl'), {
-      maxWidth: theme.breakpoints.values.xl
-    })
-  };
-};
-var Container = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.forwardRef(function Container(props, ref) {
-  var classes = props.classes,
-      className = props.className,
-      _props$component = props.component,
-      Component = _props$component === void 0 ? 'div' : _props$component,
-      _props$disableGutters = props.disableGutters,
-      disableGutters = _props$disableGutters === void 0 ? false : _props$disableGutters,
-      _props$fixed = props.fixed,
-      fixed = _props$fixed === void 0 ? false : _props$fixed,
-      _props$maxWidth = props.maxWidth,
-      maxWidth = _props$maxWidth === void 0 ? 'lg' : _props$maxWidth,
-      other = (0,_babel_runtime_helpers_esm_objectWithoutProperties__WEBPACK_IMPORTED_MODULE_1__.default)(props, ["classes", "className", "component", "disableGutters", "fixed", "maxWidth"]);
-
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3__.createElement(Component, (0,_babel_runtime_helpers_esm_extends__WEBPACK_IMPORTED_MODULE_0__.default)({
-    className: (0,clsx__WEBPACK_IMPORTED_MODULE_5__.default)(classes.root, className, fixed && classes.fixed, disableGutters && classes.disableGutters, maxWidth !== false && classes["maxWidth".concat((0,_utils_capitalize__WEBPACK_IMPORTED_MODULE_6__.default)(String(maxWidth)))]),
-    ref: ref
-  }, other));
-});
- true ? Container.propTypes = {
-  // ----------------------------- Warning --------------------------------
-  // | These PropTypes are generated from the TypeScript type definitions |
-  // |     To update them edit the d.ts file and run "yarn proptypes"     |
-  // ----------------------------------------------------------------------
-
-  /**
-   * @ignore
-   */
-  children: (prop_types__WEBPACK_IMPORTED_MODULE_4___default().node.isRequired),
-
-  /**
-   * Override or extend the styles applied to the component.
-   * See [CSS API](#css) below for more details.
-   */
-  classes: (prop_types__WEBPACK_IMPORTED_MODULE_4___default().object),
-
-  /**
-   * @ignore
-   */
-  className: (prop_types__WEBPACK_IMPORTED_MODULE_4___default().string),
-
-  /**
-   * The component used for the root node.
-   * Either a string to use a HTML element or a component.
-   */
-  component: (prop_types__WEBPACK_IMPORTED_MODULE_4___default().elementType),
-
-  /**
-   * If `true`, the left and right padding is removed.
-   */
-  disableGutters: (prop_types__WEBPACK_IMPORTED_MODULE_4___default().bool),
-
-  /**
-   * Set the max-width to match the min-width of the current breakpoint.
-   * This is useful if you'd prefer to design for a fixed set of sizes
-   * instead of trying to accommodate a fully fluid viewport.
-   * It's fluid by default.
-   */
-  fixed: (prop_types__WEBPACK_IMPORTED_MODULE_4___default().bool),
-
-  /**
-   * Determine the max-width of the container.
-   * The container width grows with the size of the screen.
-   * Set to `false` to disable `maxWidth`.
-   */
-  maxWidth: prop_types__WEBPACK_IMPORTED_MODULE_4___default().oneOf(['lg', 'md', 'sm', 'xl', 'xs', false])
-} : 0;
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,_styles_withStyles__WEBPACK_IMPORTED_MODULE_7__.default)(styles, {
-  name: 'MuiContainer'
-})(Container));
-
-/***/ }),
-
-/***/ "./node_modules/@material-ui/core/esm/Container/index.js":
-/*!***************************************************************!*\
-  !*** ./node_modules/@material-ui/core/esm/Container/index.js ***!
-  \***************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* reexport safe */ _Container__WEBPACK_IMPORTED_MODULE_0__.default)
-/* harmony export */ });
-/* harmony import */ var _Container__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Container */ "./node_modules/@material-ui/core/esm/Container/Container.js");
-
-
-/***/ }),
-
 /***/ "./node_modules/@material-ui/core/esm/Drawer/Drawer.js":
 /*!*************************************************************!*\
   !*** ./node_modules/@material-ui/core/esm/Drawer/Drawer.js ***!
@@ -44388,8 +44210,9 @@ function warning(condition, message) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 const MainContainer_1 = __webpack_require__(/*! ../Containers/MainContainer */ "./src/frontend/Containers/MainContainer.tsx");
+const VisualContainer_1 = __webpack_require__(/*! ../Containers/VisualContainer */ "./src/frontend/Containers/VisualContainer.tsx");
 const App = () => {
-    return (jsx_runtime_1.jsx(MainContainer_1.MainContainer, {}, void 0));
+    return (jsx_runtime_1.jsx(MainContainer_1.MainContainer, { children: jsx_runtime_1.jsx(VisualContainer_1.VisualContainer, {}, void 0) }, void 0));
 };
 exports.default = App;
 
@@ -44400,23 +44223,19 @@ exports.default = App;
 /*!***************************************************!*\
   !*** ./src/frontend/Containers/MainContainer.tsx ***!
   \***************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.MainContainer = void 0;
 const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-const Container_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Container */ "./node_modules/@material-ui/core/esm/Container/index.js"));
 const SnapshotContainer_1 = __webpack_require__(/*! ./SnapshotContainer */ "./src/frontend/Containers/SnapshotContainer.tsx");
-const VisualContainer_1 = __webpack_require__(/*! ./VisualContainer */ "./src/frontend/Containers/VisualContainer.tsx");
-const styles_1 = __webpack_require__(/*! ../styles */ "./src/frontend/styles.ts");
-const MainContainer = () => {
+const styles_1 = __webpack_require__(/*! ../Styling/styles */ "./src/frontend/Styling/styles.ts");
+// children needs to be of type JSX.Element[] because multiple children are being returned
+const MainContainer = ({ children }) => {
     const classes = styles_1.useStyles();
-    return (jsx_runtime_1.jsxs(Container_1.default, Object.assign({ className: classes.root }, { children: [jsx_runtime_1.jsx(SnapshotContainer_1.SnapshotContainer, {}, void 0), jsx_runtime_1.jsx(VisualContainer_1.VisualContainer, {}, void 0)] }), void 0));
+    return (jsx_runtime_1.jsxs("div", Object.assign({ className: classes.MainContainer }, { children: [jsx_runtime_1.jsx(SnapshotContainer_1.SnapshotContainer, {}, void 0), jsx_runtime_1.jsx("div", { children: children }, void 0)] }), void 0));
 };
 exports.MainContainer = MainContainer;
 
@@ -44439,10 +44258,10 @@ exports.SnapshotContainer = void 0;
 const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 const Drawer_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Drawer */ "./node_modules/@material-ui/core/esm/Drawer/index.js"));
 const Typography_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/esm/Typography/index.js"));
-const styles_1 = __webpack_require__(/*! ../styles */ "./src/frontend/styles.ts");
+const styles_1 = __webpack_require__(/*! ../Styling/styles */ "./src/frontend/Styling/styles.ts");
 const SnapshotContainer = () => {
     const classes = styles_1.useStyles();
-    return (jsx_runtime_1.jsx(Drawer_1.default, Object.assign({ className: classes.drawer, variant: 'permanent', anchor: 'left', classes: { paper: classes.drawerPaper } }, { children: jsx_runtime_1.jsx(Typography_1.default, Object.assign({ variant: 'h4', component: 'h2' }, { children: "SnapShots" }), void 0) }), void 0));
+    return (jsx_runtime_1.jsx(Drawer_1.default, Object.assign({ className: classes.drawer, variant: 'permanent', anchor: 'left', classes: { paper: classes.drawerPaper } }, { children: jsx_runtime_1.jsx("div", { children: jsx_runtime_1.jsx(Typography_1.default, Object.assign({ className: classes.snapText, variant: 'h4', component: 'h2' }, { children: "SnapShots" }), void 0) }, void 0) }), void 0));
 };
 exports.SnapshotContainer = SnapshotContainer;
 
@@ -44460,12 +44279,46 @@ exports.SnapshotContainer = SnapshotContainer;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.VisualContainer = void 0;
 const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-const styles_1 = __webpack_require__(/*! ../styles */ "./src/frontend/styles.ts");
 const VisualContainer = () => {
-    const classes = styles_1.useStyles();
-    return (jsx_runtime_1.jsx("div", Object.assign({ className: classes.visualContainer }, { children: "State Tree" }), void 0));
+    return (jsx_runtime_1.jsxs("div", { children: ["State Tree jkldjdkflajdsklfkadsjfkladjslfjkadsjklfklsjadklfjkldasjklfdjkdsajlkfjsadkjfklasdjlkfjadsklfjadklsjfklajsdklfjkladsjfklasjdlfkljaslkjfjdskljfkldsjklfdjdaskljfkladsjklfjaklsjfkldj", jsx_runtime_1.jsx("br", {}, void 0), "test", jsx_runtime_1.jsx("br", {}, void 0), "State Tree", jsx_runtime_1.jsx("br", {}, void 0), "test", jsx_runtime_1.jsx("br", {}, void 0), "State Tree", jsx_runtime_1.jsx("br", {}, void 0), "test", jsx_runtime_1.jsx("br", {}, void 0), "State Tree", jsx_runtime_1.jsx("br", {}, void 0), "test", jsx_runtime_1.jsx("br", {}, void 0), "State Tree", jsx_runtime_1.jsx("br", {}, void 0), "test", jsx_runtime_1.jsx("br", {}, void 0), "State Tree", jsx_runtime_1.jsx("br", {}, void 0), "test", jsx_runtime_1.jsx("br", {}, void 0), "State Tree", jsx_runtime_1.jsx("br", {}, void 0), "test", jsx_runtime_1.jsx("br", {}, void 0), "State Tree", jsx_runtime_1.jsx("br", {}, void 0), "test", jsx_runtime_1.jsx("br", {}, void 0)] }, void 0));
 };
 exports.VisualContainer = VisualContainer;
+
+
+/***/ }),
+
+/***/ "./src/frontend/Styling/styles.ts":
+/*!****************************************!*\
+  !*** ./src/frontend/Styling/styles.ts ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.useStyles = void 0;
+const styles_1 = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
+exports.useStyles = styles_1.makeStyles((theme) => styles_1.createStyles({
+    drawer: {
+        width: '15rem'
+    },
+    drawerPaper: {
+        width: '15rem',
+        background: '#98C1D9',
+        border: '2px solid #293241'
+    },
+    MainContainer: {
+        display: 'flex',
+        background: '#98C1D9',
+        width: '100%',
+        height: '100%'
+    },
+    snapText: {
+        color: '#293241',
+        textAlign: 'center',
+        padding: 8
+    }
+}));
 
 
 /***/ }),
@@ -44486,39 +44339,6 @@ const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modul
 const react_dom_1 = __importDefault(__webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js"));
 const App_1 = __importDefault(__webpack_require__(/*! ./Components/App */ "./src/frontend/Components/App.tsx"));
 react_dom_1.default.render(jsx_runtime_1.jsx(App_1.default, {}, void 0), document.getElementById('root'));
-
-
-/***/ }),
-
-/***/ "./src/frontend/styles.ts":
-/*!********************************!*\
-  !*** ./src/frontend/styles.ts ***!
-  \********************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.useStyles = void 0;
-const styles_1 = __webpack_require__(/*! @material-ui/core/styles */ "./node_modules/@material-ui/core/esm/styles/index.js");
-exports.useStyles = styles_1.makeStyles((theme) => styles_1.createStyles({
-    drawer: {
-        minwidth: '12%',
-        background: '#4287f5'
-    },
-    drawerPaper: {
-        minWidth: '12%',
-        background: '#4287f5'
-    },
-    root: {
-        display: 'flex',
-        background: '#8287f5'
-    },
-    visualContainer: {
-        minWidth: '88%',
-        background: '#2287f5'
-    }
-}));
 
 
 /***/ }),

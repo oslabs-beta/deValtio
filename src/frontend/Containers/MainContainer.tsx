@@ -1,14 +1,17 @@
-import Container from '@material-ui/core/Container';
 import { SnapshotContainer } from './SnapshotContainer';
-import { VisualContainer } from './VisualContainer';
-import { useStyles } from '../styles'
+import Container from '@material-ui/core/Container';
+import { useStyles } from '../Styling/styles';
 
-export const MainContainer = (): JSX.Element => {
+// children needs to be of type JSX.Element[] because multiple children are being returned
+
+export const MainContainer = ({ children }: { children: JSX.Element }) => {
     const classes = useStyles();
     return (
-        <Container className={classes.root}>
+        <div className={classes.MainContainer}>
             <SnapshotContainer />
-            <VisualContainer />
-        </Container>
+            <div>
+                {children}
+            </div>
+        </div>
     );
 }

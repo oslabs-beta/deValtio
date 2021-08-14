@@ -1,4 +1,4 @@
-import { useStyles } from '../styles'
+import { useStyles } from '../Styling/styles'
 
 export const VisualContainer = (): JSX.Element => {
     return (

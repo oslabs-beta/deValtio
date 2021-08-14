@@ -1,6 +1,6 @@
 import Drawer from '@material-ui/core/Drawer';
 import Typography from '@material-ui/core/Typography';
-import { useStyles } from '../styles'
+import { useStyles } from '../Styling/styles'
 
 export const SnapshotContainer = (): JSX.Element => {
     const classes = useStyles();

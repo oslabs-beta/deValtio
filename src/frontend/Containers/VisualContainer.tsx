@@ -1,9 +1,40 @@
-import Grid from '@material-ui/core/Grid';
+import { useStyles } from '../Styling/styles'
 
 export const VisualContainer = (): JSX.Element => {
     return (
-        <Grid container item>
-            Visual Components Goes here
-        </Grid>
+        <div>
+            State Tree jkldjdkflajdsklfkadsjfkladjslfjkadsjklfklsjadklfjkldasjklfdjkdsajlkfjsadkjfklasdjlkfjadsklfjadklsjfklajsdklfjkladsjfklasjdlfkljaslkjfjdskljfkldsjklfdjdaskljfkladsjklfjaklsjfkldj
+            <br />
+            test
+            <br />
+            State Tree
+            <br />
+            test
+            <br />
+            State Tree
+            <br />
+            test
+            <br />
+            State Tree
+            <br />
+            test
+            <br />
+            State Tree
+            <br />
+            test
+            <br />
+            State Tree
+            <br />
+            test
+            <br />
+            State Tree
+            <br />
+            test
+            <br />
+            State Tree
+            <br />
+            test
+            <br />
+        </div>
     );
 }

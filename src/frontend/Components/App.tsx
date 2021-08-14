@@ -1,11 +1,8 @@
-import { MainContainer } from '../Containers/MainContainer';
-import { VisualContainer } from '../Containers/VisualContainer';
+import MainContainer from '../Containers/MainContainer';
 
 const App = (): JSX.Element => {
     return (
-        <MainContainer>
-            <VisualContainer />
-        </MainContainer>
+        <MainContainer />
     );
 }
 

@@ -44203,16 +44203,18 @@ function warning(condition, message) {
 /*!*****************************************!*\
   !*** ./src/frontend/Components/App.tsx ***!
   \*****************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
 
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-const MainContainer_1 = __webpack_require__(/*! ../Containers/MainContainer */ "./src/frontend/Containers/MainContainer.tsx");
-const VisualContainer_1 = __webpack_require__(/*! ../Containers/VisualContainer */ "./src/frontend/Containers/VisualContainer.tsx");
+const MainContainer_1 = __importDefault(__webpack_require__(/*! ../Containers/MainContainer */ "./src/frontend/Containers/MainContainer.tsx"));
 const App = () => {
-    return (jsx_runtime_1.jsx(MainContainer_1.MainContainer, { children: jsx_runtime_1.jsx(VisualContainer_1.VisualContainer, {}, void 0) }, void 0));
+    return (jsx_runtime_1.jsx(MainContainer_1.default, {}, void 0));
 };
 exports.default = App;
 
@@ -44223,21 +44225,36 @@ exports.default = App;
 /*!***************************************************!*\
   !*** ./src/frontend/Containers/MainContainer.tsx ***!
   \***************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
 
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.MainContainer = void 0;
 const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 const SnapshotContainer_1 = __webpack_require__(/*! ./SnapshotContainer */ "./src/frontend/Containers/SnapshotContainer.tsx");
+const VisualContainer_1 = __importDefault(__webpack_require__(/*! ./VisualContainer */ "./src/frontend/Containers/VisualContainer.tsx"));
 const styles_1 = __webpack_require__(/*! ../Styling/styles */ "./src/frontend/Styling/styles.ts");
 // children needs to be of type JSX.Element[] because multiple children are being returned
-const MainContainer = ({ children }) => {
+// export const MainContainer = ({ children }: { children: JSX.Element }) => {
+//     const classes = useStyles();
+//     return (
+//         <div className={classes.MainContainer}>
+//             <SnapshotContainer />
+//             <div>
+//                 {children}
+//             </div>
+//             <VisualContainer />
+//         </div>
+//     );
+// }
+function MainContainer() {
     const classes = styles_1.useStyles();
-    return (jsx_runtime_1.jsxs("div", Object.assign({ className: classes.MainContainer }, { children: [jsx_runtime_1.jsx(SnapshotContainer_1.SnapshotContainer, {}, void 0), jsx_runtime_1.jsx("div", { children: children }, void 0)] }), void 0));
-};
-exports.MainContainer = MainContainer;
+    return (jsx_runtime_1.jsxs("div", Object.assign({ className: classes.MainContainer }, { children: [jsx_runtime_1.jsx(SnapshotContainer_1.SnapshotContainer, {}, void 0), jsx_runtime_1.jsx(VisualContainer_1.default, {}, void 0)] }), void 0));
+}
+exports.default = MainContainer;
 
 
 /***/ }),
@@ -44272,17 +44289,33 @@ exports.SnapshotContainer = SnapshotContainer;
 /*!*****************************************************!*\
   !*** ./src/frontend/Containers/VisualContainer.tsx ***!
   \*****************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
 
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.VisualContainer = void 0;
-const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-const VisualContainer = () => {
-    return (jsx_runtime_1.jsxs("div", { children: ["State Tree jkldjdkflajdsklfkadsjfkladjslfjkadsjklfklsjadklfjkldasjklfdjkdsajlkfjsadkjfklasdjlkfjadsklfjadklsjfklajsdklfjkladsjfklasjdlfkljaslkjfjdskljfkldsjklfdjdaskljfkladsjklfjaklsjfkldj", jsx_runtime_1.jsx("br", {}, void 0), "test", jsx_runtime_1.jsx("br", {}, void 0), "State Tree", jsx_runtime_1.jsx("br", {}, void 0), "test", jsx_runtime_1.jsx("br", {}, void 0), "State Tree", jsx_runtime_1.jsx("br", {}, void 0), "test", jsx_runtime_1.jsx("br", {}, void 0), "State Tree", jsx_runtime_1.jsx("br", {}, void 0), "test", jsx_runtime_1.jsx("br", {}, void 0), "State Tree", jsx_runtime_1.jsx("br", {}, void 0), "test", jsx_runtime_1.jsx("br", {}, void 0), "State Tree", jsx_runtime_1.jsx("br", {}, void 0), "test", jsx_runtime_1.jsx("br", {}, void 0), "State Tree", jsx_runtime_1.jsx("br", {}, void 0), "test", jsx_runtime_1.jsx("br", {}, void 0), "State Tree", jsx_runtime_1.jsx("br", {}, void 0), "test", jsx_runtime_1.jsx("br", {}, void 0)] }, void 0));
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-exports.VisualContainer = VisualContainer;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+const react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+const NavBar_1 = __importDefault(__webpack_require__(/*! ../components/NavBar/NavBar */ "./src/frontend/components/NavBar/NavBar.tsx"));
+const StateDiff_1 = __importDefault(__webpack_require__(/*! ../components/StateDiff/StateDiff */ "./src/frontend/components/StateDiff/StateDiff.tsx"));
+const ComponentTree_1 = __importDefault(__webpack_require__(/*! ../components/ComponentTree/ComponentTree */ "./src/frontend/components/ComponentTree/ComponentTree.tsx"));
+const ComponentGraph_1 = __importDefault(__webpack_require__(/*! ../components/ComponentGraph/ComponentGraph */ "./src/frontend/components/ComponentGraph/ComponentGraph.tsx"));
+const ProxyNetwork_1 = __importDefault(__webpack_require__(/*! ../components/ProxyNetwork/ProxyNetwork */ "./src/frontend/components/ProxyNetwork/ProxyNetwork.tsx"));
+function VisualContainer() {
+    const [tab, setTab] = react_1.useState('State Diff');
+    const navLists = {
+        'State Diff': jsx_runtime_1.jsx(StateDiff_1.default, {}, void 0),
+        'Component Tree': jsx_runtime_1.jsx(ComponentTree_1.default, {}, void 0),
+        'Component Graph': jsx_runtime_1.jsx(ComponentGraph_1.default, {}, void 0),
+        'Proxy Network': jsx_runtime_1.jsx(ProxyNetwork_1.default, {}, void 0),
+    };
+    const tabsList = Object.keys(navLists);
+    return (jsx_runtime_1.jsxs("div", Object.assign({ className: "visualContainer" }, { children: [jsx_runtime_1.jsx(NavBar_1.default, { setTab: setTab, tabsList: tabsList, tab: tab }, void 0), navLists[tab]] }), void 0));
+}
+exports.default = VisualContainer;
 
 
 /***/ }),
@@ -44319,6 +44352,116 @@ exports.useStyles = styles_1.makeStyles((theme) => styles_1.createStyles({
         padding: 8
     }
 }));
+
+
+/***/ }),
+
+/***/ "./src/frontend/components/ComponentGraph/ComponentGraph.tsx":
+/*!*******************************************************************!*\
+  !*** ./src/frontend/components/ComponentGraph/ComponentGraph.tsx ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+//this is for the component graph
+function componentGraph() {
+    return (jsx_runtime_1.jsx("div", Object.assign({ className: 'Graph' }, { children: "Render component graph here" }), void 0));
+}
+exports.default = componentGraph;
+
+
+/***/ }),
+
+/***/ "./src/frontend/components/ComponentTree/ComponentTree.tsx":
+/*!*****************************************************************!*\
+  !*** ./src/frontend/components/ComponentTree/ComponentTree.tsx ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+//this is for the component tree
+function componentTree() {
+    return (jsx_runtime_1.jsx("div", Object.assign({ className: 'Tree' }, { children: "Render component tree here" }), void 0));
+}
+exports.default = componentTree;
+
+
+/***/ }),
+
+/***/ "./src/frontend/components/NavBar/NavBar.tsx":
+/*!***************************************************!*\
+  !*** ./src/frontend/components/NavBar/NavBar.tsx ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function NavBar({ setTab, tabsList, tab }) {
+    const tabButtons = tabsList.reduce((acc, name) => {
+        acc.push(jsx_runtime_1.jsx("button", Object.assign({ className: "navBarButtons", style: tab === name
+                ? {
+                    color: '#1cb5c9',
+                    backgroundColor: '#212121',
+                    fontWeight: 'bold',
+                }
+                : { color: '#e6e6e6', fontWeight: 'bold' }, onClick: () => {
+                setTab(name);
+            } }, { children: name }), name));
+        return acc;
+    }, []);
+    // Renders the array of NavBar buttons generated above
+    return jsx_runtime_1.jsx("div", Object.assign({ className: "navBar" }, { children: tabButtons }), void 0);
+}
+exports.default = NavBar;
+
+
+/***/ }),
+
+/***/ "./src/frontend/components/ProxyNetwork/ProxyNetwork.tsx":
+/*!***************************************************************!*\
+  !*** ./src/frontend/components/ProxyNetwork/ProxyNetwork.tsx ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+//this is for the proxy network image
+function proxyNetwork() {
+    return (jsx_runtime_1.jsx("div", Object.assign({ className: 'Network' }, { children: "Render proxy network here" }), void 0));
+}
+exports.default = proxyNetwork;
+
+
+/***/ }),
+
+/***/ "./src/frontend/components/StateDiff/StateDiff.tsx":
+/*!*********************************************************!*\
+  !*** ./src/frontend/components/StateDiff/StateDiff.tsx ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+//this is for state drawn out 
+function stateDiff() {
+    //extract intial state from the app and display it as an object 
+    //as we add to state show the updates to state - save it as a snapshot and display it in the snapshot section 
+    //everytime state is update, it should display updated state and save it as a new snapshot 
+    return (jsx_runtime_1.jsx("div", Object.assign({ className: 'Diff' }, { children: "render the states here" }), void 0));
+}
+exports.default = stateDiff;
 
 
 /***/ }),

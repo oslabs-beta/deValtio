@@ -19,5 +19,8 @@ export const useStyles = makeStyles((theme: Theme) => createStyles({
         color: '#293241',
         textAlign: 'center',
         padding: 8
+    },
+    navBar: {
+        width: 'calc(100% - 15rem)'
     }
 }));

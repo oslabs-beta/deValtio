@@ -1,11 +1,11 @@
 //this is for the component tree
 
-function componentTree(): JSX.Element { 
+function ComponentTree(): JSX.Element {
   return (
     <div className='Tree'>
-      Render component tree here 
+      Render component tree here
     </div>
   )
-  }
-  
-  export default componentTree;
+}
+
+export default ComponentTree;

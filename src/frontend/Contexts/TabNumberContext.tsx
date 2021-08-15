@@ -1,6 +1,6 @@
 import { createContext, useState, useContext } from "react";
 
-const TabNumberContext = createContext<number | null>(null);
+const TabNumberContext = createContext<number>(1);
 const ChangeTabContext = createContext<any>(null);
 
 export const useTabNumber = () => useContext(TabNumberContext);

@@ -47724,6 +47724,25 @@ exports.default = App;
 
 /***/ }),
 
+/***/ "./src/frontend/Components/ComponentTree/componenttree.tsx":
+/*!*****************************************************************!*\
+  !*** ./src/frontend/Components/ComponentTree/componenttree.tsx ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+//this is for the component tree
+function ComponentTree() {
+    return (jsx_runtime_1.jsx("div", Object.assign({ className: 'Tree' }, { children: "Render component tree here" }), void 0));
+}
+exports.default = ComponentTree;
+
+
+/***/ }),
+
 /***/ "./src/frontend/Components/NavBar/navbar.tsx":
 /*!***************************************************!*\
   !*** ./src/frontend/Components/NavBar/navbar.tsx ***!
@@ -47738,23 +47757,57 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.NavBar = void 0;
 const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-const react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const AppBar_1 = __importDefault(__webpack_require__(/*! @material-ui/core/AppBar */ "./node_modules/@material-ui/core/esm/AppBar/index.js"));
 const Tabs_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Tabs */ "./node_modules/@material-ui/core/esm/Tabs/index.js"));
 const Tab_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Tab */ "./node_modules/@material-ui/core/esm/Tab/index.js"));
 const styles_1 = __webpack_require__(/*! ../../Styling/styles */ "./src/frontend/Styling/styles.ts");
+const TabNumberContext_1 = __webpack_require__(/*! ../../Contexts/TabNumberContext */ "./src/frontend/Contexts/TabNumberContext.tsx");
 const NavBar = () => {
     const classes = styles_1.useStyles();
-    const [tabNum, setTabNum] = react_1.useState(1);
-    const handleTabChange = (e, value) => {
-        setTabNum(value);
-        console.log(e.target);
-        console.log(tabNum);
-        return;
-    };
-    return (jsx_runtime_1.jsx("div", { children: jsx_runtime_1.jsx(AppBar_1.default, Object.assign({ className: classes.navBar, position: 'static' }, { children: jsx_runtime_1.jsxs(Tabs_1.default, Object.assign({ value: tabNum, onChange: handleTabChange }, { children: [jsx_runtime_1.jsx(Tab_1.default, { label: 'StateDiff', value: 1 }, void 0), jsx_runtime_1.jsx(Tab_1.default, { label: 'State Tree', value: 2 }, void 0), jsx_runtime_1.jsx(Tab_1.default, { label: 'ProxyNetwork', value: 3 }, void 0)] }), void 0) }), void 0) }, void 0));
+    return (jsx_runtime_1.jsx("div", { children: jsx_runtime_1.jsx(AppBar_1.default, Object.assign({ className: classes.navBar, position: 'static' }, { children: jsx_runtime_1.jsxs(Tabs_1.default, Object.assign({ value: TabNumberContext_1.useTabNumber(), onChange: TabNumberContext_1.useTabChange() }, { children: [jsx_runtime_1.jsx(Tab_1.default, { label: 'StateDiff', value: 1 }, void 0), jsx_runtime_1.jsx(Tab_1.default, { label: 'State Tree', value: 2 }, void 0), jsx_runtime_1.jsx(Tab_1.default, { label: 'ProxyNetwork', value: 3 }, void 0)] }), void 0) }), void 0) }, void 0));
 };
 exports.NavBar = NavBar;
+
+
+/***/ }),
+
+/***/ "./src/frontend/Components/ProxyNetwork/proxynetwork.tsx":
+/*!***************************************************************!*\
+  !*** ./src/frontend/Components/ProxyNetwork/proxynetwork.tsx ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+//this is for the proxy network image
+function ProxyNetwork() {
+    return (jsx_runtime_1.jsx("div", Object.assign({ className: 'Network' }, { children: "Render proxy network here" }), void 0));
+}
+exports.default = ProxyNetwork;
+
+
+/***/ }),
+
+/***/ "./src/frontend/Components/StateDiff/statediff.tsx":
+/*!*********************************************************!*\
+  !*** ./src/frontend/Components/StateDiff/statediff.tsx ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+//this is for state drawn out 
+function StateDiff() {
+    //extract intial state from the app and display it as an object 
+    //as we add to state show the updates to state - save it as a snapshot and display it in the snapshot section 
+    //everytime state is update, it should display updated state and save it as a new snapshot 
+    return (jsx_runtime_1.jsx("div", Object.assign({ className: 'Diff' }, { children: "render the states here" }), void 0));
+}
+exports.default = StateDiff;
 
 
 /***/ }),
@@ -47772,11 +47825,11 @@ exports.MainContainer = void 0;
 const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 const SnapshotContainer_1 = __webpack_require__(/*! ./SnapshotContainer */ "./src/frontend/Containers/SnapshotContainer.tsx");
 const styles_1 = __webpack_require__(/*! ../Styling/styles */ "./src/frontend/Styling/styles.ts");
+const TabNumberContext_1 = __webpack_require__(/*! ../Contexts/TabNumberContext */ "./src/frontend/Contexts/TabNumberContext.tsx");
 // children needs to be of type JSX.Element because there are only 1 children being returned
 const MainContainer = ({ children }) => {
     const classes = styles_1.useStyles();
-    console.log('mainContainer', children);
-    return (jsx_runtime_1.jsxs("div", { children: [jsx_runtime_1.jsx(SnapshotContainer_1.SnapshotContainer, {}, void 0), jsx_runtime_1.jsx("div", { children: children }, void 0)] }, void 0));
+    return (jsx_runtime_1.jsx(TabNumberContext_1.TabNumberProvider, { children: jsx_runtime_1.jsxs("div", { children: [jsx_runtime_1.jsx(SnapshotContainer_1.SnapshotContainer, {}, void 0), jsx_runtime_1.jsx("div", { children: children }, void 0)] }, void 0) }, void 0));
 };
 exports.MainContainer = MainContainer;
 
@@ -47814,16 +47867,57 @@ exports.SnapshotContainer = SnapshotContainer;
 /*!*****************************************************!*\
   !*** ./src/frontend/Containers/VisualContainer.tsx ***!
   \*****************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+const TabNumberContext_1 = __webpack_require__(/*! ../Contexts/TabNumberContext */ "./src/frontend/Contexts/TabNumberContext.tsx");
+const statediff_1 = __importDefault(__webpack_require__(/*! ../Components/StateDiff/statediff */ "./src/frontend/Components/StateDiff/statediff.tsx"));
+const componenttree_1 = __importDefault(__webpack_require__(/*! ../Components/ComponentTree/componenttree */ "./src/frontend/Components/ComponentTree/componenttree.tsx"));
+const proxynetwork_1 = __importDefault(__webpack_require__(/*! ../Components/ProxyNetwork/proxynetwork */ "./src/frontend/Components/ProxyNetwork/proxynetwork.tsx"));
+function VisualContainer() {
+    console.log('useTabNumber', TabNumberContext_1.useTabNumber());
+    return (jsx_runtime_1.jsxs("div", { children: ["Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container", (TabNumberContext_1.useTabNumber() === 1) && jsx_runtime_1.jsx(statediff_1.default, {}, void 0), (TabNumberContext_1.useTabNumber() === 2) && jsx_runtime_1.jsx(componenttree_1.default, {}, void 0), (TabNumberContext_1.useTabNumber() === 3) && jsx_runtime_1.jsx(proxynetwork_1.default, {}, void 0)] }, void 0));
+}
+exports.default = VisualContainer;
+
+
+/***/ }),
+
+/***/ "./src/frontend/Contexts/TabNumberContext.tsx":
+/*!****************************************************!*\
+  !*** ./src/frontend/Contexts/TabNumberContext.tsx ***!
+  \****************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.TabNumberProvider = exports.useTabChange = exports.useTabNumber = void 0;
 const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-function VisualContainer() {
-    return (jsx_runtime_1.jsx("div", { children: "Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container Visual Container" }, void 0));
-}
-exports.default = VisualContainer;
+const react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+const TabNumberContext = react_1.createContext(1);
+const ChangeTabContext = react_1.createContext(null);
+const useTabNumber = () => react_1.useContext(TabNumberContext);
+exports.useTabNumber = useTabNumber;
+const useTabChange = () => react_1.useContext(ChangeTabContext);
+exports.useTabChange = useTabChange;
+const TabNumberProvider = ({ children }) => {
+    const [tabNum, setTabNum] = react_1.useState(1);
+    const handleTabChange = (e, value) => {
+        setTabNum(value);
+        console.log(e.target);
+        console.log(tabNum);
+        return;
+    };
+    return (jsx_runtime_1.jsx(TabNumberContext.Provider, Object.assign({ value: tabNum }, { children: jsx_runtime_1.jsx(ChangeTabContext.Provider, Object.assign({ value: handleTabChange }, { children: children }), void 0) }), void 0));
+};
+exports.TabNumberProvider = TabNumberProvider;
 
 
 /***/ }),

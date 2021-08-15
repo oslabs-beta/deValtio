@@ -47724,25 +47724,6 @@ exports.default = App;
 
 /***/ }),
 
-/***/ "./src/frontend/Components/NavBar/NavBarPanel.tsx":
-/*!********************************************************!*\
-  !*** ./src/frontend/Components/NavBar/NavBarPanel.tsx ***!
-  \********************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.NavBarPanel = void 0;
-const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-const NavBarPanel = ({ children, value, index }) => {
-    return (jsx_runtime_1.jsx("div", { children: "NavBarPanel" }, void 0));
-};
-exports.NavBarPanel = NavBarPanel;
-
-
-/***/ }),
-
 /***/ "./src/frontend/Components/NavBar/navbar.tsx":
 /*!***************************************************!*\
   !*** ./src/frontend/Components/NavBar/navbar.tsx ***!
@@ -47762,16 +47743,16 @@ const AppBar_1 = __importDefault(__webpack_require__(/*! @material-ui/core/AppBa
 const Tabs_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Tabs */ "./node_modules/@material-ui/core/esm/Tabs/index.js"));
 const Tab_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Tab */ "./node_modules/@material-ui/core/esm/Tab/index.js"));
 const styles_1 = __webpack_require__(/*! ../../Styling/styles */ "./src/frontend/Styling/styles.ts");
-const NavBarPanel_1 = __webpack_require__(/*! ./NavBarPanel */ "./src/frontend/Components/NavBar/NavBarPanel.tsx");
 const NavBar = () => {
     const classes = styles_1.useStyles();
-    const [tabNum, setTabNum] = react_1.useState(0);
-    const handleTabChange = (e, val) => {
-        setTabNum(tabNum);
+    const [tabNum, setTabNum] = react_1.useState(1);
+    const handleTabChange = (e, value) => {
+        setTabNum(value);
+        console.log(e.target);
         console.log(tabNum);
         return;
     };
-    return (jsx_runtime_1.jsxs("div", { children: [jsx_runtime_1.jsx(AppBar_1.default, Object.assign({ className: classes.navBar, position: 'static' }, { children: jsx_runtime_1.jsxs(Tabs_1.default, Object.assign({ value: tabNum, onChange: handleTabChange }, { children: [jsx_runtime_1.jsx(Tab_1.default, { label: 'StateDiff' }, void 0), jsx_runtime_1.jsx(Tab_1.default, { label: 'State Tree' }, void 0), jsx_runtime_1.jsx(Tab_1.default, { label: 'ProxyNetwork' }, void 0)] }), void 0) }), void 0), jsx_runtime_1.jsx(NavBarPanel_1.NavBarPanel, Object.assign({ value: 0 }, { children: jsx_runtime_1.jsx("div", { children: "panel" }, void 0) }), void 0), jsx_runtime_1.jsx(NavBarPanel_1.NavBarPanel, Object.assign({ value: 1 }, { children: jsx_runtime_1.jsx("div", { children: "panel2" }, void 0) }), void 0), jsx_runtime_1.jsx(NavBarPanel_1.NavBarPanel, Object.assign({ value: 2 }, { children: jsx_runtime_1.jsx("div", { children: "panel3" }, void 0) }), void 0)] }, void 0));
+    return (jsx_runtime_1.jsx("div", { children: jsx_runtime_1.jsx(AppBar_1.default, Object.assign({ className: classes.navBar, position: 'static' }, { children: jsx_runtime_1.jsxs(Tabs_1.default, Object.assign({ value: tabNum, onChange: handleTabChange }, { children: [jsx_runtime_1.jsx(Tab_1.default, { label: 'StateDiff', value: 1 }, void 0), jsx_runtime_1.jsx(Tab_1.default, { label: 'State Tree', value: 2 }, void 0), jsx_runtime_1.jsx(Tab_1.default, { label: 'ProxyNetwork', value: 3 }, void 0)] }), void 0) }), void 0) }, void 0));
 };
 exports.NavBar = NavBar;
 

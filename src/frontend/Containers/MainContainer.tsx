@@ -1,18 +1,21 @@
 import { SnapshotContainer } from './SnapshotContainer';
 import { useStyles } from '../Styling/styles';
+import { TabNumberProvider } from '../Contexts/TabNumberContext';
+
 
 // children needs to be of type JSX.Element because there are only 1 children being returned
 
 export const MainContainer = ({ children }: { children: JSX.Element }) => {
   const classes = useStyles();
-  console.log('mainContainer', children);
   return (
-    <div>
-      <SnapshotContainer />
+    <TabNumberProvider>
       <div>
-        {children}
+        <SnapshotContainer />
+        <div>
+          {children}
+        </div>
       </div>
-    </div>
+    </TabNumberProvider>
   );
 }
 

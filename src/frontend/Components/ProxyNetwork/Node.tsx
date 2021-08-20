@@ -1,24 +1,24 @@
 import { Group } from '@visx/group';
-import { HierarchyPointNode } from '@visx/hierarchy/lib/types';
-import { ITreeNode } from '../../../Types/Types';
+import { HierarchyNode } from '../../../Types/Types';
 
 
 
-export const Node = ({ node }: { node: ITreeNode }) => {
+export const Node = ({ node }: { node: HierarchyNode }) => {
+    const width = 40;
+    const height = 20;
+    const centerX = -width / 2;
+    const centerY = -height / 2;
     console.log(node);
     return (
-        <Group top={100} left={100}>
-            <svg height='50' width='100'>
-                <rect
-                    height='100'
-                    width='100'
-                    fill='#fe6e9e'
-                >
-                </rect>
-                <text fill='#ffffff' fontSize={8} stroke='#ffffff' x={25} y={25}>
-                    {node.name}
-                </text>
-            </svg>
+        <Group top={node.x} left={node.y}>
+            <rect
+                height={height}
+                width={width}
+                y={centerY}
+                x={centerX}
+                fill='black'
+            >
+            </rect>
         </Group>
     )
 }

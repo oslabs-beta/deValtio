@@ -1,11 +1,17 @@
+import { HierarchyPointNode } from '@visx/hierarchy/lib/types';
+
+
+
 // interface for the hierarchical structure of state date
 export interface ITree {
-    parent: string | null;
-    value: any;
-    children?: ITreeNode[]
+    name: string;
+    value?: any;
+    children?: this[]
 }
 
-export interface ITreeNode {
-    name: string;
-}
+export type HierarchyNode = HierarchyPointNode<ITree>;
+
+// export interface ITreeNode {
+//     name: string;
+// }
 

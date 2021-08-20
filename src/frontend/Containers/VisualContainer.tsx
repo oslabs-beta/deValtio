@@ -4,7 +4,7 @@ import NavBar from '../components/NavBar/NavBar';
 import StateDiff from '../components/StateDiff/StateDiff';
 import ComponentTree from '../components/ComponentTree/ComponentTree';
 import ComponentGraph from '../components/ComponentGraph/ComponentGraph';
-import ProxyNetwork from '../components/ProxyNetwork/ProxyNetwork';
+import ProxyNetwork from '../Components/ProxyNetwork/ProxyNetwork';
 
 interface navType {
   [tabName: string]: JSX.Element;

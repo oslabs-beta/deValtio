@@ -6962,6 +6962,141 @@ function getDisplayName(Component) {
 
 /***/ }),
 
+/***/ "./node_modules/@visx/group/esm/Group.js":
+/*!***********************************************!*\
+  !*** ./node_modules/@visx/group/esm/Group.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Group)
+/* harmony export */ });
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_2__);
+
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+
+
+
+function Group(_ref) {
+  var _ref$top = _ref.top,
+      top = _ref$top === void 0 ? 0 : _ref$top,
+      _ref$left = _ref.left,
+      left = _ref$left === void 0 ? 0 : _ref$left,
+      transform = _ref.transform,
+      className = _ref.className,
+      children = _ref.children,
+      innerRef = _ref.innerRef,
+      restProps = _objectWithoutPropertiesLoose(_ref, ["top", "left", "transform", "className", "children", "innerRef"]);
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement("g", _extends({
+    ref: innerRef,
+    className: classnames__WEBPACK_IMPORTED_MODULE_2___default()('visx-group', className),
+    transform: transform || "translate(" + left + ", " + top + ")"
+  }, restProps), children);
+}
+Group.propTypes = {
+  top: (prop_types__WEBPACK_IMPORTED_MODULE_0___default().number),
+  left: (prop_types__WEBPACK_IMPORTED_MODULE_0___default().number),
+  transform: (prop_types__WEBPACK_IMPORTED_MODULE_0___default().string),
+  className: (prop_types__WEBPACK_IMPORTED_MODULE_0___default().string),
+  children: (prop_types__WEBPACK_IMPORTED_MODULE_0___default().node),
+  innerRef: prop_types__WEBPACK_IMPORTED_MODULE_0___default().oneOfType([(prop_types__WEBPACK_IMPORTED_MODULE_0___default().string), (prop_types__WEBPACK_IMPORTED_MODULE_0___default().func), (prop_types__WEBPACK_IMPORTED_MODULE_0___default().object)])
+};
+
+/***/ }),
+
+/***/ "./node_modules/@visx/group/esm/index.js":
+/*!***********************************************!*\
+  !*** ./node_modules/@visx/group/esm/index.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Group": () => (/* reexport safe */ _Group__WEBPACK_IMPORTED_MODULE_0__.default)
+/* harmony export */ });
+/* harmony import */ var _Group__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Group */ "./node_modules/@visx/group/esm/Group.js");
+
+
+/***/ }),
+
+/***/ "./node_modules/classnames/index.js":
+/*!******************************************!*\
+  !*** ./node_modules/classnames/index.js ***!
+  \******************************************/
+/***/ ((module, exports) => {
+
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+  Copyright (c) 2018 Jed Watson.
+  Licensed under the MIT License (MIT), see
+  http://jedwatson.github.io/classnames
+*/
+/* global define */
+
+(function () {
+	'use strict';
+
+	var hasOwn = {}.hasOwnProperty;
+
+	function classNames() {
+		var classes = [];
+
+		for (var i = 0; i < arguments.length; i++) {
+			var arg = arguments[i];
+			if (!arg) continue;
+
+			var argType = typeof arg;
+
+			if (argType === 'string' || argType === 'number') {
+				classes.push(arg);
+			} else if (Array.isArray(arg)) {
+				if (arg.length) {
+					var inner = classNames.apply(null, arg);
+					if (inner) {
+						classes.push(inner);
+					}
+				}
+			} else if (argType === 'object') {
+				if (arg.toString === Object.prototype.toString) {
+					for (var key in arg) {
+						if (hasOwn.call(arg, key) && arg[key]) {
+							classes.push(key);
+						}
+					}
+				} else {
+					classes.push(arg.toString());
+				}
+			}
+		}
+
+		return classes.join(' ');
+	}
+
+	if ( true && module.exports) {
+		classNames.default = classNames;
+		module.exports = classNames;
+	} else if (true) {
+		// register as 'classnames', consistent with npm package name
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function () {
+			return classNames;
+		}).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else {}
+}());
+
+
+/***/ }),
+
 /***/ "./node_modules/clsx/dist/clsx.m.js":
 /*!******************************************!*\
   !*** ./node_modules/clsx/dist/clsx.m.js ***!
@@ -44221,6 +44356,60 @@ exports.default = App;
 
 /***/ }),
 
+/***/ "./src/frontend/Components/ProxyNetwork/Node.tsx":
+/*!*******************************************************!*\
+  !*** ./src/frontend/Components/ProxyNetwork/Node.tsx ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Node = void 0;
+const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+const group_1 = __webpack_require__(/*! @visx/group */ "./node_modules/@visx/group/esm/index.js");
+const Node = ({ node }) => {
+    console.log(node);
+    return (jsx_runtime_1.jsx(group_1.Group, Object.assign({ top: 100, left: 100 }, { children: jsx_runtime_1.jsxs("svg", Object.assign({ height: '50', width: '100' }, { children: [jsx_runtime_1.jsx("rect", { height: '100', width: '100', fill: '#fe6e9e' }, void 0), jsx_runtime_1.jsx("text", Object.assign({ fill: '#ffffff', fontSize: 8, stroke: '#ffffff', x: 25, y: 25 }, { children: node.name }), void 0)] }), void 0) }), void 0));
+};
+exports.Node = Node;
+
+
+/***/ }),
+
+/***/ "./src/frontend/Components/ProxyNetwork/ProxyNetwork.tsx":
+/*!***************************************************************!*\
+  !*** ./src/frontend/Components/ProxyNetwork/ProxyNetwork.tsx ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+//this is for the proxy network image
+const Node_1 = __webpack_require__(/*! ./Node */ "./src/frontend/Components/ProxyNetwork/Node.tsx");
+const group_1 = __webpack_require__(/*! @visx/group */ "./node_modules/@visx/group/esm/index.js");
+const testTree = {
+    parent: 'Parent Component',
+    value: 'This is the value',
+    children: [
+        { name: 'Child Comp 1' },
+        { name: 'Child Comp 2' },
+    ]
+};
+const testNode = {
+    name: 'This is a node',
+};
+function ProxyNetwork() {
+    var _a;
+    return (jsx_runtime_1.jsxs(group_1.Group, { children: [jsx_runtime_1.jsxs("svg", Object.assign({ height: '1000', width: '1000' }, { children: [jsx_runtime_1.jsx("circle", { cx: "800", cy: "50", r: "40", stroke: "black", "stroke-width": "3", fill: "red" }, void 0), jsx_runtime_1.jsx("text", Object.assign({ fill: '#000000', fontSize: 8, stroke: '#ffffff', x: 25, y: 25 }, { children: testTree.parent }), void 0), jsx_runtime_1.jsx("text", Object.assign({ fill: '#000000', fontSize: 8, stroke: '#ffffff', x: 30, y: 30 }, { children: testTree.value }), void 0)] }), void 0), jsx_runtime_1.jsx("svg", { children: (_a = testTree.children) === null || _a === void 0 ? void 0 : _a.map(node => (jsx_runtime_1.jsx(Node_1.Node, { node: node }, void 0))) }, void 0)] }, void 0));
+}
+exports.default = ProxyNetwork;
+
+
+/***/ }),
+
 /***/ "./src/frontend/Containers/MainContainer.tsx":
 /*!***************************************************!*\
   !*** ./src/frontend/Containers/MainContainer.tsx ***!
@@ -44303,7 +44492,7 @@ const NavBar_1 = __importDefault(__webpack_require__(/*! ../components/NavBar/Na
 const StateDiff_1 = __importDefault(__webpack_require__(/*! ../components/StateDiff/StateDiff */ "./src/frontend/components/StateDiff/StateDiff.tsx"));
 const ComponentTree_1 = __importDefault(__webpack_require__(/*! ../components/ComponentTree/ComponentTree */ "./src/frontend/components/ComponentTree/ComponentTree.tsx"));
 const ComponentGraph_1 = __importDefault(__webpack_require__(/*! ../components/ComponentGraph/ComponentGraph */ "./src/frontend/components/ComponentGraph/ComponentGraph.tsx"));
-const ProxyNetwork_1 = __importDefault(__webpack_require__(/*! ../components/ProxyNetwork/ProxyNetwork */ "./src/frontend/components/ProxyNetwork/ProxyNetwork.tsx"));
+const ProxyNetwork_1 = __importDefault(__webpack_require__(/*! ../Components/ProxyNetwork/ProxyNetwork */ "./src/frontend/Components/ProxyNetwork/ProxyNetwork.tsx"));
 function VisualContainer() {
     const [tab, setTab] = react_1.useState('State Diff');
     const navLists = {
@@ -44421,25 +44610,6 @@ function NavBar({ setTab, tabsList, tab }) {
     return jsx_runtime_1.jsx("div", Object.assign({ className: "navBar" }, { children: tabButtons }), void 0);
 }
 exports.default = NavBar;
-
-
-/***/ }),
-
-/***/ "./src/frontend/components/ProxyNetwork/ProxyNetwork.tsx":
-/*!***************************************************************!*\
-  !*** ./src/frontend/components/ProxyNetwork/ProxyNetwork.tsx ***!
-  \***************************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-//this is for the proxy network image
-function proxyNetwork() {
-    return (jsx_runtime_1.jsx("div", Object.assign({ className: 'Network' }, { children: "Render proxy network here" }), void 0));
-}
-exports.default = proxyNetwork;
 
 
 /***/ }),

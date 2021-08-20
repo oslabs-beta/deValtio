@@ -9,7 +9,7 @@
             "ES6"
         ],
         "moduleResolution": "node", // how modules dependencies get resolved
-        "noImplicitAny": true,
+        "noImplicitAny": false,
         "noImplicitThis": true,
         "strictNullChecks": true,
         "allowSyntheticDefaultImports": true, // allows for import syntax like "import ReactDOM from 'react-dom'"

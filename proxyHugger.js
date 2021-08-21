@@ -13,9 +13,10 @@ const proxyViewer = {
     console.log(`set called with: obj: ${pp(obj)}, prop: ${pp(prop)}, value: ${pp(value)}`);
 	return Reflect.get(...arguments);
   },
-  construct: function(target, args) {
+  construct: function(target, args, receiver) {
 	  console.log(`construct called with: target: ${pp(target.name)}, ${pp(args)}`);
-    console.log(`has ${Object.getOwnPropertyNames(target)}`);
+    console.log(`receiver has ${Object.getOwnPropertyNames(receiver)}`);
+    console.dir(receiver);
 	  return Reflect.construct(target, args);
   },
   apply: function(target, thisArg, argumentsList) {

@@ -1,16 +1,7 @@
-import { HierarchyPointNode } from '@visx/hierarchy/lib/types';
+import { ReactNode } from "react";
 
-
-
-// interface for the hierarchical structure of state date
-export interface ITree {
-    name: string;
-    children?: ITree[];
+export interface INavBarPanelProps {
+    children?: ReactNode | JSX.Element;
+    value: number;
+    index?: number;
 }
-
-//export type HierarchyNode = HierarchyPointNode<ITree>;
-
-// export interface ITreeNode {
-//     name: string;
-// }
-

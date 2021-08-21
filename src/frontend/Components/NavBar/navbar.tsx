@@ -1,37 +1,30 @@
-import React from 'react';
+import Tabs from "@material-ui/core/Tabs";
+import Tab from '@material-ui/core/Tab';
+import { useStyles } from '../../Styling/styles';
+import { useTabNumber, useTabChange } from "../../Contexts/TabNumberContext";
+import styled from "styled-components";
 
-interface NavBarProps {
-  setTab: React.Dispatch<React.SetStateAction<string>>;
-  tabsList: string[];
-  tab: string;
+const NavBarSection = styled.section`
+  height: 10vh;
+  width: 100vw;
+  background: white;
+`;
+
+const NavTab = styled.a`
+  background: green;
+`;
+export const NavBar = (): JSX.Element => {
+  const classes = useStyles();
+
+  return (
+    <div>
+      <NavBarSection>
+        <Tabs value={useTabNumber()} onChange={useTabChange()}>
+          <Tab label='StateDiff' value={1} />
+          <Tab label='State Tree' value={2} />
+          <Tab label='ProxyNetwork' value={3} />
+        </Tabs>
+      </NavBarSection>
+    </div>
+  );
 }
-
-function NavBar({ setTab, tabsList, tab }: NavBarProps): JSX.Element {
-  const tabButtons = tabsList.reduce<React.ReactNode[]>((acc, name) => {
-    acc.push(
-      <button
-        className="navBarButtons"
-        key={name}
-        style={
-          tab === name
-            ? {
-                color: '#1cb5c9',
-                backgroundColor: '#212121',
-                fontWeight: 'bold',
-              }
-            : { color: '#e6e6e6', fontWeight: 'bold' }
-        }
-        onClick={() => {
-          setTab(name);
-        }}
-      >
-        {name}
-      </button>
-    );
-    return acc;
-  }, []);
-  // Renders the array of NavBar buttons generated above
-  return <div className="navBar">{tabButtons}</div>;
-}
-
-export default NavBar;

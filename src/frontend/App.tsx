@@ -1,4 +1,4 @@
-import MainContainer from '../Containers/MainContainer';
+import MainContainer from './Containers/MainContainer';
 
 const App = (): JSX.Element => {
     return (

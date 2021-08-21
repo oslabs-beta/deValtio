@@ -1,33 +1,20 @@
-import React from 'react';
-
 import { SnapshotContainer } from './SnapshotContainer';
 import VisualContainer from './VisualContainer';
-import Container from '@material-ui/core/Container';
-import { useStyles } from '../Styling/styles';
+import styled from 'styled-components';
 
-// children needs to be of type JSX.Element[] because multiple children are being returned
-
-// export const MainContainer = ({ children }: { children: JSX.Element }) => {
-//     const classes = useStyles();
-//     return (
-//         <div className={classes.MainContainer}>
-//             <SnapshotContainer />
-//             <div>
-//                 {children}
-//             </div>
-//             <VisualContainer />
-//         </div>
-//     );
-// }
+const Main = styled.main`
+height: 100vh;
+width: 100vw;
+background: #98C1D9;
+`;
 
 function MainContainer(): JSX.Element {
-    const classes = useStyles();
-    return (
-      <div className={classes.MainContainer}>
-        <SnapshotContainer />
-        <VisualContainer />
-      </div>
-    );
-  }
-  
-  export default MainContainer;
+  return (
+    <Main>
+      <SnapshotContainer />
+      <VisualContainer />
+    </Main>
+  );
+}
+
+export default MainContainer;

@@ -4,16 +4,17 @@ const TabNumberContext = createContext<number>(1);
 const ChangeTabContext = createContext<any>(null);
 
 export const useTabNumber = () => useContext(TabNumberContext);
-export const useTabChange = () => useContext(ChangeTabContext);
+export const useTabChange = (value: number) => useContext(ChangeTabContext);
 
 export const TabNumberProvider = ({ children }: { children: any }) => {
 
     const [tabNum, setTabNum] = useState<number>(1);
 
-    const handleTabChange = (e: React.ChangeEvent, value: number): void => {
+    const handleTabChange = (e: React.ChangeEvent<HTMLButtonElement>, value: number): void => {
         setTabNum(value);
-        console.log(e.target);
-        console.log(tabNum);
+        // console.log('context', tabNum, value);
+        // console.log(e.target.value)
+
         return;
     }
 

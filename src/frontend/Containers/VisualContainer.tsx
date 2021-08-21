@@ -2,7 +2,6 @@ import StateDiff from '../components/StateDiff/StateDiff';
 import ComponentTree from '../components/ComponentTree/ComponentTree';
 import ComponentGraph from '../components/ComponentGraph/ComponentGraph';
 import ProxyNetwork from '../Components/ProxyNetwork/ProxyNetwork';
-import { useTabNumber } from '../Contexts/TabNumberContext';
 import styled from 'styled-components';
 
 const VisualSection = styled.section`
@@ -11,14 +10,12 @@ const VisualSection = styled.section`
   background: green;
 `;
 
-function VisualContainer(): JSX.Element {
-  console.log('tabnum', useTabNumber());
+function VisualContainer({ tabNum }: { tabNum: number }): JSX.Element {
   return (
     <VisualSection>
-      Visual Container
-      {(useTabNumber() === 1) && <StateDiff />}
-      {(useTabNumber() === 2) && <ComponentTree />}
-      {(useTabNumber() === 3) && <ProxyNetwork />}
+      {(tabNum === 1) && <StateDiff />}
+      {(tabNum === 2) && <ComponentTree />}
+      {(tabNum === 3) && <ProxyNetwork />}
     </VisualSection>
   );
 }

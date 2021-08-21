@@ -1,30 +1,21 @@
-import Tabs from "@material-ui/core/Tabs";
-import Tab from '@material-ui/core/Tab';
-import { useStyles } from '../../Styling/styles';
-import { useTabNumber, useTabChange } from "../../Contexts/TabNumberContext";
 import styled from "styled-components";
+import { SetStateAction, Dispatch } from "react";
 
 const NavBarSection = styled.section`
   height: 10vh;
   width: 100vw;
-  background: white;
+  background: blue;
 `;
 
-const NavTab = styled.a`
+const NavTab = styled.button`
   background: green;
 `;
-export const NavBar = (): JSX.Element => {
-  const classes = useStyles();
-
+export const NavBar = ({ setTabNum }: { setTabNum: Dispatch<SetStateAction<number>> }): JSX.Element => {
   return (
-    <div>
-      <NavBarSection>
-        <Tabs value={useTabNumber()} onChange={useTabChange()}>
-          <Tab label='StateDiff' value={1} />
-          <Tab label='State Tree' value={2} />
-          <Tab label='ProxyNetwork' value={3} />
-        </Tabs>
-      </NavBarSection>
-    </div>
+    <NavBarSection>
+      <NavTab onClick={(event: React.MouseEvent<HTMLElement>) => setTabNum(1)}>StateDiff</NavTab>
+      <NavTab onClick={(event: React.MouseEvent<HTMLElement>) => setTabNum(2)}>State Tree</NavTab>
+      <NavTab onClick={(event: React.MouseEvent<HTMLElement>) => setTabNum(3)}>ProxyNetwork</NavTab>
+    </NavBarSection >
   );
 }

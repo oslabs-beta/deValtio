@@ -2,13 +2,13 @@ import styled from "styled-components";
 import { SetStateAction, Dispatch } from "react";
 
 const NavBarSection = styled.section`
-  height: 10vh;
-  width: 100vw;
-  background: blue;
+  height: 4vh;
+  width: 99vw;
+  background: #293241;
 `;
 
 const NavTab = styled.button`
-  background: green;
+  background: #98C1D9;
 `;
 export const NavBar = ({ setTabNum }: { setTabNum: Dispatch<SetStateAction<number>> }): JSX.Element => {
   return (

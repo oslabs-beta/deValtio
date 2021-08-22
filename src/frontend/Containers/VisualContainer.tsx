@@ -5,9 +5,12 @@ import ProxyNetwork from '../Components/ProxyNetwork/ProxyNetwork';
 import styled from 'styled-components';
 
 const VisualSection = styled.section`
-  height: 100vh;
+  height: 96vh;
   width: 85vw;
-  background: green;
+  background: #293241;
+  color: #98C1D9;
+  border-top: 2px solid #98C1D9;
+  text-align:center;
 `;
 
 function VisualContainer({ tabNum }: { tabNum: number }): JSX.Element {

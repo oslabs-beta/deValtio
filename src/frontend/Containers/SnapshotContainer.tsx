@@ -1,5 +1,14 @@
 import styled from 'styled-components';
-import { Section } from '../Styling/styles';
+
+const Section = styled.section`
+    height: 96vh;
+    width:14vw;
+    background: #293241;
+    border: 2px solid #98C1D9;
+    color: #98C1D9;
+    text-align:center;
+    
+`;
 
 export const SnapshotContainer = (): JSX.Element => {
     return (

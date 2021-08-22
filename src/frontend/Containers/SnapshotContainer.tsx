@@ -1,21 +1,20 @@
-import Drawer from '@material-ui/core/Drawer';
-import Typography from '@material-ui/core/Typography';
-import { useStyles } from '../Styling/styles'
+import styled from 'styled-components';
+
+const Section = styled.section`
+    height: 96vh;
+    width:14vw;
+    background: #293241;
+    border: 2px solid #98C1D9;
+    color: #98C1D9;
+    text-align:center;
+    
+`;
 
 export const SnapshotContainer = (): JSX.Element => {
-    const classes = useStyles();
     return (
-        <Drawer
-            className={classes.drawer}
-            variant='permanent'
-            anchor='left'
-            classes={{ paper: classes.drawerPaper }}
-        >
-            <div>
-                <Typography className={classes.snapText} variant='h4' component='h2'>
-                    SnapShots
-                </Typography>
-            </div>
-        </Drawer>
-    );
+        <Section>
+            SnapShots
+        </Section>
+    )
 }
+

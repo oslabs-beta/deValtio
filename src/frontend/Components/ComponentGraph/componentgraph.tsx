@@ -1,11 +1,11 @@
 //this is for the component graph
 
-function componentGraph(): JSX.Element { 
+function ComponentGraph(): JSX.Element {
   return (
     <div className='Graph'>
-      Render component graph here 
+      Render component graph here
     </div>
   )
-  }
-  
-  export default componentGraph;
+}
+
+export default ComponentGraph;

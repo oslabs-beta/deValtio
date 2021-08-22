@@ -1,32 +1,25 @@
-import React, { useState } from 'react';
-
-import NavBar from '../components/NavBar/NavBar';
 import StateDiff from '../components/StateDiff/StateDiff';
 import ComponentTree from '../components/ComponentTree/ComponentTree';
 import ComponentGraph from '../components/ComponentGraph/ComponentGraph';
-import ProxyNetwork from '../components/ProxyNetwork/ProxyNetwork';
+import ProxyNetwork from '../Components/ProxyNetwork/ProxyNetwork';
+import styled from 'styled-components';
 
-interface navType {
-  [tabName: string]: JSX.Element;
-}
+const VisualSection = styled.section`
+  height: 96vh;
+  width: 85vw;
+  background: #293241;
+  color: #98C1D9;
+  border-top: 2px solid #98C1D9;
+  text-align:center;
+`;
 
-function VisualContainer(): JSX.Element {
-  const [tab, setTab] = useState<string>('State Diff');
-
-  const navLists: navType = {
-    'State Diff': <StateDiff />,
-    'Component Tree': <ComponentTree />,
-    'Component Graph': <ComponentGraph />,
-    'Proxy Network': <ProxyNetwork />,
-  };
-
-  const tabsList: string[] = Object.keys(navLists);
-
+function VisualContainer({ tabNum }: { tabNum: number }): JSX.Element {
   return (
-    <div className="visualContainer">
-      <NavBar setTab={setTab} tabsList={tabsList} tab={tab} />
-      {navLists[tab]}
-    </div>
+    <VisualSection>
+      {(tabNum === 1) && <StateDiff />}
+      {(tabNum === 2) && <ComponentTree />}
+      {(tabNum === 3) && <ProxyNetwork />}
+    </VisualSection>
   );
 }
 

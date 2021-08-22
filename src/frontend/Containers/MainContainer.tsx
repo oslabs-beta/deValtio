@@ -1,33 +1,26 @@
-import React from 'react';
-
 import { SnapshotContainer } from './SnapshotContainer';
 import VisualContainer from './VisualContainer';
-import Container from '@material-ui/core/Container';
-import { useStyles } from '../Styling/styles';
+import { NavBar } from '../Components/NavBar/navbar'
+import styled from 'styled-components';
+import { useState } from 'react';
 
-// children needs to be of type JSX.Element[] because multiple children are being returned
 
-// export const MainContainer = ({ children }: { children: JSX.Element }) => {
-//     const classes = useStyles();
-//     return (
-//         <div className={classes.MainContainer}>
-//             <SnapshotContainer />
-//             <div>
-//                 {children}
-//             </div>
-//             <VisualContainer />
-//         </div>
-//     );
-// }
+const Main = styled.main`
+  display: flex;
+  flex-wrap: wrap;
+  height: 100vh;
+  width: 100vw;
+`;
 
 function MainContainer(): JSX.Element {
-    const classes = useStyles();
-    return (
-      <div className={classes.MainContainer}>
-        <SnapshotContainer />
-        <VisualContainer />
-      </div>
-    );
-  }
-  
-  export default MainContainer;
+  const [tabNum, setTabNum] = useState<number>(1);
+  return (
+    <Main>
+      <NavBar setTabNum={setTabNum} />
+      <SnapshotContainer />
+      <VisualContainer tabNum={tabNum} />
+    </Main>
+  );
+}
+
+export default MainContainer;

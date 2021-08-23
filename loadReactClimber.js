@@ -3,8 +3,9 @@
 
 let s = document.createElement('script');
 s.src = chrome.runtime.getURL('reactClimber.js');
-s.defer = true;
+// s.defer = true;
+// s.async = true;
 s.onload = function() {
-    this.remove();
+    // this.remove();
 };
 (document.head || document.documentElement).appendChild(s);

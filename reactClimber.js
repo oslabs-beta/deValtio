@@ -1,22 +1,60 @@
-const pp = (stuff) => console.log(JSON.stringify(stuff, null, 2));
+const VERBOSE = true;
 
-pp(`Running reactClimber.js`);
-
-document.onload = function(){
-
-// grab every react node in document
-const reactRoots = [];
-document.querySelectorAll('*').forEach(node => {
-for (const key in node) {
-  if (key.startsWith('_reactRootContainer')) {
-    reactRoots.push(node);
-    break;
-    }
-    }
-  })
-
-let sampleRoot = reactRoots[0]
-pp(`reactRoots is ${reactRoots.map(root => root.nodeName)}`);
-if (sampleRoot) pp(`Reflect.ownKeys(sampleRoot) is ${Reflect.ownKeys(sampleRoot)}`);
-
+const getReactRootKey = (node) => {
+ for (const key in node) {
+  if (key.startsWith('_reactRoot')) return [node, key];
+ }
 };
+
+const reactRootsMap = new Map();
+
+const documentObserver = new MutationObserver(documentObserverCallback);
+
+const documentObserverOptions = {
+  childList: true,
+  attributes: true,
+  characterData: false,
+  // subtree: true,
+  subtree: false,
+  // attributeFilter: [],
+  attributeOldValue: false,
+  characterDataOldValue: false
+}
+
+function documentObserverCallback(mutationArray, observer) {
+ mutationArray.forEach(mutation => {
+  if (mutation.type === 'childList') {
+    const node = mutation.target;
+    console.log(`${node.id || node.className || node.nodeName}`);
+    const reactRootKey = getReactRootKey(node);
+    if (reactRootKey) {
+      if (VERBOSE) console.log(`React Root found. Key is: ${reactRootKey[1]}. identifier is ${node.id || node.className || node.nodeName}`);
+      reactRootsMap.set(reactRootKey[0], reactRootKey[1]);
+    }
+    // if (mutation.addedNodes) {
+    //   mutation.addedNodes.forEach(node => {
+    //     const reactRootKey = getReactRootKey(node);
+    //     if (reactRootKey) {
+    //       if (VERBOSE) console.log(`React Root found. Key is: ${reactRootKey[1]}. id is ${node.id}`);
+    //       reactRootsMap.set(reactRootKey[0], reactRootKey[1]);
+    //     } else {console.log(`${node.id || node.className || node.nodeName} added`)}
+    //   }) // end iteration over added nodes
+    // }
+    // if (mutation.removedNodes) {
+    //   mutation.removedNodes.forEach(node => {
+    //     console.log(`${node.id || node.className || node.nodeName} has been removed`)
+    //     if (reactRootsMap.has(node)) {
+    //       const reactRootKeyValue = reactRootMap.get(node);
+    //       const deletedId = node.id;
+    //       reactRootsMap.delete(node);
+    //       if (VERBOSE) console.log(`reactRoot with the key of ${reactRootKeyValue} and id ${deletedId} has been either removed or updated.`)
+    //     }
+    //   }) // end iteration over removed nodes
+    // }
+  }
+ })
+};
+
+const documentNode = document.documentElement;
+
+documentObserver.observe(documentNode, documentObserverOptions);

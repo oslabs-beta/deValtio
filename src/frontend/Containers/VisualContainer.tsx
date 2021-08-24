@@ -19,6 +19,7 @@ function VisualContainer({ tabNum }: { tabNum: number }): JSX.Element {
       {(tabNum === 1) && <StateDiff />}
       {(tabNum === 2) && <ComponentTree />}
       {(tabNum === 3) && <ProxyNetwork />}
+      {(tabNum === 4) && <ComponentGraph />}
     </VisualSection>
   );
 }

@@ -16,7 +16,7 @@ function MainContainer(): JSX.Element {
   const [tabNum, setTabNum] = useState<number>(1);
   return (
     <Main>
-      <NavBar setTabNum={setTabNum} />
+      <NavBar setTabNum={setTabNum} tabNum={tabNum} />
       <SnapshotContainer />
       <VisualContainer tabNum={tabNum} />
     </Main>

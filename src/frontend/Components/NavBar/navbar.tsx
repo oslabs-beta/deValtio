@@ -9,13 +9,16 @@ const NavBarSection = styled.section`
 
 const NavTab = styled.button`
   background: #98C1D9;
+  cursor: pointer;
+  
 `;
 export const NavBar = ({ setTabNum }: { setTabNum: Dispatch<SetStateAction<number>> }): JSX.Element => {
   return (
     <NavBarSection>
       <NavTab onClick={(event: React.MouseEvent<HTMLElement>) => setTabNum(1)}>StateDiff</NavTab>
       <NavTab onClick={(event: React.MouseEvent<HTMLElement>) => setTabNum(2)}>State Tree</NavTab>
-      <NavTab onClick={(event: React.MouseEvent<HTMLElement>) => setTabNum(3)}>ProxyNetwork</NavTab>
+      <NavTab onClick={(event: React.MouseEvent<HTMLElement>) => setTabNum(3)}>Proxy Network</NavTab>
+      <NavTab onClick={(event: React.MouseEvent<HTMLElement>) => setTabNum(4)}>Component Graph</NavTab>
     </NavBarSection >
   );
 }

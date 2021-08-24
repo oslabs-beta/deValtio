@@ -34420,6 +34420,9 @@ exports.NavBar = void 0;
 const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 const styled_components_1 = __importDefault(__webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js"));
 const NavBarSection = styled_components_1.default.section `
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 4vh;
   width: 99vw;
   background: #293241;
@@ -34427,10 +34430,29 @@ const NavBarSection = styled_components_1.default.section `
 const NavTab = styled_components_1.default.button `
   background: #98C1D9;
   cursor: pointer;
-  
+  border: 1px solid #98C1D9;
+  border-radius: 2px;
+  height: 90%;
+  width: 10em;
+  margin: 1em;
+  color: white;
+  &:hover {
+    background: white;
+    color: #98C1D9; 
+  };
+  &:focus {
+    background: white;
+    color: #98C1D9;
+    text-decoration: underline;
+  }
 `;
-const NavBar = ({ setTabNum }) => {
-    return (jsx_runtime_1.jsxs(NavBarSection, { children: [jsx_runtime_1.jsx(NavTab, Object.assign({ onClick: (event) => setTabNum(1) }, { children: "StateDiff" }), void 0), jsx_runtime_1.jsx(NavTab, Object.assign({ onClick: (event) => setTabNum(2) }, { children: "State Tree" }), void 0), jsx_runtime_1.jsx(NavTab, Object.assign({ onClick: (event) => setTabNum(3) }, { children: "Proxy Network" }), void 0), jsx_runtime_1.jsx(NavTab, Object.assign({ onClick: (event) => setTabNum(4) }, { children: "Component Graph" }), void 0)] }, void 0));
+const NavBar = ({ setTabNum, tabNum }) => {
+    const changeTab = (e) => {
+        const value = e.target.value;
+        setTabNum(parseInt(value));
+        return;
+    };
+    return (jsx_runtime_1.jsxs(NavBarSection, { children: [jsx_runtime_1.jsx(NavTab, Object.assign({ onClick: changeTab, value: 1 }, { children: "StateDiff" }), void 0), jsx_runtime_1.jsx(NavTab, Object.assign({ onClick: changeTab, value: 2 }, { children: "State Tree" }), void 0), jsx_runtime_1.jsx(NavTab, Object.assign({ onClick: changeTab, value: 3 }, { children: "Proxy Network" }), void 0), jsx_runtime_1.jsx(NavTab, Object.assign({ onClick: changeTab, value: 4 }, { children: "Component Graph" }), void 0)] }, void 0));
 };
 exports.NavBar = NavBar;
 
@@ -34463,7 +34485,7 @@ const Main = styled_components_1.default.main `
 `;
 function MainContainer() {
     const [tabNum, setTabNum] = react_1.useState(1);
-    return (jsx_runtime_1.jsxs(Main, { children: [jsx_runtime_1.jsx(navbar_1.NavBar, { setTabNum: setTabNum }, void 0), jsx_runtime_1.jsx(SnapshotContainer_1.SnapshotContainer, {}, void 0), jsx_runtime_1.jsx(VisualContainer_1.default, { tabNum: tabNum }, void 0)] }, void 0));
+    return (jsx_runtime_1.jsxs(Main, { children: [jsx_runtime_1.jsx(navbar_1.NavBar, { setTabNum: setTabNum, tabNum: tabNum }, void 0), jsx_runtime_1.jsx(SnapshotContainer_1.SnapshotContainer, {}, void 0), jsx_runtime_1.jsx(VisualContainer_1.default, { tabNum: tabNum }, void 0)] }, void 0));
 }
 exports.default = MainContainer;
 

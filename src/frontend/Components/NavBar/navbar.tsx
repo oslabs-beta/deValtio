@@ -9,6 +9,10 @@ const NavBarSection = styled.section`
 
 const NavTab = styled.button`
   background: #98C1D9;
+  cursor: pointer;
+  &:hover {
+    background: white;
+  }
 `;
 export const NavBar = ({ setTabNum }: { setTabNum: Dispatch<SetStateAction<number>> }): JSX.Element => {
   return (

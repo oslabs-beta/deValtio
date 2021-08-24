@@ -34426,6 +34426,10 @@ const NavBarSection = styled_components_1.default.section `
 `;
 const NavTab = styled_components_1.default.button `
   background: #98C1D9;
+  cursor: pointer;
+  &:hover {
+    background: white;
+  }
 `;
 const NavBar = ({ setTabNum }) => {
     return (jsx_runtime_1.jsxs(NavBarSection, { children: [jsx_runtime_1.jsx(NavTab, Object.assign({ onClick: (event) => setTabNum(1) }, { children: "StateDiff" }), void 0), jsx_runtime_1.jsx(NavTab, Object.assign({ onClick: (event) => setTabNum(2) }, { children: "State Tree" }), void 0), jsx_runtime_1.jsx(NavTab, Object.assign({ onClick: (event) => setTabNum(3) }, { children: "ProxyNetwork" }), void 0)] }, void 0));

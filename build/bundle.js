@@ -34459,6 +34459,38 @@ exports.NavBar = NavBar;
 
 /***/ }),
 
+/***/ "./src/frontend/Containers/CurrentStateContainer.tsx":
+/*!***********************************************************!*\
+  !*** ./src/frontend/Containers/CurrentStateContainer.tsx ***!
+  \***********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.CurrentState = void 0;
+const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+const styled_components_1 = __importDefault(__webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js"));
+const Section = styled_components_1.default.section `
+    height: 96vh;
+    width:14vw;
+    background: #293241;
+    border: 2px solid #98C1D9;
+    color: #98C1D9;
+    text-align:center;
+    
+`;
+const CurrentState = () => {
+    return (jsx_runtime_1.jsx(Section, { children: "Current State" }, void 0));
+};
+exports.CurrentState = CurrentState;
+
+
+/***/ }),
+
 /***/ "./src/frontend/Containers/MainContainer.tsx":
 /*!***************************************************!*\
   !*** ./src/frontend/Containers/MainContainer.tsx ***!
@@ -34472,7 +34504,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-const SnapshotContainer_1 = __webpack_require__(/*! ./SnapshotContainer */ "./src/frontend/Containers/SnapshotContainer.tsx");
+const CurrentStateContainer_1 = __webpack_require__(/*! ./CurrentStateContainer */ "./src/frontend/Containers/CurrentStateContainer.tsx");
 const VisualContainer_1 = __importDefault(__webpack_require__(/*! ./VisualContainer */ "./src/frontend/Containers/VisualContainer.tsx"));
 const navbar_1 = __webpack_require__(/*! ../Components/NavBar/navbar */ "./src/frontend/Components/NavBar/navbar.tsx");
 const styled_components_1 = __importDefault(__webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js"));
@@ -34485,41 +34517,9 @@ const Main = styled_components_1.default.main `
 `;
 function MainContainer() {
     const [tabNum, setTabNum] = react_1.useState(1);
-    return (jsx_runtime_1.jsxs(Main, { children: [jsx_runtime_1.jsx(navbar_1.NavBar, { setTabNum: setTabNum, tabNum: tabNum }, void 0), jsx_runtime_1.jsx(SnapshotContainer_1.SnapshotContainer, {}, void 0), jsx_runtime_1.jsx(VisualContainer_1.default, { tabNum: tabNum }, void 0)] }, void 0));
+    return (jsx_runtime_1.jsxs(Main, { children: [jsx_runtime_1.jsx(navbar_1.NavBar, { setTabNum: setTabNum, tabNum: tabNum }, void 0), jsx_runtime_1.jsx(CurrentStateContainer_1.CurrentState, {}, void 0), jsx_runtime_1.jsx(VisualContainer_1.default, { tabNum: tabNum }, void 0)] }, void 0));
 }
 exports.default = MainContainer;
-
-
-/***/ }),
-
-/***/ "./src/frontend/Containers/SnapshotContainer.tsx":
-/*!*******************************************************!*\
-  !*** ./src/frontend/Containers/SnapshotContainer.tsx ***!
-  \*******************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.SnapshotContainer = void 0;
-const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-const styled_components_1 = __importDefault(__webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js"));
-const Section = styled_components_1.default.section `
-    height: 96vh;
-    width:14vw;
-    background: #293241;
-    border: 2px solid #98C1D9;
-    color: #98C1D9;
-    text-align:center;
-    
-`;
-const SnapshotContainer = () => {
-    return (jsx_runtime_1.jsx(Section, { children: "SnapShots" }, void 0));
-};
-exports.SnapshotContainer = SnapshotContainer;
 
 
 /***/ }),

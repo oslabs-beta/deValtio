@@ -10,10 +10,10 @@ const Section = styled.section`
     
 `;
 
-export const SnapshotContainer = (): JSX.Element => {
+export const CurrentState = (): JSX.Element => {
     return (
         <Section>
-            SnapShots
+            Current State
         </Section>
     )
 }

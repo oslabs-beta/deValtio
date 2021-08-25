@@ -46695,25 +46695,325 @@ const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modul
 //this is for state drawn out 
 const jsondiffpatch_1 = __webpack_require__(/*! jsondiffpatch */ "./node_modules/jsondiffpatch/dist/jsondiffpatch.umd.js");
 const react_html_parser_1 = __importDefault(__webpack_require__(/*! react-html-parser */ "./node_modules/react-html-parser/lib/index.js"));
+const mockStateDiff_1 = __webpack_require__(/*! ./mockStateDiff */ "./src/frontend/components/StateDiff/mockStateDiff.tsx");
 function StateDiff() {
-    let dummyone = {
-        firstname: "hello",
-        lastname: "bye"
-    };
-    let dummytwo = {
-        firstname: "bye",
-        lastname: "hello"
-    };
+    // let dummyone = [{
+    //   firstname: "hello",
+    //   lastname: "bye"
+    // }]
+    // let dummytwo = [{
+    //   firstname: "bye",
+    //   lastname: "hello"
+    // }]
     //extract intial state from the app and display it as an object 
     //as we add to state show the updates to state - save it as a snapshot and display it in the snapshot section 
     //everytime state is update, it should display updated state and save it as a new snapshot 
-    const change = jsondiffpatch_1.diff(dummyone, dummytwo);
-    console.log('this is the delta version', change);
-    const html = jsondiffpatch_1.formatters.html.format(change, dummyone);
+    //this is for diffing difference between 2 snapshots
+    const delta = jsondiffpatch_1.diff(mockStateDiff_1.curSnapMock, mockStateDiff_1.prevSnapMock);
+    console.log('this is the delta version', delta);
+    //this is to covert difference to html format
+    const html = jsondiffpatch_1.formatters.html.format(delta, mockStateDiff_1.prevSnapMock);
     console.log('this is the formatted version', html);
-    return (jsx_runtime_1.jsxs("div", Object.assign({ className: 'Diff' }, { children: ["changes here will render what I need", react_html_parser_1.default(html)] }), void 0));
+    return (jsx_runtime_1.jsxs("div", Object.assign({ className: 'Diff' }, { children: ["changes here will render what I need this turns the html back into react code to render", react_html_parser_1.default(html)] }), void 0));
 }
 exports.default = StateDiff;
+
+
+/***/ }),
+
+/***/ "./src/frontend/components/StateDiff/mockStateDiff.tsx":
+/*!*************************************************************!*\
+  !*** ./src/frontend/components/StateDiff/mockStateDiff.tsx ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.snapshotTestArray = exports.prevSnapMock = exports.curSnapMock = void 0;
+exports.curSnapMock = {
+    statusAtom: {
+        contents: 'Next Player: X',
+        nodeDeps: ['squaresAtom', 'winnerAtom', 'nextValueAtom'],
+        components: ['End', 'Status', 'test'],
+    },
+    winnerAtom: {
+        contents: null,
+        nodeDeps: ['squaresAtom'],
+        components: ['End'],
+    },
+    nextValueAtom: {
+        contents: 'O',
+        nodeDeps: ['squaresAtom'],
+        components: [],
+    },
+    resetSquaresAtom: {
+        contents: 0,
+        nodeDeps: ['squaresAtom'],
+        components: ['Status'],
+    },
+    selectSquareAtom: {
+        contents: [null, null, null, null, null, null, null, null, null],
+        nodeDeps: ['squaresAtom', 'winnerAtom', 'nextValueAtom'],
+        components: ['Squares'],
+    },
+    squaresAtom: {
+        contents: [null, null, null, null, null, null, null, null, null],
+        nodeDeps: [],
+        components: [],
+    },
+};
+exports.prevSnapMock = {
+    statusAtom: {
+        contents: 'Next Player: O',
+        nodeDeps: ['squaresAtom', 'winnerAtom', 'nextValueAtom'],
+        components: ['End', 'Status'],
+    },
+    winnerAtom: {
+        contents: null,
+        nodeDeps: ['squaresAtom'],
+        components: ['End'],
+    },
+    nextValueAtom: {
+        contents: 'X',
+        nodeDeps: ['squaresAtom'],
+        components: [],
+    },
+    resetSquaresAtom: {
+        contents: 1,
+        nodeDeps: ['squaresAtom'],
+        components: ['Status'],
+    },
+    selectSquareAtom: {
+        contents: ['X', null, null, 'X', null, null, 'O', null, null],
+        nodeDeps: ['squaresAtom', 'winnerAtom', 'nextValueAtom'],
+        components: ['Squares'],
+    },
+    squaresAtom: {
+        contents: ['X', null, null, 'X', null, null, 'O', null, null],
+        nodeDeps: [],
+        components: [],
+    },
+};
+const one = {
+    statusAtom: {
+        r: 1,
+        nodeDeps: ['winnerAtom', 'squaresAtom', 'nextValueAtom'],
+        contents: 'Next player: X',
+        components: ['End', 'Status'],
+    },
+    resetSquaresAtom: {
+        r: 0,
+        nodeDeps: ['resetSquaresAtom'],
+        contents: null,
+        components: ['Status'],
+    },
+    selectSquareAtom: {
+        r: 1,
+        nodeDeps: ['squaresAtom'],
+        contents: [null, null, null, null, null, null, null, null, null],
+        components: ['Squares'],
+    },
+    winnerAtom: {
+        r: 1,
+        nodeDeps: ['squaresAtom'],
+        contents: null,
+        components: ['End'],
+    },
+    squaresAtom: {
+        r: 0,
+        nodeDeps: ['squaresAtom'],
+        contents: [null, null, null, null, null, null, null, null, null],
+        components: [],
+    },
+    nextValueAtom: {
+        r: 1,
+        nodeDeps: ['squaresAtom'],
+        contents: 'X',
+        components: [],
+    },
+};
+const two = {
+    statusAtom: {
+        r: 2,
+        nodeDeps: ['winnerAtom', 'squaresAtom', 'nextValueAtom'],
+        contents: 'Next player: O',
+        components: ['End', 'Status'],
+    },
+    resetSquaresAtom: {
+        r: 0,
+        nodeDeps: ['resetSquaresAtom'],
+        contents: null,
+        components: ['Status'],
+    },
+    selectSquareAtom: {
+        r: 2,
+        nodeDeps: ['squaresAtom'],
+        contents: [null, null, null, null, 'X', null, null, null, null],
+        components: ['Squares'],
+    },
+    winnerAtom: {
+        r: 1,
+        nodeDeps: ['squaresAtom'],
+        contents: null,
+        components: ['End'],
+    },
+    squaresAtom: {
+        r: 1,
+        nodeDeps: ['squaresAtom'],
+        contents: [null, null, null, null, 'X', null, null, null, null],
+        components: [],
+    },
+    nextValueAtom: {
+        r: 2,
+        nodeDeps: ['squaresAtom'],
+        contents: 'O',
+        components: [],
+    },
+};
+const three = {
+    statusAtom: {
+        r: 3,
+        nodeDeps: ['winnerAtom', 'squaresAtom', 'nextValueAtom'],
+        contents: 'Next player: X',
+        components: ['End', 'Status'],
+    },
+    resetSquaresAtom: {
+        r: 0,
+        nodeDeps: ['resetSquaresAtom'],
+        contents: null,
+        components: ['Status'],
+    },
+    selectSquareAtom: {
+        r: 3,
+        nodeDeps: ['squaresAtom'],
+        contents: [null, null, 'O', null, 'X', null, null, null, null],
+        components: ['Squares'],
+    },
+    winnerAtom: {
+        r: 1,
+        nodeDeps: ['squaresAtom'],
+        contents: null,
+        components: ['End'],
+    },
+    squaresAtom: {
+        r: 2,
+        nodeDeps: ['squaresAtom'],
+        contents: [null, null, 'O', null, 'X', null, null, null, null],
+        components: [],
+    },
+    nextValueAtom: {
+        r: 3,
+        nodeDeps: ['squaresAtom'],
+        contents: 'X',
+        components: [],
+    },
+};
+const four = {
+    statusAtom: {
+        r: 4,
+        nodeDeps: ['winnerAtom', 'squaresAtom', 'nextValueAtom'],
+        contents: 'Next player: O',
+        components: ['End', 'Status'],
+    },
+    resetSquaresAtom: {
+        r: 0,
+        nodeDeps: ['resetSquaresAtom'],
+        contents: null,
+        components: ['Status'],
+    },
+    selectSquareAtom: {
+        r: 4,
+        nodeDeps: ['squaresAtom'],
+        contents: [null, null, 'O', null, 'X', 'X', null, null, null],
+        components: ['Squares'],
+    },
+    winnerAtom: { r: 1, nodeDeps: ['squaresAtom'], contents: null },
+    squaresAtom: {
+        r: 3,
+        nodeDeps: ['squaresAtom'],
+        contents: [null, null, 'O', null, 'X', 'X', null, null, null],
+        components: [],
+    },
+    nextValueAtom: {
+        r: 4,
+        nodeDeps: ['squaresAtom'],
+        contents: 'O',
+        components: [],
+    },
+};
+const five = {
+    statusAtom: {
+        r: 5,
+        nodeDeps: ['winnerAtom', 'squaresAtom', 'nextValueAtom'],
+        contents: 'Next player: X',
+        components: ['End', 'Status'],
+    },
+    resetSquaresAtom: {
+        r: 0,
+        nodeDeps: ['resetSquaresAtom'],
+        contents: null,
+        components: ['Status'],
+    },
+    selectSquareAtom: {
+        r: 5,
+        nodeDeps: ['squaresAtom'],
+        contents: [null, 'O', 'O', null, 'X', 'X', null, null, null],
+        components: ['Squares'],
+    },
+    winnerAtom: {
+        r: 1,
+        nodeDeps: ['squaresAtom'],
+        contents: null,
+        components: ['End'],
+    },
+    squaresAtom: {
+        r: 4,
+        nodeDeps: ['squaresAtom'],
+        contents: [null, 'O', 'O', null, 'X', 'X', null, null, null],
+        components: [],
+    },
+    nextValueAtom: {
+        r: 5,
+        nodeDeps: ['squaresAtom'],
+        contents: 'X',
+        components: [],
+    },
+};
+const six = {
+    statusAtom: {
+        r: 6,
+        nodeDeps: ['winnerAtom'],
+        contents: 'Winner: X',
+        components: ['End', 'Status'],
+    },
+    resetSquaresAtom: {
+        r: 0,
+        nodeDeps: ['resetSquaresAtom'],
+        contents: null,
+        components: ['Status'],
+    },
+    selectSquareAtom: {
+        r: 6,
+        nodeDeps: ['squaresAtom'],
+        contents: [null, 'O', 'O', 'X', 'X', 'X', null, null, null],
+        components: ['Squares'],
+    },
+    winnerAtom: { r: 2, nodeDeps: ['squaresAtom'], contents: 'X' },
+    squaresAtom: {
+        r: 5,
+        nodeDeps: ['squaresAtom'],
+        contents: [null, 'O', 'O', 'X', 'X', 'X', null, null, null],
+        components: [],
+    },
+    extraAtom: {
+        r: 5,
+        nodeDeps: ['squaresAtom'],
+        contents: [null, 'O', 'O', 'X', 'X', 'X', null, null, null],
+        components: [],
+    },
+};
+exports.snapshotTestArray = [one, two, three, four, five, six];
 
 
 /***/ }),

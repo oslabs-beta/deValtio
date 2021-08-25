@@ -26,9 +26,10 @@ const NavTab = styled.button`
   &:focus {
     background: white;
     color: #98C1D9;
-    text-decoration: underline;
+    border: 4px solid #98C1D9;
   }
 `;
+
 export const NavBar = ({ setTabNum, tabNum }: { setTabNum: Dispatch<SetStateAction<number>>, tabNum: number }): JSX.Element => {
 
   const changeTab = (e: React.MouseEvent<HTMLElement>): void => {

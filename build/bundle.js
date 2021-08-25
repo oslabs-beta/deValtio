@@ -34443,7 +34443,7 @@ const NavTab = styled_components_1.default.button `
   &:focus {
     background: white;
     color: #98C1D9;
-    text-decoration: underline;
+    border: 4px solid #98C1D9;
   }
 `;
 const NavBar = ({ setTabNum, tabNum }) => {
@@ -34455,6 +34455,37 @@ const NavBar = ({ setTabNum, tabNum }) => {
     return (jsx_runtime_1.jsxs(NavBarSection, { children: [jsx_runtime_1.jsx(NavTab, Object.assign({ onClick: changeTab, value: 1 }, { children: "StateDiff" }), void 0), jsx_runtime_1.jsx(NavTab, Object.assign({ onClick: changeTab, value: 2 }, { children: "State Tree" }), void 0), jsx_runtime_1.jsx(NavTab, Object.assign({ onClick: changeTab, value: 3 }, { children: "Proxy Network" }), void 0), jsx_runtime_1.jsx(NavTab, Object.assign({ onClick: changeTab, value: 4 }, { children: "Component Graph" }), void 0)] }, void 0));
 };
 exports.NavBar = NavBar;
+
+
+/***/ }),
+
+/***/ "./src/frontend/Components/Snapshot/CurrentState.tsx":
+/*!***********************************************************!*\
+  !*** ./src/frontend/Components/Snapshot/CurrentState.tsx ***!
+  \***********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.CurrentState = void 0;
+const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+const styled_components_1 = __importDefault(__webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js"));
+const StateItem = styled_components_1.default.li `
+    list-style-type: none;
+    margin: 1.5em;
+`;
+const P = styled_components_1.default.p `
+    margin: 0.3em;
+    font-size: 1.2em;
+`;
+const CurrentState = ({ state }) => {
+    return (jsx_runtime_1.jsxs(StateItem, { children: [jsx_runtime_1.jsxs(P, { children: ["State: ", jsx_runtime_1.jsx("strong", Object.assign({ style: { fontWeight: 1100, padding: '0.5em' } }, { children: state.name }), void 0)] }, void 0), jsx_runtime_1.jsxs(P, { children: ["Value: ", jsx_runtime_1.jsx("strong", Object.assign({ style: { fontWeight: 1000, padding: '0.5em' } }, { children: state.value }), void 0)] }, void 0)] }, void 0));
+};
+exports.CurrentState = CurrentState;
 
 
 /***/ }),
@@ -34471,9 +34502,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.CurrentState = void 0;
+exports.CurrentStateContainer = void 0;
 const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 const styled_components_1 = __importDefault(__webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js"));
+const CurrentState_1 = __webpack_require__(/*! ../Components/Snapshot/CurrentState */ "./src/frontend/Components/Snapshot/CurrentState.tsx");
+const fakeState = {
+    state: [
+        {
+            name: 'Count',
+            value: 5
+        },
+        {
+            name: 'loggedIn',
+            value: false
+        },
+        {
+            name: 'Name',
+            value: 'Cameron'
+        },
+    ]
+};
 const Section = styled_components_1.default.section `
     height: 96vh;
     width:14vw;
@@ -34481,12 +34529,17 @@ const Section = styled_components_1.default.section `
     border: 2px solid #98C1D9;
     color: #98C1D9;
     text-align:center;
-    
 `;
-const CurrentState = () => {
-    return (jsx_runtime_1.jsx(Section, { children: "Current State" }, void 0));
+const StateList = styled_components_1.default.ul `
+    padding: 0;
+
+`;
+const CurrentStateContainer = () => {
+    return (jsx_runtime_1.jsxs(Section, { children: [jsx_runtime_1.jsx("h1", Object.assign({ style: { borderBottomWidth: '1px', borderBottomStyle: 'solid', paddingBottom: '2px' } }, { children: "Current State" }), void 0), jsx_runtime_1.jsx(StateList, { children: fakeState.state.map(state => {
+                    return jsx_runtime_1.jsx(CurrentState_1.CurrentState, { state: state }, state.name);
+                }) }, void 0)] }, void 0));
 };
-exports.CurrentState = CurrentState;
+exports.CurrentStateContainer = CurrentStateContainer;
 
 
 /***/ }),
@@ -34517,7 +34570,7 @@ const Main = styled_components_1.default.main `
 `;
 function MainContainer() {
     const [tabNum, setTabNum] = react_1.useState(1);
-    return (jsx_runtime_1.jsxs(Main, { children: [jsx_runtime_1.jsx(navbar_1.NavBar, { setTabNum: setTabNum, tabNum: tabNum }, void 0), jsx_runtime_1.jsx(CurrentStateContainer_1.CurrentState, {}, void 0), jsx_runtime_1.jsx(VisualContainer_1.default, { tabNum: tabNum }, void 0)] }, void 0));
+    return (jsx_runtime_1.jsxs(Main, { children: [jsx_runtime_1.jsx(navbar_1.NavBar, { setTabNum: setTabNum, tabNum: tabNum }, void 0), jsx_runtime_1.jsx(CurrentStateContainer_1.CurrentStateContainer, {}, void 0), jsx_runtime_1.jsx(VisualContainer_1.default, { tabNum: tabNum }, void 0)] }, void 0));
 }
 exports.default = MainContainer;
 

@@ -4,7 +4,15 @@ body {
 }
 
 .jsondiffpatch-delta {
-    width: 100%;
-    height: 100%;
-    overflow: scroll;
+  font-family: Helvetica;
+  font-size: 13px;
+  margin: 0;
+  padding: 0 0 0 12px;
+  display: inline-block;
+}
+
+.jsondiffpatch pre {
+    font-family: Helvetica;
+    font-size: 13px;
+    color:blueviolet;
 }

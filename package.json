@@ -23,9 +23,12 @@
     "@visx/group": "^1.17.1",
     "@visx/hierarchy": "^1.17.1",
     "@visx/shape": "^1.17.1",
+    "buffer": "^6.0.3",
     "d3": "^7.0.1",
+    "jsondiffpatch": "^0.4.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-html-parser": "^2.0.2",
     "react-is": "^16.13.1",
     "styled-components": "^5.3.0"
   },

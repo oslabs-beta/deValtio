@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ParentSize } from '@visx/responsive';
 
 import NavBar from '../components/NavBar/NavBar';
 import StateDiff from '../components/StateDiff/StateDiff';
@@ -16,7 +17,13 @@ function VisualContainer(): JSX.Element {
   const navLists: navType = {
     'State Diff': <StateDiff />,
     'Component Tree': <ComponentTree />,
-    'Component Graph': <ComponentGraph />,
+    'Component Graph': (
+      <ParentSize>
+        {({ width, height }) => (
+          <ComponentGraph width={width} height={height} />
+        )}
+      </ParentSize>
+    ),
     'Proxy Network': <ProxyNetwork />,
   };
 

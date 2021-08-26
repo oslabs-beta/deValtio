@@ -13,6 +13,7 @@ const VisualSection = styled.section`
   color: #98C1D9;
   border-top: 2px solid #98C1D9;
   text-align:center;
+  overflow-y: scroll;
 `;
 
 function VisualContainer({ tabNum }: { tabNum: number }): JSX.Element {

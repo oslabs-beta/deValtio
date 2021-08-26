@@ -14,14 +14,14 @@ function StateDiff(): JSX.Element {
   `
 
 
-  // let dummyone = [{
+  // let dummyone = {
   //   firstname: "hello",
   //   lastname: "bye"
-  // }]
-  // let dummytwo = [{
+  // }
+  // let dummytwo = {
   //   firstname: "bye",
   //   lastname: "hello"
-  // }]
+  // }
 
   //extract intial state from the app and display it as an object 
   //as we add to state show the updates to state - save it as a snapshot and display it in the snapshot section 

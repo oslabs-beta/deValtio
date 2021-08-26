@@ -1,10 +1,18 @@
-//this is for state drawn out 
 import {diff, formatters} from "jsondiffpatch";
 import ReactHtmlParser from 'react-html-parser';
 import {curSnapMock, prevSnapMock, snapshotTestArray} from './mockStateDiff'
+import styled from "styled-components";
 
 
 function StateDiff(): JSX.Element {
+
+  const DiffState = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+  align-items: flex-start; 
+  `
+
 
   // let dummyone = [{
   //   firstname: "hello",
@@ -27,11 +35,9 @@ console.log('this is the formatted version', html)
 
 
   return (
-    <div className='Diff'>
-      changes here will render what I need
-      this turns the html back into react code to render
+    <DiffState>
       {ReactHtmlParser(html)}
-    </div>
+    </DiffState>
   )
 }
 

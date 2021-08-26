@@ -1,7 +1,8 @@
-import { ReactNode } from "react";
+export interface IState {
+    name: string;
+    value: any;
+};
 
-export interface INavBarPanelProps {
-    children?: ReactNode | JSX.Element;
-    value: number;
-    index?: number;
-}
+export interface IApplicationState {
+    state: IState[];
+};

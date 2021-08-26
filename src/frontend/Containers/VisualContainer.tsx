@@ -1,39 +1,32 @@
-import React, { useState } from 'react';
-import { ParentSize } from '@visx/responsive';
-
-import NavBar from '../components/NavBar/NavBar';
 import StateDiff from '../components/StateDiff/StateDiff';
 import ComponentTree from '../components/ComponentTree/ComponentTree';
 import ComponentGraph from '../components/ComponentGraph/ComponentGraph';
 import ProxyNetwork from '../components/ProxyNetwork/ProxyNetwork';
+import styled from 'styled-components';
 
-interface navType {
-  [tabName: string]: JSX.Element;
-}
+import { ParentSize } from '@visx/responsive';
 
-function VisualContainer(): JSX.Element {
-  const [tab, setTab] = useState<string>('State Diff');
+const VisualSection = styled.section`
+  height: 96vh;
+  width: 85vw;
+  background: #293241;
+  color: #98C1D9;
+  border-top: 2px solid #98C1D9;
+  text-align:center;
+`;
 
-  const navLists: navType = {
-    'State Diff': <StateDiff />,
-    'Component Tree': <ComponentTree />,
-    'Component Graph': (
-      <ParentSize>
+function VisualContainer({ tabNum }: { tabNum: number }): JSX.Element {
+  return (
+    <VisualSection>
+      {(tabNum === 1) && <StateDiff />}
+      {(tabNum === 2) && <ComponentTree />}
+      {(tabNum === 3) && <ProxyNetwork />}
+      {(tabNum === 4) && <ParentSize>
         {({ width, height }) => (
           <ComponentGraph width={width} height={height} />
         )}
-      </ParentSize>
-    ),
-    'Proxy Network': <ProxyNetwork />,
-  };
-
-  const tabsList: string[] = Object.keys(navLists);
-
-  return (
-    <div className="visualContainer">
-      <NavBar setTab={setTab} tabsList={tabsList} tab={tab} />
-      {navLists[tab]}
-    </div>
+      </ParentSize>}
+    </VisualSection>
   );
 }
 

@@ -1,7 +1,13 @@
-import { ReactNode } from "react";
+export type LinkTypesProps = {
+  width: number;
+  height: number;
+  margin?: { top: number; right: number; bottom: number; left: number };
+};
+export interface IState {
+    name: string;
+    value: any;
+};
 
-export interface INavBarPanelProps {
-    children?: ReactNode | JSX.Element;
-    value: number;
-    index?: number;
-}
+export interface IApplicationState {
+    state: IState[];
+};

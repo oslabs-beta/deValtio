@@ -55891,6 +55891,7 @@ const VisualSection = styled_components_1.default.section `
   color: #98C1D9;
   border-top: 2px solid #98C1D9;
   text-align:center;
+  overflow-y: scroll;
 `;
 function VisualContainer({ tabNum }) {
     return (jsx_runtime_1.jsxs(VisualSection, { children: [(tabNum === 1) && jsx_runtime_1.jsx(StateDiff_1.default, {}, void 0), (tabNum === 2) && jsx_runtime_1.jsx(ComponentTree_1.default, {}, void 0), (tabNum === 3) && jsx_runtime_1.jsx(ProxyNetwork_1.default, {}, void 0), (tabNum === 4) && jsx_runtime_1.jsx(responsive_1.ParentSize, { children: ({ width, height }) => (jsx_runtime_1.jsx(ComponentGraph_1.default, { width: width, height: height }, void 0)) }, void 0)] }, void 0));
@@ -56196,19 +56197,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-//this is for state drawn out 
 const jsondiffpatch_1 = __webpack_require__(/*! jsondiffpatch */ "./node_modules/jsondiffpatch/dist/jsondiffpatch.umd.js");
 const react_html_parser_1 = __importDefault(__webpack_require__(/*! react-html-parser */ "./node_modules/react-html-parser/lib/index.js"));
 const mockStateDiff_1 = __webpack_require__(/*! ./mockStateDiff */ "./src/frontend/components/StateDiff/mockStateDiff.tsx");
+const styled_components_1 = __importDefault(__webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js"));
 function StateDiff() {
-    // let dummyone = [{
+    const DiffState = styled_components_1.default.div `
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+  align-items: flex-start; 
+  `;
+    // let dummyone = {
     //   firstname: "hello",
     //   lastname: "bye"
-    // }]
-    // let dummytwo = [{
+    // }
+    // let dummytwo = {
     //   firstname: "bye",
     //   lastname: "hello"
-    // }]
+    // }
     //extract intial state from the app and display it as an object 
     //as we add to state show the updates to state - save it as a snapshot and display it in the snapshot section 
     //everytime state is update, it should display updated state and save it as a new snapshot 
@@ -56218,7 +56225,7 @@ function StateDiff() {
     //this is to covert difference to html format
     const html = jsondiffpatch_1.formatters.html.format(delta, mockStateDiff_1.prevSnapMock);
     console.log('this is the formatted version', html);
-    return (jsx_runtime_1.jsxs("div", Object.assign({ className: 'Diff' }, { children: ["changes here will render what I need this turns the html back into react code to render", react_html_parser_1.default(html)] }), void 0));
+    return (jsx_runtime_1.jsx(DiffState, { children: react_html_parser_1.default(html) }, void 0));
 }
 exports.default = StateDiff;
 

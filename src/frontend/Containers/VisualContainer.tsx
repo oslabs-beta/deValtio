@@ -1,8 +1,10 @@
 import StateDiff from '../components/StateDiff/StateDiff';
 import ComponentTree from '../components/ComponentTree/ComponentTree';
 import ComponentGraph from '../components/ComponentGraph/ComponentGraph';
-import ProxyNetwork from '../Components/ProxyNetwork/ProxyNetwork';
+import ProxyNetwork from '../components/ProxyNetwork/ProxyNetwork';
 import styled from 'styled-components';
+
+import { ParentSize } from '@visx/responsive';
 
 const VisualSection = styled.section`
   height: 96vh;
@@ -19,7 +21,11 @@ function VisualContainer({ tabNum }: { tabNum: number }): JSX.Element {
       {(tabNum === 1) && <StateDiff />}
       {(tabNum === 2) && <ComponentTree />}
       {(tabNum === 3) && <ProxyNetwork />}
-      {(tabNum === 4) && <ComponentGraph />}
+      {(tabNum === 4) && <ParentSize>
+        {({ width, height }) => (
+          <ComponentGraph width={width} height={height} />
+        )}
+      </ParentSize>}
     </VisualSection>
   );
 }

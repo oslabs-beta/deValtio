@@ -1,4 +1,4 @@
-import { SnapshotContainer } from './SnapshotContainer';
+import { CurrentStateContainer } from './CurrentStateContainer';
 import VisualContainer from './VisualContainer';
 import { NavBar } from '../Components/NavBar/navbar'
 import styled from 'styled-components';
@@ -17,7 +17,7 @@ function MainContainer(): JSX.Element {
   return (
     <Main>
       <NavBar setTabNum={setTabNum} tabNum={tabNum} />
-      <SnapshotContainer />
+      <CurrentStateContainer />
       <VisualContainer tabNum={tabNum} />
     </Main>
   );

@@ -3,5 +3,7 @@ node_modules
 
 package-lock.json
 
+# ignore build folder
+build
 build/bundle.js
 build/bundle.js.map

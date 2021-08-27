@@ -20,7 +20,6 @@ interface INavTab {
     tabNum: number;
     setTabNum: Dispatch<SetStateAction<number>>
     text: string;
-
 }
 
 export const NavTab = ({ value, tabNum, text, setTabNum }: INavTab) => {
@@ -28,7 +27,8 @@ export const NavTab = ({ value, tabNum, text, setTabNum }: INavTab) => {
     const changeTab = (e: React.MouseEvent<HTMLElement>): void => {
         setTabNum(value);
         return;
-    }
+    };
+
     return (
         <NavTabStyled value={value} tabNum={tabNum} onClick={changeTab}>{text}</NavTabStyled>
     );

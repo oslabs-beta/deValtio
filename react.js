@@ -39,18 +39,9 @@ class FiberNode {
     this.sibling = instance.sibling;
     this.return = instance.return;
     this.rendersElement = instance.elementType ? true : false;
-    this.name = instance.type? instance.type.displayName : null;
-    // this.instance = instance;
-    // this.child = null;
-    // this.sibling = null;
+    this.name = instance.type? instance.type.displayName || instance.type.name : null;
   }
 };
-
-class FiberTree {
-  constructor(head) {
-
-  }
-}
 
 const getHostRoot = function(reactRootNode, returnFiberNode=true) {
   const fiberRoot = reactRootNode._reactRootContainer._internalRoot;
@@ -64,12 +55,14 @@ const buildFiberTree = function(fiberNode) {
   
   if (fiberNode.sibling) {
     if (VERBOSE) console.log(`sibling node of ${fiberNode.name} found`);
-    buildFiberTree(new FiberNode(fiberNode.sibling));
+    fiberNode.sibling = new FiberNode(fiberNode.sibling)
+    buildFiberTree(fiberNode.sibling);
   };
   
   if (fiberNode.child) {
     if (VERBOSE) console.log(`child node of ${fiberNode.name} found`);
-    buildFiberTree(new FiberNode(fiberNode.child));
+    fiberNode.child = new FiberNode(fiberNode.child)
+    buildFiberTree(fiberNode.child);
   };
 
   return fiberNode;
@@ -96,16 +89,24 @@ let reactID = getReactID(firstRootNode);
 let hostRoot = getHostRoot(firstRootNode);
 let reactTree = buildFiberTree(hostRoot);
 
+// function callback(fiberNode, type, size) {
+//   console.log(`Current size is: ${size}`);
+//   console.log(`Current node type is ${type}`);
+//   if (fiberNode.elementType) console.log(`This renders element type ${fiberNode.elementType}`);
+//   if (fiberNode.type && typeof fiberNode.type === 'string') console.log(`fiberNode type is ${fiberNode.type}`);
+//   if (fiberNode.type && (fiberNode.type.displayName || fiberNode.type.name)) console.log(`fiberNode name is ${fiberNode.type.displayName || fiberNode.type.name}`);
+//   // if (fiberNode.rendersElement) console.log(`This renders an element`)
+//   // if (fiberNode.name) {
+//   //   console.log(`Name at size ${size} is ${fiberNode.name}`);
+//   // } else {console.dir(fiberNode.instance)};
+// };
+
 function callback(fiberNode, type, size) {
   console.log(`Current size is: ${size}`);
   console.log(`Current node type is ${type}`);
-  if (fiberNode.elementType) console.log(`This renders element type ${fiberNode.elementType}`);
-  if (fiberNode.type && typeof fiberNode.type === 'string') console.log(`fiberNode type is ${fiberNode.type}`);
-  if (fiberNode.type && (fiberNode.type.displayName || fiberNode.type.name)) console.log(`fiberNode name is ${fiberNode.type.displayName || fiberNode.type.name}`);
-  // if (fiberNode.rendersElement) console.log(`This renders an element`)
-  // if (fiberNode.name) {
-  //   console.log(`Name at size ${size} is ${fiberNode.name}`);
-  // } else {console.dir(fiberNode.instance)};
+  if (fiberNode.rendersElement) console.log(`This renders an element`)
+  if (fiberNode.name) {
+    console.log(`Name at size ${size} is ${fiberNode.name}`);
 };
 
 walkFiberTree(hostRoot, callback);

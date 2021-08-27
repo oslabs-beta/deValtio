@@ -1,10 +1,9 @@
-import React from "react";
-
+//import { ITree } from "../../../Types/Types";
 
 const ProxyNetwork = () => {
   return (
     <div>
-      my proxy network
+      Proxy NetWork
     </div>
   );
 }

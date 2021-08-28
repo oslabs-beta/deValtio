@@ -38,6 +38,6 @@ const reactRoots = [];
 document.querySelectorAll('*').forEach(node => {
   if (node._reactRootContainer) {
     reactRoots.push(node);
-    node._reactRootContainer._internalRoot.current = interceptMethodCalls(node._reactRootContainer._internalRoot.current, handleMethodCall);
+    node._reactRootContainer._internalRoot.current = interceptMethodCalls(node._reactRootContainer._internalRoot.current);
   }
 });

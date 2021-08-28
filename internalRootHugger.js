@@ -33,10 +33,6 @@ function interceptMethodCalls(obj, func) {
   })
 };
 
-const handleMethodCall = (fnName, fnArgs) => {
-  console.log(`${fnName} called with `, fnArgs);
-};
-
 const reactRoots = [];
 
 document.querySelectorAll('*').forEach(node => {

@@ -10,7 +10,7 @@ const fakeState: IApplicationState = {
         },
         {
             name: 'loggedIn',
-            value: false
+            value: false.toString()
         },
         {
             name: 'Name',

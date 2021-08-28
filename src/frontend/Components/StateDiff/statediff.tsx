@@ -15,12 +15,14 @@ function StateDiff(): JSX.Element {
 
 
   let dummyone = {
-    firstname: "hello",
-    lastname: "bye"
+    counter: 0,
+    isLoggedIn: false,
+    name: 'Cameron'
   }
   let dummytwo = {
-    firstname: "bye",
-    lastname: "hello"
+    counter: 1,
+    isLoggedIn: true,
+    name: 'Tom'
   }
 
   //extract intial state from the app and display it as an object 

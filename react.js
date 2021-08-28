@@ -3,12 +3,7 @@ const VERBOSE = false;
 const getReactRoots = function(startNode = document) {
   const reactRoots = [];
   startNode.querySelectorAll('*').forEach(node => {
-  for (const key in node) {
-    if (key.startsWith('_reactRootContainer')) {
-      reactRoots.push(node);
-      break;
-      }
-    }
+    if (node._reactRootContainer) reactRoots.push(node);
   });
   if (reactRoots.length > 0) return reactRoots;
 };

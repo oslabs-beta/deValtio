@@ -1,39 +1,11 @@
-import { useState } from 'react';
-import styled from 'styled-components';
-import { ISnapShotList } from '../../Types/Types';
+import { useContext } from 'react';
+import { GlobalStateContext } from '../Contexts/GlobalStateContext';
+import { SnapShotContext } from '../Contexts/SnapShotContext';
+import { ISnapShotContext } from '../../Types/Types';
 import { SnapShot } from '../Components/Snapshot/SnapShot';
+import styled from 'styled-components';
 
-const fakeState: ISnapShotList = [
-    [
-        {
-            name: 'count',
-            value: 5
-        },
-        {
-            name: 'isLoggedIn',
-            value: false.toString()
-        },
-        {
-            name: 'name',
-            value: 'Cameron'
-        },
-    ],
-    [
-        {
-            name: 'count',
-            value: 6
-        },
-        {
-            name: 'isLoggedIn',
-            value: true.toString()
-        },
-        {
-            name: 'name',
-            value: 'Cameron'
-        },
-    ]
-]
-
+// NEED TO FIX TYPE ANY ON LINE 27
 
 const Section = styled.section`
     height: 96vh;
@@ -50,14 +22,15 @@ const SnapShots = styled.section`
 `;
 
 export const SnapShotContainer = (): JSX.Element => {
-    const [state, setState] = useState<ISnapShotList>(fakeState);
-    const [snapShotIndex, setSnapShotIndex] = useState<number>(0);
+
+    const state = useContext(GlobalStateContext);
+    const { setSnapShotIndex }: { setSnapShotIndex: React.Dispatch<React.SetStateAction<number>> } = useContext<any>(SnapShotContext);
 
     return (
         <Section>
             <h1>SnapShots</h1>
             <SnapShots>
-                {state.map((state, i: number) => {
+                {state?.map((state, i: number) => {
                     return <SnapShot key={i} snapNum={i} setSnapShotIndex={setSnapShotIndex} />
                 })}
             </SnapShots>

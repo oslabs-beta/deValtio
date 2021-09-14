@@ -1,5 +1,4 @@
 import { SetStateAction, Dispatch } from "react";
-import { ISnapShotList } from "../../../Types/Types";
 import styled from "styled-components";
 
 const SnapShotButton = styled.button`

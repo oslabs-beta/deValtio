@@ -12,3 +12,8 @@ export interface IState {
 export type ISnapShot = IState[];
 
 export type ISnapShotList = ISnapShot[];
+
+export interface ISnapShotContext {
+  snapShotIndex: number;
+  setSnapShotIndex: React.Dispatch<React.SetStateAction<number>>;
+}

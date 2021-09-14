@@ -3,6 +3,7 @@
 
 var s = document.createElement('script');
 s.src = chrome.runtime.getURL('proxyHugger.js');
+s.async = true;
 s.onload = function() {
     this.remove();
 };

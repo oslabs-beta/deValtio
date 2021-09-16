@@ -8,26 +8,43 @@ const getRoots = (elem = document) => {
 
 const getHostRoot = reactNode => reactNode._reactRootContainer._internalRoot.current;
 
+const getFiberNodeName = (node) => {
+
+  console.dir(node)
+  
+  if (node.tag === 3) return 'fiberRoot';
+  
+  if (node.tag === 0) return node.type.name;
+
+  if (node.tag === 5) {
+    return node.stateNode.className ? `${node.type}.${node.stateNode.className}` : node.type;
+  }
+
+  if (typeof node.type === 'string') return node.type;
+  if (typeof node.type === 'function') return node.type.name;
+  if (typeof node.type === 'symbol') return node.type.toString();
+
+}
+
 class TreeNode {
-  constructor() {
-    this.name = null;
-    this.tag = null;
+  constructor(node) {
+    this.tag = node.tag;
+    this.name = getFiberNodeName(node);
+    this.tagName = tagNames[node.tag]
+    this.type = node.type;
     this.children = [];
-    // this.sourceCode = null;
+    // this.sourceCode = node.type? node.type.toString() : null;
   }
 }
 
-const tags = ["FunctionComponent", "ClassComponent", "IndeterminateComponent", "HostRoot", "HostPortal", "HostComponent", "HostText", "Fragment", "Mode", "ContextConsumer", "ContextProvider", "ForwardRef", "Profiler", "SuspenseComponent", "MemoComponent", "SimpleMemoComponent", "LazyComponent"];
+const tagNames = ["FunctionComponent", "ClassComponent", "IndeterminateComponent", "HostRoot", "HostPortal", "HostComponent", "HostText", "Fragment", "Mode", "ContextConsumer", "ContextProvider", "ForwardRef", "Profiler", "SuspenseComponent", "MemoComponent", "SimpleMemoComponent", "LazyComponent"];
 
 climb = (node, parentTreeNode = null) => {
-  let treeNode = new TreeNode();
-  treeNode.name = tags[node.tag];
-  // treeNode.sourceCode = node.type? node.type.toString() : null;
-  treeNode.tag = node.tag;
-  treeNode.type = node.type;
+  
+  let treeNode = new TreeNode(node);
   
   if (node.sibling) {
-    if (parentTreeNode) parentTreeNode.children.push(climb(node.sibling));
+    parentTreeNode.children.push(climb(node.sibling, parentTreeNode));
   };
 
   if (node.child) {
@@ -42,7 +59,7 @@ hostRoot = getHostRoot(roots[0]);
 
 console.log(roots);
 
-tree = climb(hostRoot);
+let tree = climb(hostRoot);
 
 console.log(JSON.stringify(tree, null, 2))
 

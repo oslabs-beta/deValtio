@@ -15,14 +15,14 @@
         "activeTab"
     ],
     "web_accessible_resources": [{
-        "resources": ["proxyHugger.js"],
+        "resources": ["injected.js"],
         "matches": ["<all_urls>"]
     }],
     "content_scripts": [
         {
             "matches": ["http://*/*", "https://*/*"],
             "match_about_blank": true,
-            "js": ["loadProxyHugger.js"],
+            "js": ["injector.js"],
             "all_frames": true,
             "run_at": "document_start"
         }

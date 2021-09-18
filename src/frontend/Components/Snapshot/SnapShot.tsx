@@ -4,14 +4,13 @@ import styled from "styled-components";
 
 const SnapShotButton = styled.button<{ snapShotIndex: number }>`
     background: ${props => props.value === props.snapShotIndex ? '#E0FBFC' : '#98C1D9'};
-    background: ${props => props.value === props.snapShotIndex ? 'yellow' : 'green'};
+    color: ${props => props.value === props.snapShotIndex ? '#98C1D9' : '#E0FBFC'};
     width: 50%;
     height: 2em;
     border: 1px solid #98C1D9;
     border-radius: 2px;
     margin: 7px 4px;
     cursor: pointer;
-
     &:hover {
         color: #293241; 
     };

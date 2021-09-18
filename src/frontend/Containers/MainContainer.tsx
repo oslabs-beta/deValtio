@@ -1,8 +1,9 @@
+/*global chrome*/
+import { useState, useEffect } from 'react';
 import { SnapShotContainer } from './SnapShotContainer';
 import VisualContainer from './VisualContainer';
 import { NavBar } from '../Components/NavBar/navbar'
 import styled from 'styled-components';
-import { useState } from 'react';
 import { GlobalStateContext } from '../Contexts/GlobalStateContext';
 import { SnapShotContext } from '../Contexts/SnapShotContext';
 import { fakeState } from '../../fakeState';

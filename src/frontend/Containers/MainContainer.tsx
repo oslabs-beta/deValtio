@@ -21,6 +21,15 @@ function MainContainer(): JSX.Element {
   const [tabNum, setTabNum] = useState<number>(1);
   const [snapShotIndex, setSnapShotIndex] = useState<number>(0);
 
+  useEffect(() => {
+    chrome.runtime.onMessage.addListener((message) => {
+      if (message) {
+        //set state with data here
+        console.log(message)
+      }
+    })
+  }, [])
+
   return (
     <Main>
       <NavBar setTabNum={setTabNum} tabNum={tabNum} />

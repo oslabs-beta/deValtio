@@ -7,5 +7,21 @@
         "default_title": "deValtio",
         "default_popup": "index.html"
     },
-    "devtools_page": "./src/chrome-extension/devTools.html"
+    "devtools_page": "./src/chrome-extension/devTools.html",
+    "permissions": [
+        "activeTab"
+    ],
+    "web_accessible_resources": [{
+        "resources": ["injected.js"],
+        "matches": ["<all_urls>"]
+    }],
+    "content_scripts": [
+        {
+            "matches": ["http://*/*", "https://*/*"],
+            "match_about_blank": true,
+            "js": ["injector.js"],
+            "all_frames": true,
+            "run_at": "document_start"
+        }
+    ]
 }

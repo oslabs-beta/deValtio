@@ -12,7 +12,7 @@ const objectHandler = {
 };
 
 const proxyHandler = {
-  construct: (target, args, receiver) => {
+  construct: (target, args) => {
     let caller;
     
     try {
@@ -23,16 +23,17 @@ const proxyHandler = {
     }
     
     // console.log(`Proxy caller is: ${caller} and params are ${pp(args)}`)
-    console.dir(Reflect.ownKeys(args[1]));
-    console.dir(args[1]['f'])
-    console.dir(args[1].constructor)
+    console.dir(args)
+    // console.dir(Reflect.ownKeys(args[1]));
+    // console.dir(args[1]['f'])
+    // console.dir(args[1].constructor)
     // console.log(Reflect.ownKeys(args[-1]));
     // args.forEach((arg) => {
     //   console.log(`arg is ${arg}`);
     //   arg = new Proxy(arg, objectHandler);
     // });
     // // return new origProxy(target, args, receiver);
-    return Reflect.construct(target, args, receiver);
+    return Reflect.construct(target, args);
   }
 };
 

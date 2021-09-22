@@ -35,12 +35,12 @@ function StateDiff(): JSX.Element {
   //everytime state is update, it should display updated state and save it as a new snapshot 
   //this is for diffing difference between 2 snapshots
   const delta: any = diff(dummyone, dummytwo);
-  console.log('this is the delta version', delta);
+  //console.log('this is the delta version', delta);
   //this is to covert difference to html format
   const html = formatters.html.format(delta, dummyone);
-  console.log('this is the formatted version', html)
+  //console.log('this is the formatted version', html)
 
-  console.log('from stateDiff at index', state![snapShotIndex]);
+  //console.log('from stateDiff at index', state![snapShotIndex]);
   return (
     <DiffState>
       {ReactHtmlParser(html)}

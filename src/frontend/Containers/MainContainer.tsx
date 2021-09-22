@@ -16,24 +16,54 @@ const Main = styled.main`
   width: 100vw;
 `;
 
-function MainContainer(): JSX.Element {
+function MainContainer() {
 
   const [tabNum, setTabNum] = useState<number>(1);
   const [snapShotIndex, setSnapShotIndex] = useState<number>(0);
+  const [message, setMessage] = useState<string>('');
+
+
 
   useEffect(() => {
-    chrome.runtime.onMessage.addListener((message) => {
+    console.log('from useEffect')
+    // chrome.runtime.onConnect.addListener(port => {
+    //   console.log('connected ', port);
+    //   port.postMessage({
+    //     message: 'from frontend'
+    //   });
+
+    //   port.onMessage.addListener((message) => {
+    //     if (message) {
+    //       setMessage(message.message);
+    //       console.log('message from backend', message)
+    //     }
+    //   })
+    //});
+
+    // const port = chrome.runtime.connect({
+    //   name: 'deValtio'
+    // });
+
+  });
+
+  chrome.runtime.onConnect.addListener(port => {
+    console.log('connected ', port);
+    port.postMessage({
+      message: 'from frontend'
+    });
+
+    port.onMessage.addListener((message) => {
       if (message) {
-        //set state with data here
-        console.log(message)
+        setMessage(message.message);
+        console.log('message from backend', message)
       }
     })
-  }, [])
+  });
 
   return (
     <Main>
       <NavBar setTabNum={setTabNum} tabNum={tabNum} />
-
+      <p> {message}</p>
       <GlobalStateContext.Provider value={fakeState}>
         <SnapShotContext.Provider value={{ snapShotIndex, setSnapShotIndex }}>
           <SnapShotContainer />

@@ -25,6 +25,14 @@ injectedScript.onload = function() {
 // };
 
 // communication with front end
-const port = chrome.runtime.connect({name: "deValtio"});
-port.postMessage({message: "Test Message"});
-port.onMessage.addListener(msg => console.log(`Content script received following message: ${msg}`));
+// chrome.runtime.onConnect.addListener(port => {
+//     console.log('connected ', port);
+// })
+// const port = chrome.runtime.connect({name: "deValtio"});
+// port.postMessage({message: "Test Message"});
+// port.onMessage.addListener(msg => console.log(`Content script received following message: ${msg}`));
+setTimeout(() => {
+    const port = chrome.runtime.connect({name: "deValtio"});
+    port.onMessage.addListener(msg => console.log(`Content script received following message: ${msg}`));
+    port.postMessage({message: "Test Message"});
+    }, 10000);

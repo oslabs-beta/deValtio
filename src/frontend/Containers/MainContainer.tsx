@@ -26,44 +26,40 @@ function MainContainer() {
 
   useEffect(() => {
     console.log('from useEffect')
-    // chrome.runtime.onConnect.addListener(port => {
-    //   console.log('connected ', port);
-    //   port.postMessage({
-    //     message: 'from frontend'
-    //   });
+    chrome.runtime.onConnect.addListener(port => {
+      console.log('connected ', port);
 
-    //   port.onMessage.addListener((message) => {
-    //     if (message) {
-    //       setMessage(message.message);
-    //       console.log('message from backend', message)
-    //     }
-    //   })
-    //});
+      port.postMessage({
+        message: 'from frontend'
+      });
 
-    // const port = chrome.runtime.connect({
-    //   name: 'deValtio'
-    // });
-
-  });
-
-  chrome.runtime.onConnect.addListener(port => {
-    console.log('connected ', port);
-    port.postMessage({
-      message: 'from frontend'
+      port.onMessage.addListener((message) => {
+        if (message) {
+          setMessage(message.message);
+          console.log('message from backend', message)
+        }
+      })
     });
 
-    port.onMessage.addListener((message) => {
-      if (message) {
-        setMessage(message.message);
-        console.log('message from backend', message)
-      }
-    })
-  });
+  }, [tabNum]);
+
+  // chrome.runtime.onConnect.addListener(port => {
+  //   console.log('connected ', port);
+  //   port.postMessage({
+  //     message: 'from frontend'
+  //   });
+
+  //   port.onMessage.addListener((message) => {
+  //     if (message) {
+  //       setMessage(message.message);
+  //       console.log('message from backend', message)
+  //     }
+  //   })
+  // });
 
   return (
     <Main>
       <NavBar setTabNum={setTabNum} tabNum={tabNum} />
-      <p> {message}</p>
       <GlobalStateContext.Provider value={fakeState}>
         <SnapShotContext.Provider value={{ snapShotIndex, setSnapShotIndex }}>
           <SnapShotContainer />

@@ -31,8 +31,7 @@ injectedScript.onload = function() {
 // const port = chrome.runtime.connect({name: "deValtio"});
 // port.postMessage({message: "Test Message"});
 // port.onMessage.addListener(msg => console.log(`Content script received following message: ${msg}`));
-setTimeout(() => {
-    const port = chrome.runtime.connect({name: "deValtio"});
-    port.onMessage.addListener(msg => console.log(`Content script received following message: ${msg}`));
-    port.postMessage({message: "Test Message"});
-    }, 10000);
+
+const port = chrome.runtime.connect({name: "deValtio"});
+port.onMessage.addListener(msg => console.log(`Content script received following message: ${msg}`));
+port.postMessage({message: "Test Message"});

@@ -23,25 +23,36 @@ function MainContainer() {
   const [message, setMessage] = useState<string>('');
 
 
-
   useEffect(() => {
-    console.log('from useEffect')
-    chrome.runtime.onConnect.addListener(port => {
-      console.log('connected ', port);
+    const tabId = chrome.devtools.inspectedWindow.tabId;
+    console.log(tabId)
 
-      port.postMessage({
-        message: 'from frontend'
-      });
+    const port = chrome.tabs.connect(tabId);
+    // port.postMessage({
+    //   message: 'ready'
+    // });
+    port.onMessage.addListener(res => console.log('responese', res));
+  }, []);
+  // useEffect(() => {
+  //   console.log('ready State', document.readyState)
+  //   console.log('from useEffect')
+  //   if (document.readyState === 'complete') {
+  //     chrome.runtime.onConnect.addListener(port => {
+  //       console.log('connected ', port);
 
-      port.onMessage.addListener((message) => {
-        if (message) {
-          setMessage(message.message);
-          console.log('message from backend', message)
-        }
-      })
-    });
+  //       port.postMessage({
+  //         message: 'ready'
+  //       });
 
-  }, [tabNum]);
+  //       port.onMessage.addListener((message) => {
+  //         if (message) {
+  //           setMessage(message.message);
+  //           console.log('message from backend', message)
+  //         }
+  //       })
+  //     });
+  //   }
+  // }, []);
 
   // chrome.runtime.onConnect.addListener(port => {
   //   console.log('connected ', port);

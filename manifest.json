@@ -27,11 +27,9 @@
                 "http://*/*",
                 "https://*/*"
             ],
-            "match_about_blank": true,
             "js": [
                 "injector.js"
             ],
-            "all_frames": true,
             "run_at": "document_start"
         }
     ]

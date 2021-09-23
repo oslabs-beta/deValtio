@@ -2,6 +2,12 @@ console.log(`injected.js has been initiated`);
 
 const pp = stuff => JSON.stringify(stuff, null, 2);
 
+// disable locking down object properties for fiberNode (and any other) objects
+Object.preventExtensions = () => true;
+
+// declare fiberRoot object
+let fiberRoot;
+
 const origProxy = Proxy;
 
 const objectHandler = {
@@ -57,6 +63,7 @@ document.onreadystatechange = () => {
 
     if (reactRoots[0]) {
       console.log(`React Root Found`);
+      fiberRoot = reactRoots[0]._reactRootContainer._internalRoot.current;
     };
   }
 };

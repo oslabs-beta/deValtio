@@ -1,7 +1,7 @@
 //console.log(`injected.js has been initiated`)
 
 document.onreadystatechange = () => {
-  if (document.readyState === 'interactive' || document.readyState === 'complete') {
+  if (document.readyState === 'complete') {
 
     const reactRoots = [];
     document.querySelectorAll('*').forEach(node => {

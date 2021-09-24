@@ -1,22 +1,29 @@
 import { useContext } from 'react';
 import { GlobalStateContext } from '../Contexts/GlobalStateContext';
 import { SnapShotContext } from '../Contexts/SnapShotContext';
-import { ISnapShotContext } from '../../Types/Types';
 import { SnapShot } from '../Components/Snapshot/SnapShot';
 import styled from 'styled-components';
 
 // NEED TO FIX TYPE ANY ON LINE 27
 
 const Section = styled.section`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     height: 96vh;
     width:14vw;
     background: #293241;
     border: 2px solid #98C1D9;
     color: #98C1D9;
-    text-align:center;
+    text-align: center;
 `;
 
 const SnapShots = styled.section`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
     padding: 0;
 
 `;
@@ -31,7 +38,7 @@ export const SnapShotContainer = (): JSX.Element => {
             <h1>SnapShots</h1>
             <SnapShots>
                 {state?.map((state, i: number) => {
-                    return <SnapShot key={i} snapNum={i} setSnapShotIndex={setSnapShotIndex} />
+                    return <SnapShot key={i} value={i} snapNum={i} setSnapShotIndex={setSnapShotIndex} />
                 })}
             </SnapShots>
         </Section>

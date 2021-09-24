@@ -65,5 +65,52 @@ document.onreadystatechange = () => {
       console.log(`React Root Found`);
       fiberRoot = reactRoots[0]._reactRootContainer._internalRoot.current;
     };
+
+    //tree parsing part.
+
+    // func to get component (i.e. constructor) name
+    // this returns one or two letter names in prod mode but
+    // this can be adapted to still get proper component names if the site uses source maps
+    // and we add source map parsing
+    const getFiberNodeName = (node) => {
+      // root node
+      if (node.tag === 3) return 'fiberRoot';
+      // functional or class component
+      if (node.tag === 0 || node.tag === 1) return node.type.name;
+      // host component (renders to browser DOM)
+      if (node.tag === 5) {
+        return node.stateNode.className ? `${node.type}.${node.stateNode.className}` : node.type;
+      }
+      // everything else
+      if (typeof node.type === 'string') return node.type;
+      if (typeof node.type === 'function') return node.type.name;
+      if (typeof node.type === 'symbol') return node.type.toString();
+    };
+    
+
+    const fiberNodes = [];
+
+    function devaltioNode(fiberNode) {
+      this.tag = fiberNode.tag;
+      this.valtioID = fiberNode.valtioID;
+      this.componentName = getFiberNodeName(fiberNode);
+      this.hasProps = fiberNode.memoizedProps ? true : false;
+      this.hasState = fiberNode.memoizedState ? true : false;
+    };
+    
+    // climb initial Tree, add valtioID to fiberNode properties
+    // we should only need to do this once per page load and, after that,
+    // if we hijack the fiberNode constructor we can have the React Reconciler
+    // generate devaltioNodes on the fly.
+
+    // valtioID format:
+    // 0,0:
+    
+    const climbTree = (fiberNode = fiberRoot) => {
+      if (fiberNode === fiberRoot) {
+        if (!fiberNode.valtioID) fiberNode.valtioID = 'c0s0';
+      }
+    }
+
   }
 };

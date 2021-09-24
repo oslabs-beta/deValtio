@@ -8,32 +8,7 @@ injectedScript.onload = function() {
 };
 (document.head || document.documentElement).appendChild(injectedScript);
 
-// attempt to see if we can read JS context from the content script without
-// injected script or inspectedWindow eval
-// document.onreadystatechange = () => {
-//   if (document.readyState === 'interactive' || document.readyState === 'complete') {
-
-//     const reactRoots = [];
-//     document.querySelectorAll('*').forEach(node => {
-//       if (node._reactRootContainer) reactRoots.push(node);
-//     });
-
-//     if (reactRoots[0]) {
-//       console.log(`React Root Found`);
-//     };
-//   }
-// };
-
-// communication with front end
-// chrome.runtime.onConnect.addListener(port => {
-//     console.log('connected ', port);
-// })
-// const port = chrome.runtime.connect({name: "deValtio"});
-// port.postMessage({message: "Test Message"});
-// port.onMessage.addListener(msg => console.log(`Content script received following message: ${msg}`));
-
-// chrome.runtime.connect({name: "deValtio"});
-
+// creates connection between extension and content script
 chrome.runtime.onConnect.addListener(port => {
     console.log('connected ', port);
   

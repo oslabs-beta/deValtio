@@ -45,11 +45,5 @@ chrome.runtime.onConnect.addListener(port => {
         if (message) {
             console.log('received in content', message)
         }
-        })
+    });
 }); 
-// chrome.runtime.onMessage.addListener(msg => {
-//     console.log(`Content script received following message: ${msg.message}`);
-//     chrome.runtime.postMessage({message: "Test Message"});
-// });
-// console.log('ready state',document.readyState)
-

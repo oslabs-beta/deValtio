@@ -8,14 +8,15 @@ import styled from "styled-components";
 
 // NEED TO FIX TYPE ANY ON LINE 20
 
+const DiffState = styled.div`
+display: flex;
+justify-content: space-between;
+margin: 20px;
+align-items: flex-start; 
+`
+
 function StateDiff(): JSX.Element {
 
-  const DiffState = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin: 20px;
-  align-items: flex-start; 
-  `
   const state = useContext(GlobalStateContext);
   const { snapShotIndex }: { snapShotIndex: number } = useContext<any>(SnapShotContext);
 

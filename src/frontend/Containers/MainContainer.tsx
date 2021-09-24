@@ -20,53 +20,14 @@ function MainContainer() {
 
   const [tabNum, setTabNum] = useState<number>(1);
   const [snapShotIndex, setSnapShotIndex] = useState<number>(0);
-  const [message, setMessage] = useState<string>('');
-
 
   useEffect(() => {
     const tabId = chrome.devtools.inspectedWindow.tabId;
-    console.log(tabId)
-
+    console.log(tabId);
     const port = chrome.tabs.connect(tabId);
-    // port.postMessage({
-    //   message: 'ready'
-    // });
+
     port.onMessage.addListener(res => console.log('responese', res));
   }, []);
-  // useEffect(() => {
-  //   console.log('ready State', document.readyState)
-  //   console.log('from useEffect')
-  //   if (document.readyState === 'complete') {
-  //     chrome.runtime.onConnect.addListener(port => {
-  //       console.log('connected ', port);
-
-  //       port.postMessage({
-  //         message: 'ready'
-  //       });
-
-  //       port.onMessage.addListener((message) => {
-  //         if (message) {
-  //           setMessage(message.message);
-  //           console.log('message from backend', message)
-  //         }
-  //       })
-  //     });
-  //   }
-  // }, []);
-
-  // chrome.runtime.onConnect.addListener(port => {
-  //   console.log('connected ', port);
-  //   port.postMessage({
-  //     message: 'from frontend'
-  //   });
-
-  //   port.onMessage.addListener((message) => {
-  //     if (message) {
-  //       setMessage(message.message);
-  //       console.log('message from backend', message)
-  //     }
-  //   })
-  // });
 
   return (
     <Main>

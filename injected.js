@@ -1,4 +1,4 @@
-console.log(`injected.js has been initiated`)
+//console.log(`injected.js has been initiated`)
 
 document.onreadystatechange = () => {
   if (document.readyState === 'interactive' || document.readyState === 'complete') {

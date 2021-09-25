@@ -22,10 +22,11 @@ function MainContainer() {
   const [snapShotIndex, setSnapShotIndex] = useState<number>(0);
 
   useEffect(() => {
+    // get tab id of current tab
     const tabId = chrome.devtools.inspectedWindow.tabId;
     console.log(tabId);
+    // creates a port on current tab
     const port = chrome.tabs.connect(tabId);
-
     port.onMessage.addListener(res => console.log('responese', res));
   }, []);
 

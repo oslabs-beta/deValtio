@@ -1,5 +1,3 @@
-//console.log(`injected.js has been initiated`)
-
 document.onreadystatechange = () => {
   if (document.readyState === 'complete') {
     const reactRoots = [];
@@ -9,6 +7,8 @@ document.onreadystatechange = () => {
 
     if (reactRoots[0]) {
       console.log(`React Root Found`);
-    }
+      setInterval(() => window.postMessage({message: 'This is a React Apps'}), 2000)
+      
+    };
   }
 };

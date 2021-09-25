@@ -3,8 +3,8 @@ console.log(`injector.js is running`);
 // inject script into javascript context of tab
 const injectedScript = document.createElement('script');
 injectedScript.src = chrome.runtime.getURL('injected.js');
-injectedScript.onload = function() {
-    this.remove();
+injectedScript.onload = function () {
+  this.remove();
 };
 (document.head || document.documentElement).appendChild(injectedScript);
 

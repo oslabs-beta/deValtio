@@ -1,8 +1,7 @@
 document.onreadystatechange = () => {
   if (document.readyState === 'complete') {
-
     const reactRoots = [];
-    document.querySelectorAll('*').forEach(node => {
+    document.querySelectorAll('*').forEach((node) => {
       if (node._reactRootContainer) reactRoots.push(node);
     });
 

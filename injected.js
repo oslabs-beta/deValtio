@@ -29,7 +29,7 @@ const proxyHandler = {
     }
     
     // console.log(`Proxy caller is: ${caller} and params are ${pp(args)}`)
-    console.dir(args)
+    // console.dir(args)
     // console.dir(Reflect.ownKeys(args[1]));
     // console.dir(args[1]['f'])
     // console.dir(args[1].constructor)
@@ -52,6 +52,60 @@ Proxy = new origProxy(origProxy, proxyHandler);
 //   // return new origProxy(arguments);
 // };
 // Proxy.prototype = origProxy.prototype;
+
+// generateDeValtioID
+const generateDeValtioID = (fiberNode) => {
+  
+  let width = fiberNode.index;
+
+  // check if fiberNode already has deValtioID
+  fiberNode.deValtioID ? currentID = deValtionID : currentID = null;
+
+  // func to check if currentID and generatedID mismatch. If they do, throw an error
+  const checkMismatch = function(newID) {
+    if (currentID && currentID !== newID) {
+      throw new Error('Generated ID mismatch. Existing ID is ${currentID} and generated ID is ${newID');
+    }
+  }
+  
+  // detect fiberRoot (tag is 3 and return property is null)
+  if (fiberNode.return === null && fiberNode.tag === 3 && fiberNode.index === 0) {
+    fiberNode.deValtioID = '0,0';
+    checkMismatch(fiberNode.deValtioID);
+    return fiberNode.deValtioID;
+  }
+
+  // throw exception if return property has not been set and node isn't fiberRoot
+  if (fiberNode.return === null) {
+    throw new Error('node is not fiberRoot but return property is null.');
+  }
+
+  // get current depth by getting the depth of return and incrementing by one
+  // let depth = Number(fiberNode.return.deValtioID.split(':').pop().split(',')[0]) + 1;
+
+  // width is just the index property of the fiberNode
+  // let width = fiberNode.index;
+
+  // detect if current node is child of sibling
+  if (fiberNode.return.deValtioID && fiberNode.return.index > 0) {
+    const returnName = fiberNode.return.deValtioID;
+    fiberNode.deValtioID = `${returnName}:1,${width}`;
+    checkMismatch(fiberNode.deValtioID);
+    return fiberNode.deValtioID;
+  }
+
+  // get depth by parsing name of return, adding one to the last depth, and appending the width
+  const splitReturnName = fiberNode.return.deValtioID.split(':');
+  const returnNodeDepth = Number(splitReturnName.pop().split(',')[0]);
+  const newName = splitReturnName.join(':') ? 
+    splitReturnName.join(':') + ':' + (returnNodeDepth + 1) + ',' + width :
+    (returnNodeDepth + 1) + ',' + width;
+    
+  fiberNode.deValtioID = newName;
+  checkMismatch(fiberNode.deValtioID);
+  return fiberNode.deValtioID;
+  
+}
 
 document.onreadystatechange = () => {
   if (document.readyState === 'complete') {
@@ -88,11 +142,12 @@ document.onreadystatechange = () => {
     };
     
 
-    const fiberNodes = [];
+    const deValtioNodes = [];
 
     function devaltioNode(fiberNode) {
       this.tag = fiberNode.tag;
-      this.valtioID = fiberNode.valtioID;
+      this.deValtioID = fiberNode.deValtioID;
+      this.index = fiberNode.index;
       this.componentName = getFiberNodeName(fiberNode);
       this.hasProps = fiberNode.memoizedProps ? true : false;
       this.hasState = fiberNode.memoizedState ? true : false;
@@ -107,10 +162,21 @@ document.onreadystatechange = () => {
     // 0,0:
     
     const climbTree = (fiberNode = fiberRoot) => {
-      if (fiberNode === fiberRoot) {
-        if (!fiberNode.valtioID) fiberNode.valtioID = 'c0s0';
-      }
+      // generate deValtioID
+      generateDeValtioID(fiberNode);
+
+      // add current node to deValtioNodes array
+      deValtioNodes.push(new devaltioNode(fiberNode));
+
+      // climb sibling
+      if (fiberNode.sibling) climbTree(fiberNode.sibling);
+
+      // climb child
+      if (fiberNode.child) climbTree(fiberNode.child);
     }
+
+    climbTree()
+    console.log(deValtioNodes);
 
   }
 };

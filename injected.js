@@ -8,6 +8,9 @@ Object.preventExtensions = () => true;
 // declare fiberRoot object
 let fiberRoot;
 
+// declare deValtioNodes array here so we can access it from browser console
+const deValtioNodes = [];
+
 const origProxy = Proxy;
 
 const objectHandler = {
@@ -140,9 +143,6 @@ document.onreadystatechange = () => {
       if (typeof node.type === 'function') return node.type.name;
       if (typeof node.type === 'symbol') return node.type.toString();
     };
-    
-
-    const deValtioNodes = [];
 
     function devaltioNode(fiberNode) {
       this.tag = fiberNode.tag;

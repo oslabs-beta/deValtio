@@ -6,7 +6,7 @@ const NavTabStyled = styled.button<{ tabNum: number }>`
   cursor: pointer;
   border: 1px solid #98C1D9;
   border-radius: 2px;
-  height: 90%;
+  height: 80%;
   width: 10em;
   margin: 1em;
   color: ${props => props.value === props.tabNum ? '#98C1D9' : '#E0FBFC'};

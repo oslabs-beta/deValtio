@@ -3,31 +3,35 @@ console.log(`injector.js is running`);
 // inject script into javascript context of tab
 const injectedScript = document.createElement('script');
 injectedScript.src = chrome.runtime.getURL('injected.js');
-injectedScript.onload = function() {
-    this.remove();
+injectedScript.onload = function () {
+  this.remove();
 };
 (document.head || document.documentElement).appendChild(injectedScript);
 
-// attempt to see if we can read JS context from the content script without
-// injected script or inspectedWindow eval
-// document.onreadystatechange = () => {
-//   if (document.readyState === 'interactive' || document.readyState === 'complete') {
+let comms;
 
-//     const reactRoots = [];
-//     document.querySelectorAll('*').forEach(node => {
-//       if (node._reactRootContainer) reactRoots.push(node);
-//     });
+// connects injected script
+window.addEventListener('message', (e) => {
+    if (e.data.message === 'This is a React App') console.log(e.data.message);
+    if (comms) {
+        comms.postMessage({
+            message: 'fromm window' + e.data.message
+        });
+    }
+});
 
-//     if (reactRoots[0]) {
-//       console.log(`React Root Found`);
-//     };
-//   }
-// };
 
-// communication with front end
-
-setTimeout(() => {
-    const port = chrome.runtime.connect({name: "deValtio"});
-    port.onMessage.addListener(msg => console.log(`Content script received following message: ${msg}`));
-    port.postMessage({message: "Test Message"});
-    }, 2000);
+// creates connection between extension and content script
+chrome.runtime.onConnect.addListener(port => {
+    console.log('connected ', port);
+    comms = port;
+    port.postMessage({
+        message: 'from content script'
+    });
+    
+    port.onMessage.addListener((message) => {
+        if (message) {
+            console.log('received in content', message)
+        }
+    });
+}); 

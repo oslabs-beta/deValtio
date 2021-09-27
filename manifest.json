@@ -11,16 +11,25 @@
     "permissions": [
         "activeTab"
     ],
-    "web_accessible_resources": [{
-        "resources": ["injected.js"],
-        "matches": ["<all_urls>"]
-    }],
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "injected.js"
+            ],
+            "matches": [
+                "<all_urls>"
+            ]
+        }
+    ],
     "content_scripts": [
         {
-            "matches": ["http://*/*", "https://*/*"],
-            "match_about_blank": true,
-            "js": ["injector.js"],
-            "all_frames": true,
+            "matches": [
+                "http://*/*",
+                "https://*/*"
+            ],
+            "js": [
+                "injector.js"
+            ],
             "run_at": "document_start"
         }
     ]

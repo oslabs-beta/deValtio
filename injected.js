@@ -114,13 +114,15 @@ document.onreadystatechange = () => {
   if (document.readyState === 'complete') {
 
     const reactRoots = [];
-    document.querySelectorAll('*').forEach(node => {
+    document.querySelectorAll('*').forEach((node) => {
       if (node._reactRootContainer) reactRoots.push(node);
     });
 
     if (reactRoots[0]) {
       console.log(`React Root Found`);
       fiberRoot = reactRoots[0]._reactRootContainer._internalRoot.current;
+      // repeating message to test comms with front end
+      setInterval(() => window.postMessage({message: 'This is a React Apps'}), 2000)
     };
 
     //tree parsing part.

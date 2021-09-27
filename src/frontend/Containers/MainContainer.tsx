@@ -16,15 +16,23 @@ const Main = styled.main`
   width: 100vw;
 `;
 
-function MainContainer(): JSX.Element {
+function MainContainer() {
 
   const [tabNum, setTabNum] = useState<number>(1);
   const [snapShotIndex, setSnapShotIndex] = useState<number>(0);
 
+  useEffect(() => {
+    // get tab id of current tab
+    const tabId = chrome.devtools.inspectedWindow.tabId;
+    console.log(tabId);
+    // creates a port on current tab
+    const port = chrome.tabs.connect(tabId);
+    port.onMessage.addListener(res => console.log('responese', res));
+  }, []);
+
   return (
     <Main>
       <NavBar setTabNum={setTabNum} tabNum={tabNum} />
-
       <GlobalStateContext.Provider value={fakeState}>
         <SnapShotContext.Provider value={{ snapShotIndex, setSnapShotIndex }}>
           <SnapShotContainer />

@@ -21,11 +21,11 @@ const Section = styled.section`
 const SnapShots = styled.section`
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     width: 100%;
     padding: 0;
-
+    height:100%;
 `;
 
 export const SnapShotContainer = (): JSX.Element => {

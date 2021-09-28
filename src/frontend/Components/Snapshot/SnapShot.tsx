@@ -6,18 +6,16 @@ const SnapShotButton = styled.button<{ snapShotIndex: number }>`
     background: ${props => props.value === props.snapShotIndex ? '#E0FBFC' : '#98C1D9'};
     color: ${props => props.value === props.snapShotIndex ? '#98C1D9' : '#E0FBFC'};
     width: 50%;
-    min-width: 50%
-    height: 2em;
-    min-height: 50%:
+    min-width: 50%;
+    height: auto;
+    min-height: 3em;
     border: 1px solid #98C1D9;
     border-radius: 2px;
     margin: 7px 4px;
     cursor: pointer;
-    font-size: 100%;
     overflow-wrap: break-word;
     &:hover {
         color: #293241; 
-    
     };
 `;
 

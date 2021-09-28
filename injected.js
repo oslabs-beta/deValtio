@@ -202,7 +202,8 @@ document.onreadystatechange = () => {
       prevNode ? generateDeValtioID(node, prevNode) : generateDeValtioID(node);
       deValtioNodes.push(new devaltioNode(node));
       });
-      console.log(deValtioNodes);
+      console.dir(deValtioNodes);
+      console.log(`${deValtioNodes.length} fiberNodes found.`)
       console.log(`Number of nodes with props: ${deValtioNodes.filter(node => node.hasProps).length}`);
       console.log(`Number of nodes with state: ${deValtioNodes.filter(node => node.hasState).length}`);
     }, 1000);

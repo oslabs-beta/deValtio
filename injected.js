@@ -21,7 +21,7 @@ const objectHandler = {
 };
 
 const proxyHandler = {
-  construct: (target, args) => {
+  construct: (proxyObj, targetObj, handler) => {
     let caller;
     
     try {
@@ -30,6 +30,8 @@ const proxyHandler = {
       // console.log(`err.stack is ${pp(err.stack)}`);
       caller = err.stack.split("at ")[2].split(" (")[0];
     }
+
+    cons
     
     // console.log(`Proxy caller is: ${caller} and params are ${pp(args)}`)
     // console.dir(args)
@@ -42,7 +44,7 @@ const proxyHandler = {
     //   arg = new Proxy(arg, objectHandler);
     // });
     // // return new origProxy(target, args, receiver);
-    return Reflect.construct(target, args);
+    return Reflect.construct(proxyObj, targetObj, handler);
   }
 };
 
@@ -57,7 +59,7 @@ Proxy = new origProxy(origProxy, proxyHandler);
 // Proxy.prototype = origProxy.prototype;
 
 // generateDeValtioID
-const generateDeValtioID = (fiberNode) => {
+const generateDeValtioID = (fiberNode, prevNode = null) => {
   try {
     let width = fiberNode.index;
 
@@ -98,7 +100,10 @@ const generateDeValtioID = (fiberNode) => {
     }
 
     // get depth by parsing name of return, adding one to the last depth, and appending the width
-    const splitReturnName = fiberNode.return.deValtioID.split(':');
+    let returnName = fiberNode.return.deValtioID;
+    if (prevNode && fiberNode.return !== prevNode) returnName = prevNode.deValtioID;
+    
+    const splitReturnName = returnName.split(':');
     const returnNodeDepth = Number(splitReturnName.pop().split(',')[0]);
     const newName = splitReturnName.join(':') ? 
       splitReturnName.join(':') + ':' + (returnNodeDepth + 1) + ',' + width :
@@ -116,16 +121,18 @@ const generateDeValtioID = (fiberNode) => {
 document.onreadystatechange = () => {
   if (document.readyState === 'complete') {
 
-    const reactRoots = [];
-    document.querySelectorAll('*').forEach((node) => {
-      if (node._reactRootContainer) reactRoots.push(node);
-    });
+    const getFiberRoot = () => {
+      const reactRoots = [];
+      document.querySelectorAll('*').forEach((node) => {
+        if (node._reactRootContainer) reactRoots.push(node);
+      });
 
-    if (reactRoots[0]) {
-      console.log(`React Root Found`);
-      fiberRoot = reactRoots[0]._reactRootContainer._internalRoot.current;
-      // repeating message to test comms with front end
-      setInterval(() => window.postMessage({message: 'This is a React Apps'}), 2000)
+      if (reactRoots[0]) {
+        console.log(`React Root Found`);
+        fiberRoot = reactRoots[0]._reactRootContainer._internalRoot.current;
+        // repeating message to test comms with front end
+        setInterval(() => window.postMessage({message: 'This is a React Apps'}), 2000)
+      } return fiberRoot;
     };
 
     //tree parsing part.
@@ -149,11 +156,11 @@ document.onreadystatechange = () => {
       if (typeof node.type === 'symbol') return node.type.toString();
     };
 
-    function devaltioNode(fiberNode) {
+    function devaltioNode(fiberNode, parentNode = null) {
       this.tag = fiberNode.tag;
       this.deValtioID = fiberNode.deValtioID;
       this.index = fiberNode.index;
-      this.componentName = getFiberNodeName(fiberNode);
+      this.componentName = getFiberNodeName(fiberNode, parentNode);
       this.hasProps = fiberNode.memoizedProps ? true : false;
       this.hasState = fiberNode.memoizedState ? true : false;
     };
@@ -166,17 +173,12 @@ document.onreadystatechange = () => {
     // valtioID format:
     // 0,0:
     
-    const climbFiber = (fiberNode, callback) => {
-      
-      // generate deValtioID
-      generateDeValtioID(fiberNode);
-
-      // add current node to deValtioNodes array
-      deValtioNodes.push(new devaltioNode(fiberNode));
+    const climbFiber = (fiberNode, callback, prevNode = null) => {
+      callback(fiberNode, prevNode);
 
       // climb sibling
       try {
-        if (fiberNode.sibling) climbFiber(fiberNode.sibling);
+        if (fiberNode.sibling) climbFiber(fiberNode.sibling, callback, fiberNode);
       } catch (err) {
         console.log(`Recursive call to sibling node failed. Node before failed call is:`);
         console.dir(fiberNode);
@@ -184,7 +186,7 @@ document.onreadystatechange = () => {
       }
       // climb child
       try {
-        if (fiberNode.child) climbFiber(fiberNode.child);
+        if (fiberNode.child) climbFiber(fiberNode.child, callback, fiberNode);
       } catch (err) {
         console.log(`Recursive call to child node failed. Node before failed call is:`);
         console.dir(fiberNode);
@@ -192,10 +194,13 @@ document.onreadystatechange = () => {
       };
     }
 
+    
+
     setTimeout(() => {
-      climbFiber(fiberRoot, (node) => {
-      generateDeValtioID(node);
-      deValtioNodes.push(new devaltioNode(fiberNode));
+      fiberRoot = getFiberRoot();
+      climbFiber(fiberRoot, (node, prevNode) => {
+      prevNode ? generateDeValtioID(node, prevNode) : generateDeValtioID(node);
+      deValtioNodes.push(new devaltioNode(node));
       });
       console.log(deValtioNodes)}, 1000);
   }

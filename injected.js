@@ -5,6 +5,39 @@ const pp = stuff => JSON.stringify(stuff, null, 2);
 // disable locking down object properties for fiberNode (and any other) objects
 Object.preventExtensions = () => true;
 
+// DECLARATIONS GO HERE
+
+// func to get component (i.e. constructor) name
+// this returns one or two letter names in prod mode but
+// this can be adapted to still get proper component names if the site uses source maps
+// and we add source map parsing
+const getFiberNodeName = (node) => {
+  // root node
+  if (node.tag === 3) return 'fiberRoot';
+  // functional or class component
+  if (node.tag === 0 || node.tag === 1) return node.type.name;
+  // host component (renders to browser DOM)
+  if (node.tag === 5) {
+    return node.stateNode.className ? `${node.type}.${node.stateNode.className}` : node.type;
+  }
+  // everything else
+  if (typeof node.type === 'string') return node.type;
+  if (typeof node.type === 'function') return node.type.name;
+  if (typeof node.type === 'symbol') return node.type.toString();
+};
+  
+
+// DeValtioNode constructor
+
+function DeValtioNode(fiberNode, parentNode = null) {
+  this.tag = fiberNode.tag;
+  this.deValtioID = fiberNode.deValtioID;
+  this.index = fiberNode.index;
+  this.componentName = getFiberNodeName(fiberNode, parentNode);
+  this.hasProps = fiberNode.memoizedProps ? true : false;
+  this.hasState = fiberNode.memoizedState ? true : false;
+};
+
 // declare fiberRoot object
 let fiberRoot;
 
@@ -135,19 +168,30 @@ const hijackFiberNodePrototype = () => {
     },
 
     return: {
-      get: () => {
+      get: function() {
         return this._return;
       },
-      set: (fiber) => {
+      set: function(fiber) {
+        // check if return is set to null or anything else that's not a fiberNode
+        if (!(fiber instanceof fiberNodePrototype.constructor)) {
+          this._return = fiber;
+          return this;
+        }
+        
         console.log(`return value being set on fiberNode`);
         if (this.deValtioID) {
           console.log(`this fiberNode already exists and has the name: ${this.deValtioID}`);
-          console.log(`the return is being set to:`);
+          console.log(`the return is being set to: ${getFiberNodeName(fiber)}`);
           console.dir(fiber);
         }
         this._return = fiber;
-        generateDeValtioID(this, fiber);
-        deValtioNodes.push(new DeValtioNode(this));
+
+        if (fiber.deValtioID) {
+          console.log(`return node has deValtioID (${fiber.deValtioID}) so pushing this to deValtioNodes`)
+          generateDeValtioID(this, fiber);
+          deValtioNodes.push(new DeValtioNode(this));
+        }
+
         return this;
       }
     }
@@ -175,34 +219,6 @@ document.onreadystatechange = () => {
 
     //tree parsing part.
 
-    // func to get component (i.e. constructor) name
-    // this returns one or two letter names in prod mode but
-    // this can be adapted to still get proper component names if the site uses source maps
-    // and we add source map parsing
-    const getFiberNodeName = (node) => {
-      // root node
-      if (node.tag === 3) return 'fiberRoot';
-      // functional or class component
-      if (node.tag === 0 || node.tag === 1) return node.type.name;
-      // host component (renders to browser DOM)
-      if (node.tag === 5) {
-        return node.stateNode.className ? `${node.type}.${node.stateNode.className}` : node.type;
-      }
-      // everything else
-      if (typeof node.type === 'string') return node.type;
-      if (typeof node.type === 'function') return node.type.name;
-      if (typeof node.type === 'symbol') return node.type.toString();
-    };
-
-    function DeValtioNode(fiberNode, parentNode = null) {
-      this.tag = fiberNode.tag;
-      this.deValtioID = fiberNode.deValtioID;
-      this.index = fiberNode.index;
-      this.componentName = getFiberNodeName(fiberNode, parentNode);
-      this.hasProps = fiberNode.memoizedProps ? true : false;
-      this.hasState = fiberNode.memoizedState ? true : false;
-    };
-    
     // climb initial Tree, add valtioID to fiberNode properties
     // we should only need to do this once per page load and, after that,
     // if we hijack the fiberNode constructor we can have the React Reconciler
@@ -236,16 +252,18 @@ document.onreadystatechange = () => {
 
     setTimeout(() => {
       fiberRoot = getFiberRoot();
-      climbFiber(fiberRoot, (node, prevNode) => {
-      prevNode ? generateDeValtioID(node, prevNode) : generateDeValtioID(node);
-      deValtioNodes.push(new DeValtioNode(node));
-      });
-      console.dir(deValtioNodes);
-      console.log(`${deValtioNodes.length} fiberNodes found.`)
-      console.log(`Number of nodes with props: ${deValtioNodes.filter(node => node.hasProps).length}`);
-      console.log(`Number of nodes with state: ${deValtioNodes.filter(node => node.hasState).length}`);
-      console.log(`Hijacking fiberNode prototype return property...`);
-      hijackFiberNodePrototype();
+      if (fiberRoot) {
+        climbFiber(fiberRoot, (node, prevNode) => {
+        prevNode ? generateDeValtioID(node, prevNode) : generateDeValtioID(node);
+        deValtioNodes.push(new DeValtioNode(node));
+        });
+        console.dir(deValtioNodes);
+        console.log(`${deValtioNodes.length} fiberNodes found.`)
+        console.log(`Number of nodes with props: ${deValtioNodes.filter(node => node.hasProps).length}`);
+        console.log(`Number of nodes with state: ${deValtioNodes.filter(node => node.hasState).length}`);
+        console.log(`Hijacking fiberNode prototype return property...`);
+        hijackFiberNodePrototype();
+      }
     }, 1000);
   }
 };

@@ -118,6 +118,44 @@ const generateDeValtioID = (fiberNode, prevNode = null) => {
   }  
 }
 
+const hijackFiberNodePrototype = () => {
+  // check if we have a fiberRoot
+  if (!fiberRoot) return false;
+  
+  // get FiberNode prototype object
+  fiberNodePrototype = Object.getPrototypeOf(fiberRoot);
+
+  newProperties = {
+    
+    _return: {
+      value: null,
+      writable: true,
+      enumerable: false,
+      configurable: true
+    },
+
+    return: {
+      get: () => {
+        return this._return;
+      },
+      set: (fiber) => {
+        console.log(`return value being set on fiberNode`);
+        if (this.deValtioID) {
+          console.log(`this fiberNode already exists and has the name: ${this.deValtioID}`);
+          console.log(`the return is being set to:`);
+          console.dir(fiber);
+        }
+        this._return = fiber;
+        generateDeValtioID(this, fiber);
+        deValtioNodes.push(new DeValtioNode(this));
+        return this;
+      }
+    }
+  };
+
+  return Object.defineProperties(fiberNodePrototype, newProperties);
+};
+
 document.onreadystatechange = () => {
   if (document.readyState === 'complete') {
 
@@ -156,7 +194,7 @@ document.onreadystatechange = () => {
       if (typeof node.type === 'symbol') return node.type.toString();
     };
 
-    function devaltioNode(fiberNode, parentNode = null) {
+    function DeValtioNode(fiberNode, parentNode = null) {
       this.tag = fiberNode.tag;
       this.deValtioID = fiberNode.deValtioID;
       this.index = fiberNode.index;
@@ -168,7 +206,7 @@ document.onreadystatechange = () => {
     // climb initial Tree, add valtioID to fiberNode properties
     // we should only need to do this once per page load and, after that,
     // if we hijack the fiberNode constructor we can have the React Reconciler
-    // generate devaltioNodes on the fly.
+    // generate DeValtioNodes on the fly.
 
     // valtioID format:
     // 0,0:
@@ -200,12 +238,14 @@ document.onreadystatechange = () => {
       fiberRoot = getFiberRoot();
       climbFiber(fiberRoot, (node, prevNode) => {
       prevNode ? generateDeValtioID(node, prevNode) : generateDeValtioID(node);
-      deValtioNodes.push(new devaltioNode(node));
+      deValtioNodes.push(new DeValtioNode(node));
       });
       console.dir(deValtioNodes);
       console.log(`${deValtioNodes.length} fiberNodes found.`)
       console.log(`Number of nodes with props: ${deValtioNodes.filter(node => node.hasProps).length}`);
       console.log(`Number of nodes with state: ${deValtioNodes.filter(node => node.hasState).length}`);
+      console.log(`Hijacking fiberNode prototype return property...`);
+      hijackFiberNodePrototype();
     }, 1000);
   }
 };

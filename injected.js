@@ -31,7 +31,7 @@ const proxyHandler = {
       caller = err.stack.split("at ")[2].split(" (")[0];
     }
 
-    cons
+    
     
     // console.log(`Proxy caller is: ${caller} and params are ${pp(args)}`)
     // console.dir(args)
@@ -202,6 +202,9 @@ document.onreadystatechange = () => {
       prevNode ? generateDeValtioID(node, prevNode) : generateDeValtioID(node);
       deValtioNodes.push(new devaltioNode(node));
       });
-      console.log(deValtioNodes)}, 1000);
+      console.log(deValtioNodes);
+      console.log(`Number of nodes with props: ${deValtioNodes.filter(node => node.hasProps).length}`);
+      console.log(`Number of nodes with state: ${deValtioNodes.filter(node => node.hasState).length}`);
+    }, 1000);
   }
 };

@@ -2,6 +2,18 @@ console.log(`injected.js has been initiated`);
 
 const pp = stuff => JSON.stringify(stuff, null, 2);
 
+// messaging function (to communicate with content script which will send it to frontend)
+
+const sendToContentScript = (messageHead, messageBody) => {
+  try {
+    window.postMessage({messageHead : messageBody});
+    return true;
+  } catch (err) {
+    console.dir(err);
+    return false;
+  }
+};
+
 // disable locking down object properties for fiberNode (and any other) objects
 Object.preventExtensions = () => true;
 
@@ -213,7 +225,7 @@ document.onreadystatechange = () => {
         console.log(`React Root Found`);
         fiberRoot = reactRoots[0]._reactRootContainer._internalRoot.current;
         // repeating message to test comms with front end
-        setInterval(() => window.postMessage({message: 'This is a React Apps'}), 2000)
+        setInterval(() => window.postMessage({message: 'This is a React App'}), 2000)
       } return fiberRoot;
     };
 
@@ -257,6 +269,7 @@ document.onreadystatechange = () => {
         prevNode ? generateDeValtioID(node, prevNode) : generateDeValtioID(node);
         deValtioNodes.push(new DeValtioNode(node));
         });
+        sendToContentScript('deValtioTree', deValtioNodes);
         console.dir(deValtioNodes);
         console.log(`${deValtioNodes.length} fiberNodes found.`)
         console.log(`Number of nodes with props: ${deValtioNodes.filter(node => node.hasProps).length}`);

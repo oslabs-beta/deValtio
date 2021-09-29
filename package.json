@@ -25,6 +25,7 @@
     "@visx/responsive": "^1.10.1",
     "@visx/shape": "^1.17.1",
     "@visx/tooltip": "^2.1.0",
+    "@visx/zoom": "^2.1.0",
     "buffer": "^6.0.3",
     "d3-shape": "^3.0.1",
     "jsondiffpatch": "^0.4.1",

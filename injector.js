@@ -20,9 +20,19 @@ const sendToFrontEnd = (messageHead, messageBody) => {
 };
 
 // set up listener to listen for messages from injected script
-window.addEventListener('deValtioMessage', (e) => {
-    const [messageHead, messageBody] = e.data.deValtioMessage;
-    sendToFrontEnd(messageHead, messageBody);
+window.addEventListener('message', (e) => {
+    if (e.data && e.data.deValtioMessage) {
+        const [messageHead, messageBody] = e.data.deValtioMessage;
+        // console.log(`Received message from injected. Sending ${messageHead} front end with payload: ${JSON.stringify(messageBody)}`)
+        messageSender = setInterval( () => {
+            let messageSent = sendToFrontEnd(messageHead, messageBody);
+            if (messageSent) {
+                clearInterval(messageSender);
+            } else {
+                console.log(`Message sending from content script to front end failed. messageHead is: ${messageHead}`);
+            }
+        }, 1000);
+    };
 });
 
 // creates connection between extension and content script

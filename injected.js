@@ -6,7 +6,7 @@ const pp = stuff => JSON.stringify(stuff, null, 2);
 
 const sendToContentScript = (messageHead, messageBody) => {
   try {
-    window.postMessage({messageHead : messageBody});
+    window.postMessage({deValtioMessage: [messageHead, messageBody]});
     return true;
   } catch (err) {
     console.dir(err);
@@ -274,8 +274,8 @@ document.onreadystatechange = () => {
         console.log(`${deValtioNodes.length} fiberNodes found.`)
         console.log(`Number of nodes with props: ${deValtioNodes.filter(node => node.hasProps).length}`);
         console.log(`Number of nodes with state: ${deValtioNodes.filter(node => node.hasState).length}`);
-        console.log(`Hijacking fiberNode prototype return property...`);
-        hijackFiberNodePrototype();
+        // console.log(`Hijacking fiberNode prototype return property...`);
+        // hijackFiberNodePrototype();
       }
     }, 1000);
   }

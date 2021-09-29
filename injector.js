@@ -10,28 +10,33 @@ injectedScript.onload = function () {
 
 let comms;
 
-// connects injected script
-window.addEventListener('message', (e) => {
-    if (e.data.message === 'This is a React App') console.log(e.data.message);
+const sendToFrontEnd = (messageHead, messageBody) => {
     if (comms) {
-        comms.postMessage({
-            message: 'fromm window' + e.data.message
-        });
+        comms.postMessage({messageHead, messageBody});
+        return true;
+    } else {
+        return false;
     }
-});
+};
 
+// set up listener to listen for messages from injected script
+window.addEventListener('message', (e) => {
+    if (e.data && e.data.deValtioMessage) {
+        const [messageHead, messageBody] = e.data.deValtioMessage;
+        // console.log(`Received message from injected. Sending ${messageHead} front end with payload: ${JSON.stringify(messageBody)}`)
+        messageSender = setInterval( () => {
+            let messageSent = sendToFrontEnd(messageHead, messageBody);
+            if (messageSent) {
+                clearInterval(messageSender);
+            } else {
+                console.log(`Message sending from content script to front end failed. messageHead is: ${messageHead}`);
+            }
+        }, 1000);
+    };
+});
 
 // creates connection between extension and content script
 chrome.runtime.onConnect.addListener(port => {
-    console.log('connected ', port);
+    console.log('Content script is now connected to the Front End', port);
     comms = port;
-    port.postMessage({
-        message: 'from content script'
-    });
-    
-    port.onMessage.addListener((message) => {
-        if (message) {
-            console.log('received in content', message)
-        }
-    });
 }); 

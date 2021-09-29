@@ -2,6 +2,8 @@ console.log(`injected.js has been initiated`);
 
 const pp = stuff => JSON.stringify(stuff, null, 2);
 
+const VERBOSE = true;
+
 // messaging function (to communicate with content script which will send it to frontend)
 
 const sendToContentScript = (messageHead, messageBody) => {
@@ -115,7 +117,7 @@ const generateDeValtioID = (fiberNode, prevNode = null) => {
     const checkMismatch = function(newID) {
       if (currentID && currentID !== newID) {
         // throw new Error(`Generated ID mismatch. Existing ID is ${currentID} and generated ID is ${newID}`);
-        console.log(`Generated ID mismatch. Existing ID is ${currentID} and generated ID is ${newID}`);
+        console.log(`Generated ID mismatch. Existing ID is ${currentID} and generated ID is ${newID}. Setting newID.`);
       }
     }
     
@@ -243,14 +245,6 @@ document.onreadystatechange = () => {
     const climbFiber = (fiberNode, callback, prevNode = null) => {
       callback(fiberNode, prevNode);
 
-      // climb sibling
-      try {
-        if (fiberNode.sibling) climbFiber(fiberNode.sibling, callback, fiberNode);
-      } catch (err) {
-        console.log(`Recursive call to sibling node failed. Node before failed call is:`);
-        console.dir(fiberNode);
-        throw err;
-      }
       // climb child
       try {
         if (fiberNode.child) climbFiber(fiberNode.child, callback, fiberNode);
@@ -259,6 +253,16 @@ document.onreadystatechange = () => {
         console.dir(fiberNode);
         throw err;
       };
+
+      // climb sibling
+      try {
+        if (fiberNode.sibling) climbFiber(fiberNode.sibling, callback, fiberNode);
+      } catch (err) {
+        console.log(`Recursive call to sibling node failed. Node before failed call is:`);
+        console.dir(fiberNode);
+        throw err;
+      };
+      
     }
 
     

@@ -32,7 +32,8 @@ const getFiberNodeName = (node) => {
   if (node.tag === 0 || node.tag === 1) return node.type.name;
   // host component (renders to browser DOM)
   if (node.tag === 5) {
-    return node.stateNode.className ? `${node.type}.${node.stateNode.className}` : node.type;
+    if (node.stateNode && node.stateNode.className) return `${node.type}.${node.stateNode.className}`;
+    return node.type;
   }
   // everything else
   if (typeof node.type === 'string') return node.type;
@@ -262,14 +263,21 @@ document.onreadystatechange = () => {
         console.dir(fiberNode);
         throw err;
       };
-      
+
     }
 
     
 
     setTimeout(() => {
+      
+      let fiberRootHijacked = false;
+      
       fiberRootNode = getFiberRootNode();
-      hijackFiberNodePrototype(fiberRootNode.current);
+      if (!fiberRootHijacked) {
+        hijackFiberNodePrototype(fiberRootNode.current);
+        fiberRootHijacked = true;
+      }
+
       let prevFiberRoot;
       if (fiberRootNode) {
         fiberTreeInterval = setInterval( () => {
@@ -277,20 +285,29 @@ document.onreadystatechange = () => {
             clearInterval(fiberTreeInterval);
             return;
           }
+          
+          
           fiberRoot = fiberRootNode.current;
+          
           if (fiberRoot !== prevFiberRoot) {
+            
             prevFiberRoot = fiberRoot;
+            
             deValtioNodes = [];
+            
             climbFiber(fiberRoot, (node, prevNode) => {
             prevNode ? generateDeValtioID(node, prevNode) : generateDeValtioID(node);
             deValtioNodes.push(new DeValtioNode(node));
             });
+
             sendToContentScript('deValtioTree', deValtioNodes);
-            console.dir(deValtioNodes);
-            console.log(`${deValtioNodes.length} fiberNodes found.`)
-            console.log(`Number of nodes with props: ${deValtioNodes.filter(node => node.hasProps).length}`);
-            console.log(`Number of nodes with state: ${deValtioNodes.filter(node => node.hasState).length}`);
-            // console.log(`Hijacking fiberNode prototype return property...`);
+            
+            if (VERBOSE) {
+              console.dir(deValtioNodes);
+              console.log(`${deValtioNodes.length} fiberNodes found.`)
+              console.log(`Number of nodes with props: ${deValtioNodes.filter(node => node.hasProps).length}`);
+              console.log(`Number of nodes with state: ${deValtioNodes.filter(node => node.hasState).length}`);
+            }
           }
         }, 50);
       }

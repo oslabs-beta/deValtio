@@ -20,7 +20,7 @@ export default function getLinkComponent({
 }: {
   layout: string;
   linkType: string;
-  orientation: string;
+  orientation?: string;
 }): React.ComponentType<any> {
   let LinkComponent: React.ComponentType<any>;
 

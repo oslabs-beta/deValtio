@@ -114,7 +114,8 @@ const generateDeValtioID = (fiberNode, prevNode = null) => {
     // func to check if currentID and generatedID mismatch. If they do, throw an error
     const checkMismatch = function(newID) {
       if (currentID && currentID !== newID) {
-        throw new Error(`Generated ID mismatch. Existing ID is ${currentID} and generated ID is ${newID}`);
+        // throw new Error(`Generated ID mismatch. Existing ID is ${currentID} and generated ID is ${newID}`);
+        console.log(`Generated ID mismatch. Existing ID is ${currentID} and generated ID is ${newID}`);
       }
     }
     

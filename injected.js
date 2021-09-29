@@ -54,7 +54,7 @@ function DeValtioNode(fiberNode, parentNode = null) {
 let fiberRoot;
 
 // declare deValtioNodes array here so we can access it from browser console
-const deValtioNodes = [];
+let deValtioNodes = [];
 
 const origProxy = Proxy;
 
@@ -109,12 +109,12 @@ const generateDeValtioID = (fiberNode, prevNode = null) => {
     let width = fiberNode.index;
 
     // check if fiberNode already has deValtioID
-    fiberNode.deValtioID ? currentID = deValtionID : currentID = null;
+    fiberNode.deValtioID ? currentID = fiberNode.deValtioID : currentID = null;
 
     // func to check if currentID and generatedID mismatch. If they do, throw an error
     const checkMismatch = function(newID) {
       if (currentID && currentID !== newID) {
-        throw new Error('Generated ID mismatch. Existing ID is ${currentID} and generated ID is ${newID');
+        throw new Error(`Generated ID mismatch. Existing ID is ${currentID} and generated ID is ${newID}`);
       }
     }
     
@@ -163,7 +163,7 @@ const generateDeValtioID = (fiberNode, prevNode = null) => {
   }  
 }
 
-const hijackFiberNodePrototype = () => {
+const hijackFiberNodePrototype = (fiberRoot) => {
   // check if we have a fiberRoot
   if (!fiberRoot) return false;
   
@@ -215,7 +215,7 @@ const hijackFiberNodePrototype = () => {
 document.onreadystatechange = () => {
   if (document.readyState === 'complete') {
 
-    const getFiberRoot = () => {
+    const getFiberRootNode = () => {
       const reactRoots = [];
       document.querySelectorAll('*').forEach((node) => {
         if (node._reactRootContainer) reactRoots.push(node);
@@ -223,10 +223,10 @@ document.onreadystatechange = () => {
 
       if (reactRoots[0]) {
         console.log(`React Root Found`);
-        fiberRoot = reactRoots[0]._reactRootContainer._internalRoot.current;
+        fiberRootNode = reactRoots[0]._reactRootContainer._internalRoot;
         // repeating message to test comms with front end
-        setInterval(() => window.postMessage({message: 'This is a React App'}), 2000)
-      } return fiberRoot;
+        // setInterval(() => window.postMessage({message: 'This is a React App'}), 2000)
+      } return fiberRootNode;
     };
 
     //tree parsing part.
@@ -263,20 +263,32 @@ document.onreadystatechange = () => {
     
 
     setTimeout(() => {
-      fiberRoot = getFiberRoot();
-      if (fiberRoot) {
-        climbFiber(fiberRoot, (node, prevNode) => {
-        prevNode ? generateDeValtioID(node, prevNode) : generateDeValtioID(node);
-        deValtioNodes.push(new DeValtioNode(node));
-        });
-        sendToContentScript('deValtioTree', deValtioNodes);
-        console.dir(deValtioNodes);
-        console.log(`${deValtioNodes.length} fiberNodes found.`)
-        console.log(`Number of nodes with props: ${deValtioNodes.filter(node => node.hasProps).length}`);
-        console.log(`Number of nodes with state: ${deValtioNodes.filter(node => node.hasState).length}`);
-        // console.log(`Hijacking fiberNode prototype return property...`);
-        // hijackFiberNodePrototype();
+      fiberRootNode = getFiberRootNode();
+      hijackFiberNodePrototype(fiberRootNode.current);
+      let prevFiberRoot;
+      if (fiberRootNode) {
+        fiberTreeInterval = setInterval( () => {
+          if (!fiberRootNode) {
+            clearInterval(fiberTreeInterval);
+            return;
+          }
+          fiberRoot = fiberRootNode.current;
+          if (fiberRoot !== prevFiberRoot) {
+            prevFiberRoot = fiberRoot;
+            deValtioNodes = [];
+            climbFiber(fiberRoot, (node, prevNode) => {
+            prevNode ? generateDeValtioID(node, prevNode) : generateDeValtioID(node);
+            deValtioNodes.push(new DeValtioNode(node));
+            });
+            sendToContentScript('deValtioTree', deValtioNodes);
+            console.dir(deValtioNodes);
+            console.log(`${deValtioNodes.length} fiberNodes found.`)
+            console.log(`Number of nodes with props: ${deValtioNodes.filter(node => node.hasProps).length}`);
+            console.log(`Number of nodes with state: ${deValtioNodes.filter(node => node.hasState).length}`);
+            // console.log(`Hijacking fiberNode prototype return property...`);
+          }
+        }, 50);
       }
-    }, 1000);
+    })
   }
 };

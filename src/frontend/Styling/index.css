@@ -178,6 +178,54 @@ body,
     font-weight: bold;
   }
 
+/* STATE DIFF COMPONENT */
+/* COMPONENT TREE COMPONENT */
+/* PROXY NETWORK COMPONENT */
+/* Toggle Switch */
+.toggleSwitch {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 14px;
+}
+.toggleSwitch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.toggleSlider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+}
+.toggleSlider:before {
+  position: absolute;
+  content: '';
+  height: 18px;
+  width: 18px;
+  left: 0px;
+  bottom: -1.8px;
+  background-color: white;
+  transition: 0.4s;
+}
+input:checked + .toggleSlider {
+  background-color: #1cb5c9;
+}
+input:checked + .toggleSlider:before {
+  transform: translateX(15px);
+}
+.toggleSlider.round {
+  border-radius: 34px;
+}
+.toggleSlider.round:before {
+  border-radius: 50%;
+}
+
 /* PROXY NETWORK COMPONENT*/
 /* Dropdown selection  */
 .dropdown {

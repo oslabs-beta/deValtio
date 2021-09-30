@@ -1,3 +1,4 @@
+import React from 'react';
 //this is for the component tree
 
 function ComponentTree(): JSX.Element {

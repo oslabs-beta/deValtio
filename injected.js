@@ -16,6 +16,13 @@ const sendToContentScript = (messageHead, messageBody) => {
   }
 };
 
+// remove prop from all elements in array and returns a new array. Does not mutate existing array
+const removePropFromArrSafe = (arr, prop) => arr.map(elem => {
+  const deletionSuccess = delete elem[prop];
+  if (!deletionSuccess) console.log(`Unable to delete property on object.`);
+  return elem;
+})
+
 // disable locking down object properties for fiberNode (and any other) objects
 Object.preventExtensions = () => true;
 
@@ -51,6 +58,10 @@ function DeValtioNode(fiberNode, parentNode = null) {
   this.componentName = getFiberNodeName(fiberNode, parentNode);
   this.hasProps = fiberNode.memoizedProps ? true : false;
   this.hasState = fiberNode.memoizedState ? true : false;
+
+  // link to actual fiberNode for debugging. This needs to be sanitized
+  // before DeValtioNode can be stringified
+  this.fiberNode = fiberNode
 };
 
 // declare fiberRoot object
@@ -300,7 +311,12 @@ document.onreadystatechange = () => {
             deValtioNodes.push(new DeValtioNode(node));
             });
 
-            sendToContentScript('deValtioTree', deValtioNodes);
+            if (VERBOSE) console.dir(deValtioNodes.filter(node => node.hasState));
+
+            //sendToContentScript('deValtioTree', deValtioNodes);
+
+            // only send nodes with state
+            sendToContentScript('deValtioTree', removePropFromArrSafe(deValtioNodes, 'fiberNode').filter(node => node.hasState));
             
             if (VERBOSE) {
               console.dir(deValtioNodes);

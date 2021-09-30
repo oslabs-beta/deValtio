@@ -3,6 +3,8 @@ import { Group } from '@visx/group';
 import { Tree, hierarchy } from '@visx/hierarchy';
 import { LinearGradient } from '@visx/gradient';
 import { pointRadial } from 'd3-shape';
+import { useTooltip, useTooltipInPortal, defaultStyles } from '@visx/tooltip';
+import { localPoint } from '@visx/event';
 
 import useForceUpdate from './useForceUpdate'
 import LinkControls from './LinkControls';
@@ -64,6 +66,29 @@ function ComponentGraph({
     }
   }
 
+  //Tooltip Hover Box
+  const {
+    tooltipData,
+    tooltipLeft,
+    tooltipTop,
+    tooltipOpen,
+    showTooltip,
+    hideTooltip,
+  }: any = useTooltip();
+
+  const { containerRef, TooltipInPortal } = useTooltipInPortal({
+    detectBounds: true,
+    scroll: true,
+  });
+  const tooltipStyleBox = {
+    ...defaultStyles,
+    minWidth: 60,
+    backgroundColor: 'black',
+    color: '#e6e6e6',
+    fontSize: '13px',
+    lineHeight: '18px',
+  };
+
   const LinkComponent = getLinkComponent({ layout, linkType, orientation });
 
   return totalWidth < 10 ? null : (
@@ -118,6 +143,23 @@ function ComponentGraph({
                     left = node.y;
                   }
 
+                  //Tooltip Hover Box:
+                  const handleMouseOver = (event: any) => {
+                    const coords: any = localPoint(
+                      event.target.ownerSVGElement,
+                      event
+                    );
+                    const tooltipObj = node.data;
+                    showTooltip({
+                      tooltipLeft: coords.x,
+                      tooltipTop: coords.y,
+                      tooltipData: tooltipObj,
+                    });
+                  };
+                  const handleMouseOut = () => {
+                    hideTooltip();
+                  };
+
                   return (
                     <Group top={top} left={left} key={key}>
                       {node.depth === 0 && (
@@ -148,6 +190,9 @@ function ComponentGraph({
                             console.log(node);
                             forceUpdate();
                           }}
+                          //Tooltip Methods
+                          onMouseOver={handleMouseOver}
+                          onMouseOut={handleMouseOut}
                         />
                       )}
                       <text
@@ -168,6 +213,38 @@ function ComponentGraph({
           </Tree>
         </Group>
       </svg>
+      {tooltipOpen && tooltipData && (
+        <TooltipInPortal
+          // Set this to random so it correctly updates with parent bounds
+          key={Math.random() * 1000000}
+          top={tooltipTop}
+          left={tooltipLeft}
+          style={tooltipStyleBox}
+        >
+          {/* Hover name: */}
+          <div>
+            {tooltipData.name &&
+            tooltipData.name[0] === tooltipData.name[0].toUpperCase() ? (
+              <strong style={{ color: '#7f5dc0' }}>Component: </strong>
+            ) : tooltipData.name ? (
+              <strong style={{ color: '#1cb5c9' }}>Element: </strong>
+            ) : (
+              'No Component or Element'
+            )}
+
+            {tooltipData.name}
+          </div>
+          {/* Hover children details: */}
+          {tooltipData.children && tooltipData.children.length > 0 && (
+            <div>
+              <strong style={{ color: '#41b69c' }}>Children: </strong>
+              {
+                tooltipData.children.join(', ')
+              }
+            </div>
+          )}
+        </TooltipInPortal>
+      )}
     </div>
   );
 }

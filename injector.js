@@ -14,9 +14,8 @@ const sendToFrontEnd = (messageHead, messageBody) => {
     if (comms) {
         comms.postMessage({messageHead, messageBody});
         return true;
-    } else {
-        return false;
     }
+    return false;
 };
 
 // set up listener to listen for messages from injected script

@@ -30,7 +30,7 @@ function MainContainer() {
     // creates a port on current tab
       const port = chrome.tabs.connect(tabId);
       comms = port;
-      comms.onMessage.addListener(msg => console.dir(`message received: ${JSON.stringify(msg, null, 2)}`));
+      comms.onMessage.addListener(msg => console.log(`Message of ${typeof msg} type received from content script`));//console.dir(`message received: ${JSON.stringify(msg, null, 2)}`));
   }, []);
 
   return (

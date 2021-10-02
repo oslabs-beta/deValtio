@@ -3,13 +3,22 @@
 # deValtio
 
 <h1>Developer Tool for Valtio applications</h1>
-
-<h2>About</h2>
 deValtio is a Google Chrome extension that serves as a visualization and debugging tool for the <a href="https://github.com/pmndrs/valtio">Valtio proxy state management library</a> for <a href="https://reactjs.org/">Reactjs</a>.
 
 <h2>Getting Started/Installation</h2>
+1. Please install the chrome extension - #link here
+2. Open your application on the Chrome Browser and start debugging with the devtool.
+    a. only support React Applications
+    b. only intended for projects in development mode? 
 
 <h2>Features</h2>
+<h3>State Visualization</h3>
+  <h4>State Diff</h4>
+  <h4>Proxy State Visualization</h4>
+
+<h3>Component Tree Visuazliation</h3>
+
+<h3>Time Travel</h3>
 
 <h2>Work in Progress</h2>
 
@@ -18,7 +27,7 @@ DeValtio is an open-source project and welcomes contribution. Please fork the re
 
 <h2>Core Team</h2>
 <ul>
-  <li>Sergey <a href=#github>Github</a> | <a href=#linkedin>Linkedin</a></li>
+  <li>Sergey Zeygerman <a href=#github>Github</a> | <a href=#linkedin>Linkedin</a></li>
   <li>Cameron Walls <a href=#github>Github</a> | <a href=#linkedin>Linkedin</a></li>
   <li>Tom Curtin <a href=#github>Github</a> | <a href=#linkedin>Linkedin</a></li>
   <li>Damian Allert <a href=#github>Github</a> | <a href=#linkedin>Linkedin</a></li>

@@ -1,4 +1,6 @@
+<p align='center'>
 <img src="./assets/deValtioLogo.png" width="400" height="400" align="center">
+</p>
 
 <li>Website</li>
 <li>Demo Application</li>

@@ -1,15 +1,16 @@
 <img src="./assets/deValtioLogo.png">
 
-# deValtio
+<li>Website</li>
+<li>Demo Application</li>
 
 <h1>Developer Tool for Valtio applications</h1>
 deValtio is a Google Chrome extension that serves as a visualization and debugging tool for the <a href="https://github.com/pmndrs/valtio">Valtio proxy state management library</a> for <a href="https://reactjs.org/">Reactjs</a>.
 
 <h2>Getting Started/Installation</h2>
-1. Please install the chrome extension - #link here
-2. Open your application on the Chrome Browser and start debugging with the devtool.
-    a. only support React Applications
-    b. only intended for projects in development mode? 
+<p>1. Please install the chrome extension - #link here</p>
+<p>2. Open your application on the Chrome Browser and start debugging with the devtool. </p>
+    <li>a. only support React Applications</li>
+    <li>b. only intended for projects in development mode?</li>
 
 <h2>Features</h2>
 <h3>State Visualization</h3>

@@ -1,5 +1,6 @@
 import { NavTab } from "./NavTab";
 import styled from "styled-components";
+import React from 'react';
 import { SetStateAction, Dispatch } from "react";
 
 const NavBarSection = styled.section`
@@ -11,7 +12,7 @@ const NavBarSection = styled.section`
   background: #293241;
 `;
 
-export const NavBar = ({ setTabNum, tabNum }: { setTabNum: Dispatch<SetStateAction<number>>, tabNum: number }): JSX.Element => {
+const NavBar = ({ setTabNum, tabNum }: { setTabNum: Dispatch<SetStateAction<number>>, tabNum: number }): JSX.Element => {
 
   return (
     <NavBarSection>
@@ -22,3 +23,5 @@ export const NavBar = ({ setTabNum, tabNum }: { setTabNum: Dispatch<SetStateActi
     </NavBarSection >
   );
 }
+
+export default NavBar;

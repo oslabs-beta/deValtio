@@ -8,7 +8,7 @@
 <h1>Developer Tool for Valtio applications</h1>
 deValtio is a Google Chrome extension that serves as a visualization and debugging tool for the <a href="https://github.com/pmndrs/valtio">Valtio proxy state management library</a> for <a href="https://reactjs.org/">Reactjs</a>.
 
-<h4>IN BETA</h4>
+<h4>**IN BETA**</h4>
 
 <p>Please note our development tool is still in BETA. Please let us know if you find any issues and report them in the issues tab or submit a pull request. We welcome all advice, improvements and fixes.</p>
 

@@ -8,9 +8,12 @@ deValtio is a Google Chrome extension that serves as a visualization and debuggi
 
 <h2>Getting Started/Installation</h2>
 <p>1. Please install the chrome extension - #link here</p>
-<p>2. Open your application on the Chrome Browser and start debugging with the devtool. </p>
-    <li>a. only support React Applications</li>
-    <li>b. only intended for projects in development mode?</li>
+<p>2. Open your application on the Chrome Browser and start debugging with the devtool. 
+    <ul>
+        <li>Only support React Applications</li>
+        <li>Only intended for projects in development mode?</li>
+    </ul>
+</p>
 
 <h2>Features</h2>
 <h3>State Visualization</h3>

@@ -1,4 +1,4 @@
-<img src="./assets/deValtioLogo.png" width="200" height="200" position="center">
+<img src="./assets/deValtioLogo.png" width="400" height="400" align="center">
 
 <li>Website</li>
 <li>Demo Application</li>

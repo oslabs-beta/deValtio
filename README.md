@@ -1,5 +1,5 @@
 <p align='center'>
-<img src="./assets/deValtioLogo.png" width="400" height="400" align="center">
+<img src="./assets/deValtioLogo.png" width="25%" height="25%">
 </p>
 
 <li>Website</li>

@@ -2,8 +2,8 @@
 <img src="./assets/deValtioLogo.png" width="40%" height="40%">
 </p>
 
-<li>Website</li>
-<li>Demo Application</li>
+<a href=#link>Website</a>
+<a href=#demo>Demo Application</a>
 
 <h1>Developer Tool for Valtio applications</h1>
 deValtio is a Google Chrome extension that serves as a visualization and debugging tool for the <a href="https://github.com/pmndrs/valtio">Valtio proxy state management library</a> for <a href="https://reactjs.org/">Reactjs</a>.

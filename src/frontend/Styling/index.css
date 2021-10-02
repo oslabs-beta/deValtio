@@ -178,6 +178,19 @@ body,
     font-weight: bold;
   }
 
+/* STATE TREE COMPONENT */
+.componentTree {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 20px;
+  align-items: flex-start;
+}
+.componentTreeDiff {
+  display: flex;
+  margin-right: 25px;
+  align-items: center;
+}
+
 /* STATE DIFF COMPONENT */
 /* COMPONENT TREE COMPONENT */
 /* PROXY NETWORK COMPONENT */

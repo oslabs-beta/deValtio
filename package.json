@@ -53,6 +53,7 @@
     "enzyme-to-json": "^3.6.2",
     "jest": "^27.2.2",
     "jest-styled-components": "^7.0.5",
+    "jsdom": "^16.7.0",
     "react-test-renderer": "^16.14.0",
     "style-loader": "^3.2.1",
     "ts-loader": "^9.2.5",

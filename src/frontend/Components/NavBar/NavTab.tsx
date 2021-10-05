@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { SetStateAction, Dispatch } from "react";
+import React, { SetStateAction, Dispatch } from "react";
 
 const NavTabStyled = styled.button<{ tabNum: number }>`
   background: ${props => props.value === props.tabNum ? '#E0FBFC' : '#98C1D9'};

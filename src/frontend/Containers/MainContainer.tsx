@@ -1,5 +1,5 @@
 /*global chrome*/
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SnapShotContainer } from './SnapShotContainer';
 import VisualContainer from './VisualContainer';
 import  NavBar  from '../Components/NavBar/navbar'
@@ -36,7 +36,7 @@ function MainContainer() {
       <GlobalStateContext.Provider value={fakeState}>
         <SnapShotContext.Provider value={{ snapShotIndex, setSnapShotIndex }}>
           <SnapShotContainer />
-          <VisualContainer tabNum={tabNum} />
+          {/* <VisualContainer tabNum={tabNum} /> */}
         </SnapShotContext.Provider>
       </GlobalStateContext.Provider>
     </Main>

@@ -1,4 +1,4 @@
-import { SetStateAction, Dispatch, useContext } from "react";
+import React, { SetStateAction, Dispatch, useContext } from "react";
 import { SnapShotContext } from "../../Contexts/SnapShotContext";
 import styled from "styled-components";
 

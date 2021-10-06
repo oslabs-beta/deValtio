@@ -289,20 +289,27 @@ document.onreadystatechange = () => {
         fiberRootHijacked = true;
       }
 
-      let prevFiberRoot;
       if (fiberRootNode) {
+
+        // here we set the root of the current Fiber tree
+        fiberRoot = fiberRootNode.current;
+        
+        // here we initialize the variable to hold the WorkInProgress tree (fiberRoot.alternate) bit
+        // in this case we set it to the current tree to make sure the interval callback code runs the first time
+        // we'll set newFiberRoot to fiberRoot.current at the start of the setInterval callback
+        let newFiberRoot = fiberRoot;
+        
         fiberTreeInterval = setInterval( () => {
+          // check if current site is not a React site (due to crash or navigation away)
           if (!fiberRootNode) {
             clearInterval(fiberTreeInterval);
             return;
           }
           
-          
-          fiberRoot = fiberRootNode.current;
-          
-          if (fiberRoot !== prevFiberRoot) {
+          // check if previous alternate (WIP) tree is now the new current
+          if (fiberRootNode.current === newFiberRoot) {
             
-            prevFiberRoot = fiberRoot;
+            newFiberRoot = fiberRoot.alternate;
             
             deValtioNodes = [];
             

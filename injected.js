@@ -17,6 +17,27 @@ const sendToContentScript = (messageHead, messageBody) => {
 // disable locking down object properties for fiberNode (and any other) objects
 Object.preventExtensions = () => true;
 
+// hijack native JS Proxy object
+
+const nativeProxy = Proxy;
+
+const proxiesToTargets = new WeakMap();
+const targetsToProxies = new WeakMap();
+
+const proxyConstruct = {
+  construct: function(target, argsArr, newTarget) {
+    console.dir(target),
+    console.dir(argsArr),
+    console.dir(newTarget);
+    const proxy = Reflect.construct(target, argsArr, newTarget)
+    proxiesToTargets.set(proxy, newTarget);
+    targetsToProxies.set(newTarget, proxy);
+    return proxy;
+  }
+}
+
+Proxy = new nativeProxy(Proxy, proxyConstruct);
+
 // DECLARATIONS GO HERE
 
 // func to get component (i.e. constructor) name

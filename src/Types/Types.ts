@@ -30,6 +30,20 @@ export type SnapshotIndexContext = {
   setSnapshotIndex?: React.Dispatch<React.SetStateAction<number>>;
 };
 
+//Component Tree taken from DeValtio dev tool
+export type ComponentTree = {
+  name: string;
+  children: object[];
+};
+
+//Component tree history for context API
+export type ComponentTreeHistoryContext = {
+  componentTreeHistory: ComponentTree[] | [];
+  setComponentTreeHistory?: React.Dispatch<
+    React.SetStateAction<ComponentTree[]>
+  >;
+};
+
 export interface IState {
   name: string;
   value: any;

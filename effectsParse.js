@@ -1,6 +1,6 @@
 let VERBOSE = true;
 let internalRoot;
-reactRoots = [];
+const reactRoots = [];
 document.querySelectorAll('div').forEach(node => {
   if (node._reactRootContainer) reactRoots.push(node);
 });
@@ -9,10 +9,12 @@ if (reactRoots[0]) {
   internalRoot = reactRoots[0]._reactRootContainer._internalRoot;
 }
 
-possibleValtioStores = [];
-possibleUseSnapshotFuncs = [];
-definiteValtioStores = [];
-definiteUseSnapshotFuncs = [];
+const possibleValtioStores = [];
+const possibleUseSnapshotFuncs = [];
+const definiteValtioStores = [];
+const definiteUseSnapshotFuncs = [];
+
+const foundEffects = new WeakSet();
 
 const climbFiber = (fiberNode, callback, prevNode=null) => {
   if (VERBOSE) console.log(`Executing callback on found node`);
@@ -38,6 +40,7 @@ const climbFiber = (fiberNode, callback, prevNode=null) => {
 }
 
 const effectsParse = (effect) => {
+  foundEffects.add(effect);
   if (effect.create && effect.create.name === 'useSnapshot') {
     console.log(`useSnapshot found!`);
     definiteUseSnapshotFuncs.push(effect.create);
@@ -62,7 +65,7 @@ const effectsParse = (effect) => {
   }
 
   // check if next exists
-  if (effect.next) {
+  if (effect.next && !foundEffects.has(effect.next)) {
     effectsParse(effect.next);
   }
 };

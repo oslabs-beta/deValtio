@@ -1,3 +1,5 @@
+// internalRoot.current.child.child.child.sibling.sibling.updateQueue.lastEffect.next.deps[0]
+
 let VERBOSE = true;
 let internalRoot;
 const reactRoots = [];

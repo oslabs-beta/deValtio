@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { SnapShotContainer } from './SnapShotContainer';
 import VisualContainer from './VisualContainer';
-import { NavBar } from '../Components/NavBar/navbar'
+import  NavBar  from '../Components/NavBar/navbar'
 import styled from 'styled-components';
 import { GlobalStateContext } from '../Contexts/GlobalStateContext';
 import { SnapShotContext } from '../Contexts/SnapShotContext';

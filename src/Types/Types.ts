@@ -49,7 +49,7 @@ export interface IState {
   value: any;
 }
 
-export type ISnapShot = IState[];
+export type ISnapShot = IState[] | undefined;
 
 export type ISnapShotList = ISnapShot[];
 

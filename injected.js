@@ -269,7 +269,11 @@ document.onreadystatechange = () => {
         prevNode ? generateDeValtioID(node, prevNode) : generateDeValtioID(node);
         deValtioNodes.push(new DeValtioNode(node));
         });
-        sendToContentScript('deValtioTree', deValtioNodes);
+        //sendToContentScript('deValtioTree', deValtioNodes);
+        // only keep nodes with tags 0, 1, 3, 5, 6
+        const tagsToKeep = [0, 1, 3, 5, 6];
+        const filteredDeValtioNodes = deValtioNodes.filter(node => node.tag && node.tag in tagsToKeep);
+        sendToContentScript('deValtioTree', filteredDeValtioNodes);
         console.dir(deValtioNodes);
         console.log(`${deValtioNodes.length} fiberNodes found.`)
         console.log(`Number of nodes with props: ${deValtioNodes.filter(node => node.hasProps).length}`);

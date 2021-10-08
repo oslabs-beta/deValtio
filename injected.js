@@ -275,7 +275,8 @@ document.onreadystatechange = () => {
         const tagsToKeep = [0, 1, 3, 5, 6];
         const filteredDeValtioNodes = deValtioNodes.filter(node => node.tag && node.tag in tagsToKeep);
         sendToContentScript('deValtioTree', filteredDeValtioNodes);
-        console.dir(deValtioNodes);
+        console.log(`filtered DeValtio nodes are:`)
+        console.dir(filteredDeValtioNodes);
         console.log(`${deValtioNodes.length} fiberNodes found.`)
         console.log(`Number of nodes with props: ${deValtioNodes.filter(node => node.hasProps).length}`);
         console.log(`Number of nodes with state: ${deValtioNodes.filter(node => node.hasState).length}`);

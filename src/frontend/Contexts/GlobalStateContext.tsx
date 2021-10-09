@@ -1,4 +1,4 @@
 import { createContext } from "react";
-import { ISnapShotList } from "../../Types/Types";
+import { RawDataContainer } from "../../Types/Types";
 
-export const GlobalStateContext = createContext<ISnapShotList | null>(null);
+export const GlobalStateContext = createContext<RawDataContainer | undefined>(undefined);

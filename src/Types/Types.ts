@@ -57,3 +57,16 @@ export interface ISnapShotContext {
   snapShotIndex: number;
   setSnapShotIndex: React.Dispatch<React.SetStateAction<number>>;
 }
+
+export interface RawDataFormat {
+  tag: number;
+  deValtioID: string;
+  index: number;
+  componentName: string;
+  hasProps: boolean;
+  hasState: boolean;
+}
+
+export type RawData = RawDataFormat[];
+
+export type RawDataContainer = RawData[];

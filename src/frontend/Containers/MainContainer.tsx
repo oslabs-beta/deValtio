@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { GlobalStateContext } from '../Contexts/GlobalStateContext';
 import { SnapShotContext } from '../Contexts/SnapShotContext';
 import { fakeState } from '../../fakeState';
+import { RawDataFormat, RawData, RawDataContainer } from '../../Types/Types';
 
 
 const Main = styled.main`
@@ -21,6 +22,7 @@ function MainContainer() {
 
   const [tabNum, setTabNum] = useState<number>(1);
   const [snapShotIndex, setSnapShotIndex] = useState<number>(0);
+  const [rawData, setRawData] = useState<RawDataContainer | undefined>(undefined);
   const [usesValtio, setUsesValtio] = useState<boolean>(false);
 
   let comms;
@@ -33,17 +35,21 @@ function MainContainer() {
     const port = chrome.tabs.connect(tabId);
     comms = port;
     comms.onMessage.addListener(msg => {
-      console.dir(`message received: ${JSON.stringify(msg, null, 2)}`);
+      //console.dir(`message received: ${JSON.stringify(msg, null, 2)}`);
+      setRawData([msg.messageBody]);
       setUsesValtio(true);
     });
   }, []);
+
+  // console.log(`outside useEffect: `);
+  // console.dir(rawData);
 
   return (
     <>
       {usesValtio ?
         <Main>
           <NavBar setTabNum={setTabNum} tabNum={tabNum} />
-          <GlobalStateContext.Provider value={fakeState}>
+          <GlobalStateContext.Provider value={rawData}>
             <SnapShotContext.Provider value={{ snapShotIndex, setSnapShotIndex }}>
               <SnapShotContainer />
               <VisualContainer tabNum={tabNum} />

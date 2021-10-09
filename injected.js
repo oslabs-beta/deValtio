@@ -242,14 +242,6 @@ document.onreadystatechange = () => {
     const climbFiber = (fiberNode, callback, prevNode = null) => {
       callback(fiberNode, prevNode);
 
-      // climb sibling
-      try {
-        if (fiberNode.sibling) climbFiber(fiberNode.sibling, callback, fiberNode);
-      } catch (err) {
-        console.log(`Recursive call to sibling node failed. Node before failed call is:`);
-        console.dir(fiberNode);
-        throw err;
-      }
       // climb child
       try {
         if (fiberNode.child) climbFiber(fiberNode.child, callback, fiberNode);
@@ -258,6 +250,15 @@ document.onreadystatechange = () => {
         console.dir(fiberNode);
         throw err;
       };
+      
+      // climb sibling
+      try {
+        if (fiberNode.sibling) climbFiber(fiberNode.sibling, callback, fiberNode);
+      } catch (err) {
+        console.log(`Recursive call to sibling node failed. Node before failed call is:`);
+        console.dir(fiberNode);
+        throw err;
+      }
     }
 
     

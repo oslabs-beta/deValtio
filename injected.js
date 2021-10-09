@@ -109,7 +109,7 @@ const generateDeValtioID = (fiberNode, prevNode = null) => {
     let width = fiberNode.index;
 
     // check if fiberNode already has deValtioID
-    fiberNode.deValtioID ? currentID = deValtionID : currentID = null;
+    fiberNode.deValtioID ? currentID = fiberNode.deValtioID : currentID = null;
 
     // func to check if currentID and generatedID mismatch. If they do, throw an error
     const checkMismatch = function(newID) {

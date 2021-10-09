@@ -1,6 +1,10 @@
+*, ::before, ::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    margin: 0;
-    padding: 0;
     background: #98C1D9;
 }
 
@@ -177,3 +181,126 @@ body,
     color: white;
     font-weight: bold;
   }
+
+/* STATE TREE COMPONENT */
+.componentTree {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 20px;
+  align-items: flex-start;
+}
+.componentTreeDiff {
+  display: flex;
+  margin-right: 25px;
+  align-items: center;
+}
+
+/* STATE DIFF COMPONENT */
+/* COMPONENT TREE COMPONENT */
+/* PROXY NETWORK COMPONENT */
+/* Toggle Switch */
+.toggleSwitch {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 14px;
+}
+.toggleSwitch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.toggleSlider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+}
+.toggleSlider:before {
+  position: absolute;
+  content: '';
+  height: 18px;
+  width: 18px;
+  left: 0px;
+  bottom: -1.8px;
+  background-color: white;
+  transition: 0.4s;
+}
+input:checked + .toggleSlider {
+  background-color: #1cb5c9;
+}
+input:checked + .toggleSlider:before {
+  transform: translateX(15px);
+}
+.toggleSlider.round {
+  border-radius: 34px;
+}
+.toggleSlider.round:before {
+  border-radius: 50%;
+}
+
+/* PROXY NETWORK COMPONENT*/
+/* Dropdown selection  */
+.dropdown {
+  margin: 0.5em;
+  font-size: 12px;
+  border-radius: 4px;
+  background-color: #3D5A80;
+  color: #E0FBFC;
+  padding: 2px;
+}
+
+/* PROXY NETWORK COMPONENT*/
+.proxyNetwork {
+  height: 100%;
+  background-color: #293241;
+  color: #E0FBFC;
+  width: 100%;
+  margin: 10px 10px;
+}
+
+/* Switch and ToolTip */
+.dependents {
+  margin-right: 7px;
+  margin-left: 10px;
+  position: relative;
+}
+.dependentOf {
+  margin-right: 7px;
+  margin-left: 17px;
+  position: relative;
+}
+.toolTipTest {
+  visibility: hidden;
+  width: 120px;
+  font-size: 10px;
+  background-color: #293241;
+  color: #E0FBFC;
+  text-align: center;
+  border-radius: 4px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  top: 150%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0.8;
+}
+.toolTipTest::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent black transparent;
+}
+.dependents:hover .toolTipTest,
+.dependentOf:hover .toolTipTest {
+  visibility: visible;
+}

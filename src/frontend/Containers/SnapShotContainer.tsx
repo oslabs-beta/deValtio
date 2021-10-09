@@ -1,7 +1,11 @@
 import React, { useContext } from 'react';
 import { GlobalStateContext } from '../Contexts/GlobalStateContext';
 import { SnapShotContext } from '../Contexts/SnapShotContext';
+<<<<<<< HEAD
 import  SnapShot  from '../Components/Snapshot/SnapShot';
+=======
+import SnapShot from '../Components/Snapshot/SnapShot';
+>>>>>>> dev
 import styled from 'styled-components';
 
 // NEED TO FIX TYPE ANY ON LINE 27

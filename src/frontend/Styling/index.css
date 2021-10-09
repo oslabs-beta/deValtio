@@ -20,6 +20,7 @@ body,
 
 
 /* css for state diff to be able to render brackets as well as change the background of current state vs previous state */
+/* this is css for the delta div */
 .jsondiffpatch-delta {
     font-family: Helvetica;
     font-size: 13px;
@@ -27,6 +28,7 @@ body,
     padding: 0 0 0 12px;
     display: inline-block;
   }
+  /* this is for any element that has not had changes in it */
   .jsondiffpatch-delta pre {
     font-family: Helvetica;
     font-size: 13px;
@@ -57,10 +59,10 @@ body,
     background: rgb(141, 51, 51);
     text-decoration: line-through;
   }
-  .jsondiffpatch-unchanged,
+  /* .jsondiffpatch-unchanged,
   .jsondiffpatch-movedestination {
     color: gray;
-  }
+  } */
   .jsondiffpatch-unchanged,
   .jsondiffpatch-movedestination > .jsondiffpatch-value {
     transition: all 0.5s;

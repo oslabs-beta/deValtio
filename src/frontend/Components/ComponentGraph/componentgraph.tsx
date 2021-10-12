@@ -143,7 +143,7 @@ function ComponentGraph({
                     left = node.y;
                   }
 
-                  //Tooltip Hover Box:
+                  //Tooltip Hover Box
                   const handleMouseOver = (event: any) => {
                     const coords: any = localPoint(
                       event.target.ownerSVGElement,
@@ -162,6 +162,7 @@ function ComponentGraph({
 
                   return (
                     <Group top={top} left={left} key={key}>
+                      {/* ROOT NODE */}
                       {node.depth === 0 && (
                         <circle
                           r={12}
@@ -173,6 +174,7 @@ function ComponentGraph({
                           }}
                         />
                       )}
+                      {/* CHILD NODES */}
                       {node.depth !== 0 && (
                         <rect
                           height={height}
@@ -215,13 +217,13 @@ function ComponentGraph({
       </svg>
       {tooltipOpen && tooltipData && (
         <TooltipInPortal
-          // Set this to random so it correctly updates with parent bounds
+          // Setting the key to random here ensures that it correctly updates with parent bounds
           key={Math.random() * 1000000}
           top={tooltipTop}
           left={tooltipLeft}
           style={tooltipStyleBox}
         >
-          {/* Hover name: */}
+          {/* HOVER NAME */}
           <div>
             {tooltipData.name &&
             tooltipData.name[0] === tooltipData.name[0].toUpperCase() ? (
@@ -234,7 +236,7 @@ function ComponentGraph({
 
             {tooltipData.name}
           </div>
-          {/* Hover children details: */}
+          {/* HOVER CHILDREN DETAILS */}
           {tooltipData.children && tooltipData.children.length > 0 && (
             <div>
               <strong style={{ color: '#41b69c' }}>Children: </strong>

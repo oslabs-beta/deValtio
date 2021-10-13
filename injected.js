@@ -152,7 +152,7 @@ const deValtioMain = (fiberRoot) => {
   fiberRoot.current.stateNode = new Proxy(fiberRoot.current.stateNode, handler);
 
   // initial send of component tree to front end
-  sendToContentScript('deValtioTree', climbTree(value))
+  sendToContentScript('deValtioTree', climbTree(fiberRoot));
 
 };
 

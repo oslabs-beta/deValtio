@@ -133,4 +133,5 @@ setTimeout(() => {
   if (reactRoots[0]) {
     fiberRoot = reactRoots[0]._reactRootContainer._internalRoot;
     main(fiberRoot);
+    }
 }, 2000);

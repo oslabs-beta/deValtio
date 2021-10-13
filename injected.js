@@ -29,7 +29,7 @@ window.__deValtio.postMessage = sendToContentScript;
 
 // main function (to be run via setTimeout since all this code is rendered before the document
 // and all its associated scripts )
-const main = (fiberRoot) => {
+const deValtioMain = (fiberRoot) => {
   // if (!window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
   //   console.log(`The React Devtools extension is currently required for deValtio to work.`);
   //   return;
@@ -116,9 +116,16 @@ const main = (fiberRoot) => {
   handler.set = function (target, prop, value) {
     if (prop === 'current') {
       let deValtioTree = climbTree(value);
+      if (DEBUG) console.log(`Sending deValtioTree to content script.`);
       sendToContentScript('deValtioTree', JSON.stringify(deValtioTree));
       }
-    return Reflect.set(target, prop, value);}
+    return Reflect.set(target, prop, value);
+  }
+
+  // proxy the stateNode so that we can detect changes to fiberRoot. This avoids
+  // us having to use React DevTools and wrapping their onFiberRootCommit hook.
+  fiberRoot.current.stateNode = new Proxy(fiberRoot.current.stateNode, handler);
+
 
 };
 
@@ -132,6 +139,6 @@ setTimeout(() => {
   });
   if (reactRoots[0]) {
     fiberRoot = reactRoots[0]._reactRootContainer._internalRoot;
-    main(fiberRoot);
+    deValtioMain(fiberRoot);
     }
 }, 2000);

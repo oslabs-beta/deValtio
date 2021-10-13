@@ -1,4 +1,5 @@
 const DEBUG = true;
+const throttleDelay = 1000;
 
 // Lets us know our script was successfully injected
 console.log(`injected.js has been initiated`);
@@ -14,12 +15,16 @@ const handler = {};
 
 // function to send stringified data to content script
 const sendToContentScript = (messageHead, messageBody) => {
-  if (DEBUG) console.log(`Sending ${messageHead}: ${messageBody}`);
+  if (DEBUG) console.log(`Sending ${JSON.stringify(messageHead)}: ${JSON.stringify(messageBody)}`);
   try {
     window.postMessage({deValtioMessage: [messageHead, messageBody]});
     return true;
   } catch (err) {
     console.dir(err);
+    console.log(`messageHead:`);
+    console.dir(messageHead);
+    console.log(`messageBody:`);
+    console.dir(messageBody);
     return false;
   }
 };
@@ -42,6 +47,9 @@ const throttle = (func, delay) => {
 // main function (to be run via setTimeout since all this code is rendered before the document
 // and all its associated scripts )
 const deValtioMain = (fiberRoot) => {
+
+  // expose fiberRoot via window.__deValtio hook
+  window.__deValtio.fiberRoot = fiberRoot;
 
   // func to get component (i.e. constructor) name
   // this returns one or two letter names in prod mode but
@@ -77,6 +85,9 @@ const deValtioMain = (fiberRoot) => {
     // get tag
     deValtioTree.tag = node.tag;
 
+    // get key
+    deValtioTree.key = node.key;
+
     // get name of node
     deValtioTree.name = getFiberNodeName(node);
 
@@ -86,7 +97,15 @@ const deValtioMain = (fiberRoot) => {
 
     // get props
     // TO-DO: Finish this
-    deValtioTree.props = {};
+    deValtioTree.props = null;
+    // check if current node is a function component (tag: 0) or class component (tag: 1);
+    // if ([0, 1].includes(node.tag)) {
+    //   try {
+    //     deValtioTree.props = node.memoizedProps;
+    //   } catch (err) {
+    //     deValtioTree.props = 'PROBLEM WITH PROPS';
+    //   }
+    // };
 
     // get hooks
     // TO-DO: Finish this
@@ -116,13 +135,13 @@ const deValtioMain = (fiberRoot) => {
     }
 
   // throttled sendToContentScipt
-  const throttledSendToContentScript = throttle(sendToContentScript, 200);
+  const throttledSendToContentScript = throttle(sendToContentScript, throttleDelay);
   
   // if fiberRoot exists, proxy it to check for current being set.
   handler.set = function (target, prop, value) {
     if (prop === 'current') {
+      if (DEBUG) console.log(`current property of stateNode has been changed.`);
       let deValtioTree = climbTree(value);
-      if (DEBUG) console.log(`Sending deValtioTree to content script.`);
       throttledSendToContentScript('deValtioTree', deValtioTree);
       }
     return Reflect.set(target, prop, value);
@@ -131,6 +150,9 @@ const deValtioMain = (fiberRoot) => {
   // proxy the stateNode so that we can detect changes to fiberRoot. This avoids
   // us having to use React DevTools and wrapping their onFiberRootCommit hook.
   fiberRoot.current.stateNode = new Proxy(fiberRoot.current.stateNode, handler);
+
+  // initial send of component tree to front end
+  sendToContentScript('deValtioTree', climbTree(value))
 
 };
 
@@ -146,15 +168,15 @@ setTimeout(() => {
     fiberRoot = reactRoots[0]._reactRootContainer._internalRoot;
 
     // since this is a React app, we'll let the front end know
-    let timesToSend = 5;
-    messageInterval = setInterval(() => {
-      if (timesToSend === 0) {
-        clearInterval(messageInterval);
-        messageInterval = null;
-      }
-      window.postMessage({message: 'This is a React App'})
-      timesToSend--;
-    }, 2000)
+    // let timesToSend = 5;
+    // messageInterval = setInterval(() => {
+    //   if (timesToSend === 0) {
+    //     clearInterval(messageInterval);
+    //     messageInterval = null;
+    //   }
+    //   sendToContentScript({message: 'This is a React App'})
+    //   timesToSend--;
+    // }, 2000)
     deValtioMain(fiberRoot);
     }
 }, 2000);

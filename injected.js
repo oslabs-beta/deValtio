@@ -59,7 +59,7 @@ const deValtioMain = (fiberRoot) => {
     // root node
     if (node.tag === 3) return 'fiberRoot';
     // functional or class component
-    if (node.tag === 0 || node.tag === 1) return node.type.name;
+    if (node.tag === 0 || node.tag === 1) return node.type?.name || node.type;
     // host component (renders to browser DOM)
     if (node.tag === 5) {
       return node.stateNode.className ? `${node.type}.${node.stateNode.className}` : node.type;

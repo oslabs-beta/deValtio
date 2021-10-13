@@ -1,4 +1,5 @@
 const DEBUG = true;
+
 const throttleDelay = 1000;
 
 // Lets us know our script was successfully injected
@@ -9,6 +10,8 @@ Object.preventExtensions = () => true;
 
 // inject deValtio hook
 window.__deValtio = {};
+
+window.__deValtio.DEBUG = DEBUG;
 
 // handler object to be used for our own proxies
 const handler = {};
@@ -100,11 +103,7 @@ const deValtioMain = (fiberRoot) => {
     deValtioTree.props = null;
     // check if current node is a function component (tag: 0) or class component (tag: 1);
     // if ([0, 1].includes(node.tag)) {
-    //   try {
-    //     deValtioTree.props = node.memoizedProps;
-    //   } catch (err) {
-    //     deValtioTree.props = 'PROBLEM WITH PROPS';
-    //   }
+    [0,1].includes(node.tag) ? deValtioTree.props = JSON.parse(JSON.stringify(node.memoizedProps) || null) : null;
     // };
 
     // get hooks

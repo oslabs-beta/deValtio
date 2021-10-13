@@ -27,21 +27,21 @@ const sendToContentScript = (messageHead, messageBody) => {
 // create postMessage method on deValtio hook
 window.__deValtio.postMessage = sendToContentScript;
 
+// throttle function
+const throttle = (func, delay) => {
+  let throttled;
+  return function(...params) {
+    if (!throttled) {
+      func.apply(this, params);
+      throttled = true;
+      setTimeout(() => throttled = false, delay);
+    }
+  }
+};
+
 // main function (to be run via setTimeout since all this code is rendered before the document
 // and all its associated scripts )
 const deValtioMain = (fiberRoot) => {
-  // if (!window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
-  //   console.log(`The React Devtools extension is currently required for deValtio to work.`);
-  //   return;
-  // }
-
-  // find fiberRoot
-  // const reactRoots = [];
-  // let fiberRoot;
-  // document.querySelectorAll('div').forEach(node => {
-  //   if (node._reactRootContainer) reactRoots.push(node);
-  // });
-  // reactRoots[0] ? fiberRoot = reactRoots[0]._reactRootContainer._internalRoot : null;
 
   // func to get component (i.e. constructor) name
   // this returns one or two letter names in prod mode but
@@ -114,13 +114,16 @@ const deValtioMain = (fiberRoot) => {
       // return the deValtioTree object
       return deValtioTree;
     }
+
+  // throttled sendToContentScipt
+  const throttledSendToContentScript = throttle(sendToContentScript, 200);
   
   // if fiberRoot exists, proxy it to check for current being set.
   handler.set = function (target, prop, value) {
     if (prop === 'current') {
       let deValtioTree = climbTree(value);
       if (DEBUG) console.log(`Sending deValtioTree to content script.`);
-      sendToContentScript('deValtioTree', deValtioTree);
+      throttledSendToContentScript('deValtioTree', deValtioTree);
       }
     return Reflect.set(target, prop, value);
   }
@@ -128,7 +131,6 @@ const deValtioMain = (fiberRoot) => {
   // proxy the stateNode so that we can detect changes to fiberRoot. This avoids
   // us having to use React DevTools and wrapping their onFiberRootCommit hook.
   fiberRoot.current.stateNode = new Proxy(fiberRoot.current.stateNode, handler);
-
 
 };
 
@@ -142,6 +144,17 @@ setTimeout(() => {
   });
   if (reactRoots[0]) {
     fiberRoot = reactRoots[0]._reactRootContainer._internalRoot;
+
+    // since this is a React app, we'll let the front end know
+    let timesToSend = 5;
+    messageInterval = setInterval(() => {
+      if (timesToSend === 0) {
+        clearInterval(messageInterval);
+        messageInterval = null;
+      }
+      window.postMessage({message: 'This is a React App'})
+      timesToSend--;
+    }, 2000)
     deValtioMain(fiberRoot);
     }
 }, 2000);

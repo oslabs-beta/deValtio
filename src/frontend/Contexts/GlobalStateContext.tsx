@@ -1,4 +1,4 @@
 import { createContext } from "react";
 import { RawDataContainer } from "../../Types/Types";
 
-export const GlobalStateContext = createContext<RawDataContainer | undefined>(undefined);
+export const GlobalStateContext = createContext<RawDataContainer | []>([]);

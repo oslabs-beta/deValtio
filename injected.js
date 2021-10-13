@@ -74,6 +74,9 @@ const deValtioMain = (fiberRoot) => {
     // base case
     if (!node) return deValtioTree;
 
+    // get tag
+    deValtioTree.tag = node.tag;
+
     // get name of node
     deValtioTree.name = getFiberNodeName(node);
 
@@ -117,7 +120,7 @@ const deValtioMain = (fiberRoot) => {
     if (prop === 'current') {
       let deValtioTree = climbTree(value);
       if (DEBUG) console.log(`Sending deValtioTree to content script.`);
-      sendToContentScript('deValtioTree', JSON.stringify(deValtioTree));
+      sendToContentScript('deValtioTree', deValtioTree);
       }
     return Reflect.set(target, prop, value);
   }

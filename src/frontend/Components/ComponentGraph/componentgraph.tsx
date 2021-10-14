@@ -55,7 +55,7 @@ function ComponentGraph({
 
   const state = useContext(GlobalStateContext);
   const { snapShotIndex }: { snapShotIndex: number } = useContext<any>(SnapShotContext);
-  console.log('from comp graph', state, snapShotIndex);
+  //console.log('from comp graph', state, snapShotIndex);
 
   const [layout, setLayout] = useState<string>('cartesian');
   const [orientation, setOrientation] = useState<string>('horizontal');
@@ -71,7 +71,7 @@ function ComponentGraph({
     setStateSnapshot(state[snapShotIndex]);
   }, [snapShotIndex]);
 
-  console.log('from comp graph', state[0], state[1]);
+  //console.log('from comp graph', state[0], state[1]);
 
   //Sets component tree data based on current snapshot selected
   // const data: TreeNode = stateSnapshot;
@@ -158,8 +158,8 @@ function ComponentGraph({
                 ))}
 
                 {tree.descendants().map((node, key) => {
-                  const width = 40;
-                  const height = 20;
+                  const width = 65;
+                  const height = 30;
 
                   let top: number;
                   let left: number;
@@ -197,11 +197,11 @@ function ComponentGraph({
                       {/* ROOT NODE */}
                       {node.depth === 0 && (
                         <circle
-                          r={12}
+                          r={20}
                           fill="url('#links-gradient')"
                           onClick={() => {
                             node.data.isExpanded = !node.data.isExpanded;
-                            console.log(node);
+                            //console.log(node);
                             forceUpdate();
                           }}
                         />
@@ -221,7 +221,7 @@ function ComponentGraph({
                           rx={node.data.children ? 0 : 10}
                           onClick={() => {
                             node.data.isExpanded = !node.data.isExpanded;
-                            console.log(node);
+                            //console.log(node);
                             forceUpdate();
                           }}
                           //Tooltip Methods
@@ -273,7 +273,7 @@ function ComponentGraph({
             <div>
               <strong style={{ color: '#41b69c' }}>Children: </strong>
               {
-                tooltipData.children.join(', ')
+                tooltipData.children.map(child => `${child.name},`)
               }
             </div>
           )}

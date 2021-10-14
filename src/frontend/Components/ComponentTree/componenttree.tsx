@@ -40,7 +40,7 @@ function ComponentTree(): JSX.Element {
   const [stateSnapshot, setStateSnapshot] = useState<TreeNode | []>(state[snapShotIndex]);
   const [expandToggle, setExpandToggle] = useState<boolean>(true);
 
-  console.log('from comp TREE', state[snapShotIndex]);
+  //console.log('from comp TREE', state[snapShotIndex]);
 
   useEffect(() => {
     setStateSnapshot(state[snapShotIndex])

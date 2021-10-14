@@ -47,6 +47,31 @@ const throttle = (func, delay) => {
   }
 };
 
+// function to handle circular references in object
+
+const makeObjSafe = (obj) => {
+  let cache = new Set();
+  const retVal = JSON.stringify(
+    obj,
+    (key, value) => {
+      if (typeof key !== 'string') return null;
+      try {
+        typeof value === "object" && value !== null
+          ? cache.has(value)
+            ? null // Duplicate reference found, discard key
+            : cache.add(value) && value // Store value in our collection
+          : typeof value === 'function' 
+          ? cache.add(value.toString()) && value.toString() // stringify if function
+          : value
+      } catch (err) {
+        return null;
+      }
+    }, 2
+  );
+  cache = null;
+  return retVal;
+};
+
 // main function (to be run via setTimeout since all this code is rendered before the document
 // and all its associated scripts )
 const deValtioMain = (fiberRoot) => {
@@ -103,7 +128,7 @@ const deValtioMain = (fiberRoot) => {
     deValtioTree.props = null;
     // check if current node is a function component (tag: 0) or class component (tag: 1);
     // if ([0, 1].includes(node.tag)) {
-    [0,1].includes(node.tag) ? deValtioTree.props = JSON.parse(JSON.stringify(node.memoizedProps) || null) : null;
+    [0,1].includes(node.tag) ? deValtioTree.props = makeObjSafe(node.memoizedProps): null;
     // };
 
     // get hooks

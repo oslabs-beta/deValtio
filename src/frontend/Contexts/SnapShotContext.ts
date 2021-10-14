@@ -4,7 +4,7 @@ import {
   Snapshot,
   SnapshotHistoryContext,
   SnapshotIndexContext,
-
+  ComponentTreeHistoryContext
 } from "../../Types/Types";
 
 export const SnapShotContext = createContext<ISnapShotContext | null>(null);
@@ -16,3 +16,6 @@ export const snapshotHistoryContext = createContext<SnapshotHistoryContext>({
 export const snapshotIndexContext = createContext<SnapshotIndexContext>({
   snapshotIndex: 0,
 });
+export const componentTreeHistoryContext = createContext<ComponentTreeHistoryContext | null>(
+  { componentTreeHistory: [] }
+);

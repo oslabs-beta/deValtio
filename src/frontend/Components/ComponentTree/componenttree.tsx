@@ -65,7 +65,7 @@ function ComponentTree(): JSX.Element {
             }}
             collapsed={expandToggle ? 3 : false}
             theme={theme}
-            indentWidth={2}
+            indentWidth={10}
             enableClipboard={false}
           />
         )}

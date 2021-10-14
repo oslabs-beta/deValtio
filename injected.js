@@ -152,13 +152,13 @@ const deValtioMain = (fiberRoot) => {
   // us having to use React DevTools and wrapping their onFiberRootCommit hook.
   fiberRoot.current.stateNode = new Proxy(fiberRoot.current.stateNode, handler);
 
-  if (USE_REACT_DEVTOOL) {
+  if (USE_REACT_DEVTOOLS) {
     const reactDev = window.__REACT_DEVTOOLS_GLOBAL_HOOK__;
     const oldOnCommitFiberRoot = reactDev.onCommitFiberRoot;
     reactDev.onCommitFiberRoot = function(...params) {
       const devToolsFiberRoot = params[1];
       if (devToolsFiberRoot.current === fiberRoot.current) console.log('onCommitFiberRoot fiberRoot current is equal to the current we see');
-      let deValtioTree = climbTree(value);
+      let deValtioTree = climbTree(devToolsFiberRoot.current);
       throttledSendToContentScript('deValtioTree', deValtioTree);
       return oldOnCommitFiberRoot(...params);
     }

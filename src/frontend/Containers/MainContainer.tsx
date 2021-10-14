@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { GlobalStateContext } from '../Contexts/GlobalStateContext';
 import { SnapShotContext } from '../Contexts/SnapShotContext';
 import { fakeState } from '../../fakeState';
-import { RawDataFormat, RawData, RawDataContainer } from '../../Types/Types';
+import { RawDataFormat, RawData, RawDataContainer, TreeNode } from '../../Types/Types';
 
 
 const Main = styled.main`
@@ -22,7 +22,7 @@ function MainContainer() {
 
   const [tabNum, setTabNum] = useState<number>(1);
   const [snapShotIndex, setSnapShotIndex] = useState<number>(0);
-  const [rawData, setRawData] = useState<RawDataContainer | []>([]);
+  const [rawData, setRawData] = useState<TreeNode[] | []>([]);
   const [usesValtio, setUsesValtio] = useState<boolean>(false);
 
   let comms;

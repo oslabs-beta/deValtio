@@ -10,7 +10,7 @@ injectedScript.onload = function () {
 
 let comms;
 
-const sendToFrontEnd = (messageHead, messageBody) => {
+const sendToFrontEnd = async (messageHead, messageBody) => {
     if (comms) {
         comms.postMessage({messageHead, messageBody});
         return true;
@@ -24,10 +24,10 @@ window.addEventListener('message', (e) => {
     if (e.data && e.data.deValtioMessage) {
         const [messageHead, messageBody] = e.data.deValtioMessage;
         console.log(`Received message from injected. Sending ${messageHead} front end with payload: ${JSON.stringify(messageBody)}`)
-        messageSender = setInterval( () => {
-            let messageSent = sendToFrontEnd(messageHead, messageBody);
+        messageSender = setInterval(async () => {
+            let messageSent = await sendToFrontEnd(messageHead, messageBody);
             if (messageSent) {
-                clearInterval(messageSender);
+                await clearInterval(messageSender);
                 messageSender = null;
             } else {
                 console.log(`Message sending from content script to front end failed. messageHead is: ${messageHead}`);

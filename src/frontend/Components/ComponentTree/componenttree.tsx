@@ -1,10 +1,10 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { GlobalStateContext } from "../../Contexts/GlobalStateContext";
 import { SnapShotContext } from "../../Contexts/SnapShotContext";
 import ReactJson from 'react-json-view';
 
 // import { componentTreeHistoryContext, snapshotIndexContext } from '../App';
-import { SnapshotIndexContext } from '../../../Types/Types';
+import { SnapshotIndexContext, TreeNode } from '../../../Types/Types';
 
 import data from '../../MockData/data'
 
@@ -33,11 +33,18 @@ function ComponentTree(): JSX.Element {
   // const { snapshotIndex } = useContext<SnapshotIndexContext>(
   //   snapshotIndexContext
   // );
-  const [expandToggle, setExpandToggle] = useState<boolean>(true);
 
   const state = useContext(GlobalStateContext);
   const { snapShotIndex }: { snapShotIndex: number } = useContext<any>(SnapShotContext);
+
+  const [stateSnapshot, setStateSnapshot] = useState<TreeNode | []>(state[snapShotIndex]);
+  const [expandToggle, setExpandToggle] = useState<boolean>(true);
+
   console.log('from comp TREE', state[snapShotIndex]);
+
+  useEffect(() => {
+    setStateSnapshot(state[snapShotIndex])
+  }, [snapShotIndex]);
 
   //MOCK DATA IMPLEMENTATION
 
@@ -46,10 +53,10 @@ function ComponentTree(): JSX.Element {
     <div className="componentTree">
       <div>
         {/* {componentTreeHistory[snapshotIndex] && ( */}
-        {data && (
+        {stateSnapshot && (
           <ReactJson
             // src={componentTreeHistory[snapshotIndex]}
-            src={data}
+            src={stateSnapshot}
             style={{
               fontSize: '12px',
               paddingTop: '15px',

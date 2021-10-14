@@ -39,7 +39,7 @@ function MainContainer() {
       setUsesValtio(true);
     });
   }, []);
-
+  console.log('maincontainer', rawData);
   // console.log(`outside useEffect: `);
   // console.dir(rawData);
 

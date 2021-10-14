@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { GlobalStateContext } from "../../Contexts/GlobalStateContext";
 import { SnapShotContext } from "../../Contexts/SnapShotContext";
 import { Group } from '@visx/group';
@@ -11,9 +11,19 @@ import { localPoint } from '@visx/event';
 import useForceUpdate from './useForceUpdate'
 import LinkControls from './LinkControls';
 import getLinkComponent from './getLinkComponent';
-
-import { LinkTypesProps } from '../../../Types/Types';
-import mockData from '../../MockData/data'
+import {
+  componentTreeHistoryContext,
+  snapshotIndexContext,
+  snapshotHistoryContext,
+} from '../../Contexts/SnapShotContext';
+import {
+  LinkTypesProps,
+  SnapshotHistoryContext,
+  SnapshotIndexContext,
+  RawData,
+  TreeNode
+} from '../../../Types/Types';
+//import mockData from '../../MockData/data'
 
 const paleCerulean = '#98C1D9';
 const bedazzledBlue = '#3D5A80';
@@ -22,13 +32,18 @@ const redMunsell = '#F02D44';
 const salmonPink = '#F68E9A';
 export const gunmetal = '#293241';
 
-interface TreeNode {
-  name: string;
-  isExpanded?: boolean;
-  children?: TreeNode[];
-}
+// interface TreeNode {
+//   children?: TreeNode[];
+//   hooks?: {};
+//   key?: any;
+//   name: string | null;
+//   props?: any;
+//   state?: any;
+//   tag?: number;
+//   isExpanded?: boolean;
+// }
 
-const data: TreeNode = mockData;
+//const data: TreeNode = mockData;
 
 const defaultMargin = { top: 30, left: 30, right: 30, bottom: 70 };
 
@@ -38,18 +53,28 @@ function ComponentGraph({
   margin = defaultMargin,
 }: LinkTypesProps) {
 
+  const state = useContext(GlobalStateContext);
+  const { snapShotIndex }: { snapShotIndex: number } = useContext<any>(SnapShotContext);
+  //console.log('from comp graph', state, snapShotIndex);
+
   const [layout, setLayout] = useState<string>('cartesian');
   const [orientation, setOrientation] = useState<string>('horizontal');
   const [linkType, setLinkType] = useState<string>('diagonal');
   const [stepPercent, setStepPercent] = useState<number>(0.5);
+  const [stateSnapshot, setStateSnapshot] = useState<any>(state);
   const forceUpdate = useForceUpdate();
-
-  const state = useContext(GlobalStateContext);
-  const { snapShotIndex }: { snapShotIndex: number } = useContext<any>(SnapShotContext);
-  console.log('from comp graph', state, snapShotIndex);
 
   const innerWidth = totalWidth - margin.left - margin.right;
   const innerHeight = totalHeight - margin.top - margin.bottom;
+
+  useEffect(() => {
+    setStateSnapshot(state[snapShotIndex]);
+  }, [snapShotIndex]);
+
+  //console.log('from comp graph', state[0], state[1]);
+
+  //Sets component tree data based on current snapshot selected
+  // const data: TreeNode = stateSnapshot;
 
   let origin: { x: number; y: number };
   let sizeWidth: number;
@@ -115,7 +140,7 @@ function ComponentGraph({
         <rect width={totalWidth} height={totalHeight} rx={14} fill={gunmetal} />
         <Group top={margin.top} left={margin.left}>
           <Tree
-            root={hierarchy(data, d => (d.isExpanded ? null : d.children))}
+            root={hierarchy(stateSnapshot, d => (d.isExpanded ? null : d.children))}
             size={[sizeWidth, sizeHeight]}
             separation={(a, b) => (a.parent === b.parent ? 1 : 0.5) / a.depth}
           >
@@ -133,8 +158,8 @@ function ComponentGraph({
                 ))}
 
                 {tree.descendants().map((node, key) => {
-                  const width = 40;
-                  const height = 20;
+                  const width = 65;
+                  const height = 30;
 
                   let top: number;
                   let left: number;
@@ -172,11 +197,11 @@ function ComponentGraph({
                       {/* ROOT NODE */}
                       {node.depth === 0 && (
                         <circle
-                          r={12}
+                          r={20}
                           fill="url('#links-gradient')"
                           onClick={() => {
                             node.data.isExpanded = !node.data.isExpanded;
-                            console.log(node);
+                            //console.log(node);
                             forceUpdate();
                           }}
                         />
@@ -196,7 +221,7 @@ function ComponentGraph({
                           rx={node.data.children ? 0 : 10}
                           onClick={() => {
                             node.data.isExpanded = !node.data.isExpanded;
-                            console.log(node);
+                            //console.log(node);
                             forceUpdate();
                           }}
                           //Tooltip Methods
@@ -248,7 +273,7 @@ function ComponentGraph({
             <div>
               <strong style={{ color: '#41b69c' }}>Children: </strong>
               {
-                tooltipData.children.join(', ')
+                tooltipData.children.map(child => `${child.name},`)
               }
             </div>
           )}

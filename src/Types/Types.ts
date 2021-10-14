@@ -36,6 +36,17 @@ export type ComponentTree = {
   children: object[];
 };
 
+export interface TreeNode {
+  children?: TreeNode[];
+  hooks?: {};
+  key?: any;
+  name: string | null;
+  props?: any;
+  state?: any;
+  tag?: number;
+  isExpanded?: boolean;
+};
+
 //Component tree history for context API
 export type ComponentTreeHistoryContext = {
   componentTreeHistory: ComponentTree[] | [];

@@ -62,14 +62,14 @@ const deValtioMain = (fiberRoot) => {
     // root node
     if (node.tag === 3) return 'fiberRoot';
     // functional or class component
-    if (node.tag === 0 || node.tag === 1) return node.type?.name || node.type;
+    if (node.tag === 0 || node.tag === 1) return `${node.type?.name}`;
     // host component (renders to browser DOM)
     if (node.tag === 5) {
-      return node.stateNode.className ? `${node.type}.${node.stateNode.className}` : node.type;
+      return node.stateNode.className ? `${node.type}.${node.stateNode.className}` : `${node.type}`;
     }
     // everything else
     if (typeof node.type === 'string') return node.type;
-    if (typeof node.type === 'function') return node.type.name;
+    if (typeof node.type === 'function') return node.type?.name;
     if (typeof node.type === 'symbol') return node.type.toString();
   };
       
@@ -151,7 +151,8 @@ const deValtioMain = (fiberRoot) => {
   fiberRoot.current.stateNode = new Proxy(fiberRoot.current.stateNode, handler);
 
   // initial send of component tree to front end
-  sendToContentScript('deValtioTree', climbTree(fiberRoot));
+  let deValtioTree = climbTree(fiberRoot);
+  sendToContentScript('deValtioTree', climbTree(deValtioTree));
 
 };
 

@@ -22,7 +22,7 @@ function MainContainer() {
 
   const [tabNum, setTabNum] = useState<number>(1);
   const [snapShotIndex, setSnapShotIndex] = useState<number>(0);
-  const [rawData, setRawData] = useState<RawDataContainer | undefined>(undefined);
+  const [rawData, setRawData] = useState<RawDataContainer | []>([]);
   const [usesValtio, setUsesValtio] = useState<boolean>(false);
 
   let comms;
@@ -30,13 +30,12 @@ function MainContainer() {
   useEffect(() => {
     // get tab id of current tab
     const tabId = chrome.devtools.inspectedWindow.tabId;
-    console.log(tabId);
     // creates a port on current tab
     const port = chrome.tabs.connect(tabId);
     comms = port;
     comms.onMessage.addListener(msg => {
       //console.dir(`message received: ${JSON.stringify(msg, null, 2)}`);
-      setRawData([msg.messageBody]);
+      setRawData([rawData, msg.messageBody]);
       setUsesValtio(true);
     });
   }, []);

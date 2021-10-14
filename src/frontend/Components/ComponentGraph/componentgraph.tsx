@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import { useState, useContext } from 'react';
+import { GlobalStateContext } from "../../Contexts/GlobalStateContext";
+import { SnapShotContext } from "../../Contexts/SnapShotContext";
 import { Group } from '@visx/group';
 import { Tree, hierarchy } from '@visx/hierarchy';
 import { LinearGradient } from '@visx/gradient';
@@ -30,16 +32,21 @@ const data: TreeNode = mockData;
 
 const defaultMargin = { top: 30, left: 30, right: 30, bottom: 70 };
 
-function ComponentGraph({ 
+function ComponentGraph({
   width: totalWidth,
   height: totalHeight,
   margin = defaultMargin,
 }: LinkTypesProps) {
+
   const [layout, setLayout] = useState<string>('cartesian');
   const [orientation, setOrientation] = useState<string>('horizontal');
   const [linkType, setLinkType] = useState<string>('diagonal');
   const [stepPercent, setStepPercent] = useState<number>(0.5);
   const forceUpdate = useForceUpdate();
+
+  const state = useContext(GlobalStateContext);
+  const { snapShotIndex }: { snapShotIndex: number } = useContext<any>(SnapShotContext);
+  console.log('from comp graph', state, snapShotIndex);
 
   const innerWidth = totalWidth - margin.left - margin.right;
   const innerHeight = totalHeight - margin.top - margin.bottom;
@@ -226,7 +233,7 @@ function ComponentGraph({
           {/* HOVER NAME */}
           <div>
             {tooltipData.name &&
-            tooltipData.name[0] === tooltipData.name[0].toUpperCase() ? (
+              tooltipData.name[0] === tooltipData.name[0].toUpperCase() ? (
               <strong style={{ color: '#7f5dc0' }}>Component: </strong>
             ) : tooltipData.name ? (
               <strong style={{ color: '#1cb5c9' }}>Element: </strong>

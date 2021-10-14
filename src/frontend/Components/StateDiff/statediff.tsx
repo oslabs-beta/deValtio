@@ -22,8 +22,8 @@ function StateDiff(): JSX.Element {
   console.log(state);
 
   let currentState = state![snapShotIndex]
-  let previousState = state![snapShotIndex-1]
-  console.log('this is current and previous state', currentState, previousState)
+  let previousState = state![snapShotIndex - 1]
+  //console.log('this is current and previous state', currentState, previousState)
 
   //extract intial state from the app and display it as an object 
   //as we add to state show the updates to state - save it as a snapshot and display it in the snapshot section 
@@ -31,7 +31,7 @@ function StateDiff(): JSX.Element {
 
   //this is for diffing difference between 2 snapshots
   const delta: any = diff(previousState, currentState);
-  console.log('this is the delta version', delta);
+  //console.log('this is the delta version', delta);
   //this is to covert difference to html format
   const html = formatters.html.format(delta, previousState);
 

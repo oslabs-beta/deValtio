@@ -1,4 +1,5 @@
 const DEBUG = true;
+const USE_REACT_DEVTOOLS = true;
 
 const throttleDelay = 1000;
 
@@ -140,6 +141,7 @@ const deValtioMain = (fiberRoot) => {
   handler.set = function (target, prop, value) {
     if (prop === 'current') {
       if (DEBUG) console.log(`current property of stateNode has been changed.`);
+      if (USE_REACT_DEVTOOLS) return Reflect.set(target, prop, value);
       let deValtioTree = climbTree(value);
       throttledSendToContentScript('deValtioTree', deValtioTree);
       }
@@ -149,6 +151,18 @@ const deValtioMain = (fiberRoot) => {
   // proxy the stateNode so that we can detect changes to fiberRoot. This avoids
   // us having to use React DevTools and wrapping their onFiberRootCommit hook.
   fiberRoot.current.stateNode = new Proxy(fiberRoot.current.stateNode, handler);
+
+  if (USE_REACT_DEVTOOL) {
+    const reactDev = window.__REACT_DEVTOOLS_GLOBAL_HOOK__;
+    const oldOnCommitFiberRoot = reactDev.onCommitFiberRoot;
+    reactDev.onCommitFiberRoot = function(...params) {
+      const devToolsFiberRoot = params[1];
+      if (devToolsFiberRoot.current === fiberRoot.current) console.log('onCommitFiberRoot fiberRoot current is equal to the current we see');
+      let deValtioTree = climbTree(value);
+      throttledSendToContentScript('deValtioTree', deValtioTree);
+      return oldOnCommitFiberRoot(...params);
+    }
+  }
 
   // initial send of component tree to front end
   let deValtioTree = climbTree(fiberRoot);

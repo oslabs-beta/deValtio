@@ -1,4 +1,4 @@
 import { createContext } from "react";
-import { RawDataContainer } from "../../Types/Types";
+import { RawDataContainer, TreeNode } from "../../Types/Types";
 
-export const GlobalStateContext = createContext<RawDataContainer | []>([]);
+export const GlobalStateContext = createContext<TreeNode[] | []>([]);

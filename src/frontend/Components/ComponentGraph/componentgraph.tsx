@@ -1,6 +1,4 @@
-import { useState, useContext } from 'react';
-import { GlobalStateContext } from "../../Contexts/GlobalStateContext";
-import { SnapShotContext } from "../../Contexts/SnapShotContext";
+import React, { useState } from 'react';
 import { Group } from '@visx/group';
 import { Tree, hierarchy } from '@visx/hierarchy';
 import { LinearGradient } from '@visx/gradient';
@@ -37,16 +35,11 @@ function ComponentGraph({
   height: totalHeight,
   margin = defaultMargin,
 }: LinkTypesProps) {
-
   const [layout, setLayout] = useState<string>('cartesian');
   const [orientation, setOrientation] = useState<string>('horizontal');
   const [linkType, setLinkType] = useState<string>('diagonal');
   const [stepPercent, setStepPercent] = useState<number>(0.5);
   const forceUpdate = useForceUpdate();
-
-  const state = useContext(GlobalStateContext);
-  const { snapShotIndex }: { snapShotIndex: number } = useContext<any>(SnapShotContext);
-  console.log('from comp graph', state, snapShotIndex);
 
   const innerWidth = totalWidth - margin.left - margin.right;
   const innerHeight = totalHeight - margin.top - margin.bottom;

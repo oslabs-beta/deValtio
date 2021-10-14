@@ -103,7 +103,7 @@ const deValtioMain = (fiberRoot) => {
     deValtioTree.props = null;
     // check if current node is a function component (tag: 0) or class component (tag: 1);
     // if ([0, 1].includes(node.tag)) {
-    [0,1].includes(node.tag) ? deValtioTree.props = JSON.parse(JSON.stringify(node.memoizedProps) || null) : null;
+    //[0,1].includes(node.tag) ? deValtioTree.props = JSON.parse(JSON.stringify(node.memoizedProps) || null) : null;
     // };
 
     // get hooks

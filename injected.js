@@ -9,7 +9,7 @@ console.log(`injected.js has been initiated`);
 Object.preventExtensions = () => true;
 
 // inject deValtio hook
-window.__deValtio = {};
+if (!window.__deValtio) window.__deValtio = {};
 
 window.__deValtio.DEBUG = DEBUG;
 

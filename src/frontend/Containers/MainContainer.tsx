@@ -35,7 +35,7 @@ function MainContainer() {
     comms = port;
     comms.onMessage.addListener(msg => {
       console.dir(`message received: ${JSON.stringify(msg, null, 2)}`);
-      setRawData([...rawData, msg.messageBody]);
+      setRawData(prevState => [...prevState, msg.messageBody]);
       setUsesValtio(true);
     });
   }, []);

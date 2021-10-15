@@ -1,4 +1,4 @@
-const DEBUG = true;
+const DEBUG = false;
 
 const throttleDelay = 500;
 
@@ -12,6 +12,10 @@ Object.preventExtensions = () => true;
 if (!window.__deValtio) window.__deValtio = {};
 
 window.__deValtio.DEBUG = DEBUG;
+
+window.__deValtio.valtioFound = null;
+
+window.__deValtio.valtioStores = [];
 
 // handler object to be used for our own proxies
 const handler = {};
@@ -68,9 +72,55 @@ const deValtioMain = (fiberRoot) => {
       return node.stateNode.className ? `${node.type}.${node.stateNode.className}` : `${node.type}`;
     }
     // everything else
+    if (node.type?.$$typeof) return Symbol.keyFor(node.type.$$typeof);
     if (typeof node.type === 'string') return node.type;
     if (typeof node.type === 'function') return node.type?.name;
     if (typeof node.type === 'symbol') return node.type.toString();
+  };
+
+  const getFiberNodeValtioState = (node) => {
+    if (DEBUG) console.log('checking for valtio state')
+    if (!node.memoizedState) return null;
+    if (typeof node.memoizedState === 'object') {
+      let state = node.memoizedState;
+      if (DEBUG) console.log(`parsing state`);
+      while (state) {
+        if (DEBUG) console.log('Checking memoizedState');
+        if (DEBUG) console.dir(state);
+        const baseState = state.baseState;
+        const memoizedState = state.memoizedState;
+
+        // if (baseState && typeof Array.isArray(baseState) && baseState.length === 5 && baseState === memoizedState) {
+          if (baseState && typeof Array.isArray(baseState) && baseState.length === 5) {
+          if (typeof baseState[0] === 'object' 
+              && typeof baseState[1] === 'function' 
+              && typeof baseState[2] === 'function' 
+              && typeof baseState[3] === 'number') {
+            valtioArrEntries = Object.entries(baseState[0]);
+            for (let i = 0; i < valtioArrEntries.length; i++) {
+              if (typeof valtioArrKeys[i][0] !== 'symbol') break;
+            }
+            let [valtioProxyStore, valtioGetVersionFunction] = Object.values(baseState[0]);
+            let valtioSubscriber = baseState[2];
+            let valtioNakedStore = baseState[4];
+            let valtioState = {
+              valtioProxyStore,
+              valtioGetVersionFunction,
+              valtioSubscriber,
+              valtioNakedStore
+            };
+            window.__deValtio.valtioFound = true;
+            if (DEBUG) console.log('valtioState found');
+            return valtioState;
+          }
+        }
+        state = state.next;
+      }
+    }
+  };
+
+  const getFiberNodeProps = (node) => {
+    return null;
   };
       
 
@@ -97,6 +147,10 @@ const deValtioMain = (fiberRoot) => {
     // get state
     // TO-DO: Finish this
     deValtioTree.state = {};
+
+    let valtioStore = getFiberNodeValtioState(node);
+
+    if (valtioStore) window.__deValtio.valtioStores.push(valtioStore);
 
     // get props
     // TO-DO: Finish this
@@ -154,9 +208,10 @@ const deValtioMain = (fiberRoot) => {
   fiberRoot.current.stateNode = new Proxy(fiberRoot.current.stateNode, handler);
 
   // initial send of component tree to front end
-  let deValtioTree = climbTree(fiberRoot);
-  sendToContentScript('deValtioTree', climbTree(deValtioTree));
-
+  setTimeout( () => {
+    let deValtioTree = climbTree(fiberRoot.alternate);
+    sendToContentScript('deValtioTree', climbTree(deValtioTree));
+  }, 50);
 };
 
 

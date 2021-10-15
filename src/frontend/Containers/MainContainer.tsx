@@ -34,14 +34,11 @@ function MainContainer() {
     const port = chrome.tabs.connect(tabId);
     comms = port;
     comms.onMessage.addListener(msg => {
-      //console.dir(`message received: ${JSON.stringify(msg, null, 2)}`);
-      setRawData([rawData, msg.messageBody]);
+      console.dir(`message received: ${JSON.stringify(msg, null, 2)}`);
+      setRawData([...rawData, msg.messageBody]);
       setUsesValtio(true);
     });
   }, []);
-  console.log('maincontainer', rawData);
-  // console.log(`outside useEffect: `);
-  // console.dir(rawData);
 
   return (
     <>

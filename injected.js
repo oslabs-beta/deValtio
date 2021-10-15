@@ -1,6 +1,6 @@
 const DEBUG = true;
 
-const throttleDelay = 1000;
+const throttleDelay = 500;
 
 // Lets us know our script was successfully injected
 console.log(`injected.js has been initiated`);
@@ -140,8 +140,11 @@ const deValtioMain = (fiberRoot) => {
   handler.set = function (target, prop, value) {
     if (prop === 'current') {
       if (DEBUG) console.log(`current property of stateNode has been changed.`);
-      let deValtioTree = climbTree(value);
-      throttledSendToContentScript('deValtioTree', deValtioTree);
+      if (DEBUG) console.dir(value);
+      setTimeout( () => {
+        let deValtioTree = climbTree(value.alternate);
+        throttledSendToContentScript('deValtioTree', deValtioTree);
+      }, 50);
       }
     return Reflect.set(target, prop, value);
   }

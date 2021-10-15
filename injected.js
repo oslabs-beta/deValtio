@@ -51,6 +51,29 @@ const throttle = (func, delay) => {
   }
 };
 
+// rate limiting function
+// different from throttle (and debounce) since it only runs the function once every
+// X milliseconds but the function that runs is the *latest* call instead of the earliest
+// (which is what you get with throttle)
+const limitRate = (func, delay) => {
+  let waiting;
+  let latest = {};
+  return (...params) => {
+    if (waiting) {
+      latest.params = params;
+      return;
+    };
+    if (!waiting) {
+      latest.params = params;
+      waiting = true;
+      setTimeout(() => {
+        func.apply(null, latest.params);
+        waiting = false;
+      }, delay);
+    }
+  }
+}
+
 // main function (to be run via setTimeout since all this code is rendered before the document
 // and all its associated scripts )
 const deValtioMain = (fiberRoot) => {

@@ -34,7 +34,7 @@ function MainContainer() {
     const port = chrome.tabs.connect(tabId);
     comms = port;
     comms.onMessage.addListener(msg => {
-      console.dir(`message received: ${JSON.stringify(msg, null, 2)}`);
+      //console.dir(`message received: ${JSON.stringify(msg, null, 2)}`);
       setRawData(prevState => [...prevState, msg.messageBody]);
       setUsesValtio(true);
     });

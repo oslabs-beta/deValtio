@@ -19,7 +19,7 @@ function StateDiff(): JSX.Element {
 
   const state = useContext(GlobalStateContext);
   const { snapShotIndex }: { snapShotIndex: number } = useContext<any>(SnapShotContext);
-  console.log(state);
+  //console.log(state);
 
   let currentState = state![snapShotIndex]
   let previousState = state![snapShotIndex - 1]

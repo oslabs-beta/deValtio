@@ -26,6 +26,7 @@ const SnapShots = styled.section`
     width: 100%;
     padding: 0;
     height:100%;
+    overflow-y: auto;
 `;
 
 export const SnapShotContainer = (): JSX.Element => {

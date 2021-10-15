@@ -96,11 +96,18 @@ const deValtioMain = (fiberRoot) => {
               && typeof baseState[1] === 'function' 
               && typeof baseState[2] === 'function' 
               && typeof baseState[3] === 'number') {
-            valtioArrEntries = Object.entries(baseState[0]);
-            for (let i = 0; i < valtioArrEntries.length; i++) {
-              if (typeof valtioArrKeys[i][0] !== 'symbol') break;
+            let valtioSymbols = Reflect.ownKeys(baseState[0]);
+            let valtioProxyStore;
+            let valtioGetVersionFunction;
+            for (let i = 0; i < valtioSymbols.length; i++) {
+              if (typeof valtioSymbols[i] !== 'symbol') break;
+              if (typeof baseState[0][valtioSymbols[i]] === 'function') {
+                valtioGetVersionFunction = baseState[0][valtioSymbols[i]];
+              } else {
+                valtioProxyStore = baseState[0][valtioSymbols[i]];
+              }
             }
-            let [valtioProxyStore, valtioGetVersionFunction] = Object.values(baseState[0]);
+            // let [valtioProxyStore, valtioGetVersionFunction] = [valtioArrValues];
             let valtioSubscriber = baseState[2];
             let valtioNakedStore = baseState[4];
             let valtioState = {

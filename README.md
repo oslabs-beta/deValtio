@@ -32,8 +32,6 @@ deValtio is a Google Chrome extension that serves as a visualization and debuggi
 <h4>3. Component Graph Visualization</h4>
 <img src="./assets/ComponentGraph.png">
 
-<h2>Work in Progress</h2>
-
 <h2>Contributions Welcome</h2>
 DeValtio is an open-source project and welcomes contribution. Please fork the repository, create a feature branch and submit a pull request.
 

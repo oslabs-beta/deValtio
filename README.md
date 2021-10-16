@@ -2,7 +2,7 @@
 <img src="./assets/deValtioLogo.png" width="40%" height="40%">
 </p>
 
-<p><a href=http://www.devaltio.io target=_blank>Website</a></p>
+<p><a href=http://www.devaltio.io target="_blank">Website</a></p>
 <p><a href=https://github.com/maddogg612/demovaltio>Demo Application</a></p>
 
 <h1>Developer Tool for Valtio applications</h1>
@@ -33,7 +33,7 @@ deValtio is a Google Chrome extension that serves as a visualization and debuggi
 <h2>Work in Progress</h2>
 
 <h2>Contributions Welcome</h2>
-DeValtio is an open-source project and welcomes contribution. Please fork the repository, create a feature branch and submit a pull request. 
+DeValtio is an open-source project and welcomes contribution. Please fork the repository, create a feature branch and submit a pull request.
 
 <h2>Core Team</h2>
 <ul>
@@ -51,4 +51,5 @@ DeValtio is an open-source project and welcomes contribution. Please fork the re
 This is an open source product. </n>
 
 This product is accelerated by OS Labs.
+
 </p>

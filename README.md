@@ -13,11 +13,11 @@ deValtio is a Google Chrome extension that serves as a visualization and debuggi
 <p>Please note our development tool is still in BETA. Please let us know if you find any issues and report them in the issues tab or submit a pull request. We welcome all advice, improvements and fixes.</p>
 
 <h2>Getting Started/Installation</h2>
-<p>1. Please install the chrome extension - #link here</p>
-<p>2. Open your application on the Chrome Browser and start debugging with the devtool. 
+<p>1. Please install the chrome extension - PENDING</p>
+<p>2. Open your application or demo application on the Chrome Browser and start debugging with the devtool. 
     <ul>
         <li>Only support React Applications</li>
-        <li>Only intended for projects in development mode?</li>
+        <li>Only intended for projects in development mode</li>
     </ul>
 </p>
 
@@ -40,7 +40,7 @@ DeValtio is an open-source project and welcomes contribution. Please fork the re
   <li>Sergey Zeygerman <a href=https://github.com/Sergey01>Github</a> | <a href=https://www.linkedin.com/in/sergey-zeygerman/>Linkedin</a></li>
   <li>Cameron Walls <a href=https://github.com/cwalls45>Github</a> | <a href=https://www.linkedin.com/in/cameron-walls45/>Linkedin</a></li>
   <li>Tom Curtin <a href=https://github.com/3LD3ST>Github</a>
-  <li>Damian Allert <a href=https://github.com/reddallert>Github</a> | <a href=#linkedin>Linkedin</a></li>
+  <li>Damian Allert <a href=https://github.com/reddallert>Github</a> | <a href=https://www.linkedin.com/in/damian-allert-8494745/>Linkedin</a></li>
   <li>Gordon Hui <a href=https://github.com/maddogg612>Github</a> | <a href=https://www.linkedin.com/in/gordon-hui-78453935/>Linkedin</a></li>
  </ul>
  

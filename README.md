@@ -3,7 +3,7 @@
 </p>
 
 <p><a href=http://www.devaltio.io target=_blank>Website</a></p>
-<p><a href=#demo>Demo Application</a></p>
+<p><a href=https://github.com/maddogg612/demovaltio>Demo Application</a></p>
 
 <h1>Developer Tool for Valtio applications</h1>
 deValtio is a Google Chrome extension that serves as a visualization and debugging tool for the <a href="https://github.com/pmndrs/valtio">Valtio proxy state management library</a> for <a href="https://reactjs.org/">Reactjs</a>.
@@ -37,11 +37,18 @@ DeValtio is an open-source project and welcomes contribution. Please fork the re
 
 <h2>Core Team</h2>
 <ul>
-  <li>Sergey Zeygerman <a href=#github>Github</a> | <a href=#linkedin>Linkedin</a></li>
-  <li>Cameron Walls <a href=#github>Github</a> | <a href=#linkedin>Linkedin</a></li>
-  <li>Tom Curtin <a href=#github>Github</a> | <a href=#linkedin>Linkedin</a></li>
-  <li>Damian Allert <a href=#github>Github</a> | <a href=#linkedin>Linkedin</a></li>
-  <li>Gordon Hui <a href=#github>Github</a> | <a href=#linkedin>Linkedin</a></li>
+  <li>Sergey Zeygerman <a href=https://github.com/Sergey01>Github</a> | <a href=https://www.linkedin.com/in/sergey-zeygerman/>Linkedin</a></li>
+  <li>Cameron Walls <a href=https://github.com/cwalls45>Github</a> | <a href=https://www.linkedin.com/in/cameron-walls45/>Linkedin</a></li>
+  <li>Tom Curtin <a href=https://github.com/3LD3ST>Github</a>
+  <li>Damian Allert <a href=https://github.com/reddallert>Github</a> | <a href=#linkedin>Linkedin</a></li>
+  <li>Gordon Hui <a href=https://github.com/maddogg612>Github</a> | <a href=https://www.linkedin.com/in/gordon-hui-78453935/>Linkedin</a></li>
  </ul>
  
  <h2>License</h2>
+ <p>
+ This product is licensed under the MIT License. </n>
+
+This is an open source product. </n>
+
+This product is accelerated by OS Labs.
+</p>

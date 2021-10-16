@@ -2,7 +2,7 @@
 <img src="./assets/deValtioLogo.png" width="40%" height="40%">
 </p>
 
-<p><a href=http://www.devaltio.io>Website</a></p>
+<p><a href=http://www.devaltio.io target="_blank">Website</a></p>
 <p><a href=#demo>Demo Application</a></p>
 
 <h1>Developer Tool for Valtio applications</h1>

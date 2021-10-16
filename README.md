@@ -24,11 +24,10 @@ deValtio is a Google Chrome extension that serves as a visualization and debuggi
 <h2>Features</h2>
 <h4>1. State Visualization</h4>
   <h5>State Diff</h5>
-  <h5>Proxy State Visualization</h5>
 
-<h4>2. Component Tree Visuazliation</h4>
+<h4>2. Component Tree Visualzation</h4>
 
-<h4>3. Time Travel</h4>
+<h4>3. Component Graph Visualization</h4>
 
 <h2>Work in Progress</h2>
 

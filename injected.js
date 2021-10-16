@@ -247,6 +247,8 @@ const deValtioMain = (fiberRoot) => {
       return deValtioTree;
     }
 
+  window.__deValtio.climbTree = () => climbTree(fiberRoot);
+
   // throttled sendToContentScipt
   const throttledSendToContentScript = limitRate(sendToContentScript, throttleDelay);
   
@@ -269,7 +271,7 @@ const deValtioMain = (fiberRoot) => {
 
   // initial send of component tree to front end
   setTimeout( () => {
-    let deValtioTree = climbTree(fiberRoot.alternate);
+    let deValtioTree = climbTree(fiberRoot.current);
     sendToContentScript('deValtioTree', climbTree(deValtioTree));
   }, 50);
 };

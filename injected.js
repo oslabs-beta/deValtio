@@ -1,4 +1,4 @@
-const DEBUG = false;
+const DEBUG = true;
 
 const throttleDelay = 500;
 
@@ -16,6 +16,36 @@ window.__deValtio.DEBUG = DEBUG;
 window.__deValtio.valtioFound = null;
 
 window.__deValtio.valtioStores = [];
+
+window.__deValtio.usesValtio = null;
+
+window.__deValtio.initialState = null;
+
+// hijack Chrome's native Proxy factory function to inspect handler objects
+window.__deValtio.nativeProxy = Proxy;
+
+Proxy = function(targetObj, handler) {
+  if (handler.f 
+      && handler.get 
+      && handler.set 
+      && handler.has 
+      && handler.ownKeys 
+      && handler.deleteProperty
+      ) {
+        setTimeout(()=> {
+          if (handler.p 
+              && handler.a 
+              && handler.c) {
+                if (DEBUG) console.log(`valtio store found`);
+                window.__deValtio.usesValtio = true;
+                window.__deValtio.initialState = targetObj;
+              }
+        }, 0);
+      Proxy = window.__deValtio.nativeProxy;
+      return new window.__deValtio.nativeProxy(targetObj, handler);
+      }
+  return new window.__deValtio.nativeProxy(targetObj, handler);
+}
 
 // handler object to be used for our own proxies
 const handler = {};
@@ -235,7 +265,7 @@ const deValtioMain = (fiberRoot) => {
 
   // proxy the stateNode so that we can detect changes to fiberRoot. This avoids
   // us having to use React DevTools and wrapping their onFiberRootCommit hook.
-  fiberRoot.current.stateNode = new Proxy(fiberRoot.current.stateNode, handler);
+  fiberRoot.current.stateNode = new window.__deValtio.nativeProxy(fiberRoot.current.stateNode, handler);
 
   // initial send of component tree to front end
   setTimeout( () => {

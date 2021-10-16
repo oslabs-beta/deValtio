@@ -13,20 +13,20 @@ const VisualSection = styled.section`
   color: #98C1D9;
   border-top: 2px solid #98C1D9;
   text-align:center;
-  overflow-y: scroll;
+  overflow-y: auto;
 `;
 
 function VisualContainer({ tabNum }: { tabNum: number }): JSX.Element {
   return (
     <VisualSection>
       {(tabNum === 1) && <StateDiff />}
-      {(tabNum === 2) && <ComponentTree />}
-      {(tabNum === 3) && <ProxyNetwork />}
-      {(tabNum === 4) && <ParentSize>
+      {(tabNum === 2) && <ProxyNetwork />}
+      {(tabNum === 3) && <ParentSize>
         {({ width, height }) => (
           <ComponentGraph width={width} height={height} />
         )}
       </ParentSize>}
+      {(tabNum === 4) && <ComponentTree />}
     </VisualSection>
   );
 }

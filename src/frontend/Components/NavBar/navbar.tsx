@@ -1,5 +1,6 @@
 import { NavTab } from "./NavTab";
 import styled from "styled-components";
+import React from 'react';
 import { SetStateAction, Dispatch } from "react";
 
 const NavBarSection = styled.section`
@@ -11,14 +12,16 @@ const NavBarSection = styled.section`
   background: #293241;
 `;
 
-export const NavBar = ({ setTabNum, tabNum }: { setTabNum: Dispatch<SetStateAction<number>>, tabNum: number }): JSX.Element => {
+const NavBar = ({ setTabNum, tabNum }: { setTabNum: Dispatch<SetStateAction<number>>, tabNum: number }): JSX.Element => {
 
   return (
     <NavBarSection>
-      <NavTab value={1} tabNum={tabNum} text='StateDiff' setTabNum={setTabNum} />
-      <NavTab value={2} tabNum={tabNum} text='State Tree' setTabNum={setTabNum} />
-      <NavTab value={3} tabNum={tabNum} text='ProxyNetwork' setTabNum={setTabNum} />
-      <NavTab value={4} tabNum={tabNum} text='Component Graph' setTabNum={setTabNum} />
+      <NavTab value={1} tabNum={tabNum} text='State Diff' setTabNum={setTabNum} />
+      <NavTab value={2} tabNum={tabNum} text='Proxy Network' setTabNum={setTabNum} />
+      <NavTab value={3} tabNum={tabNum} text='Component Graph' setTabNum={setTabNum} />
+      <NavTab value={4} tabNum={tabNum} text='Component Tree' setTabNum={setTabNum} />
     </NavBarSection >
   );
 }
+
+export default NavBar;

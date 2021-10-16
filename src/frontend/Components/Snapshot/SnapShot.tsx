@@ -24,7 +24,7 @@ const SnapShotButton = styled.button<{ snapShotIndex: number }>`
 //     font-size: 1.2em;
 // `;
 
-export const SnapShot = ({ snapNum, setSnapShotIndex, value }: { snapNum: number, setSnapShotIndex: Dispatch<SetStateAction<number>>, value: number }) => {
+const SnapShot = ({ snapNum, setSnapShotIndex, value }: { snapNum: number, setSnapShotIndex: Dispatch<SetStateAction<number>>, value: number }) => {
 
     const { snapShotIndex }: { snapShotIndex: number } = useContext<any>(SnapShotContext);
 
@@ -36,3 +36,4 @@ export const SnapShot = ({ snapNum, setSnapShotIndex, value }: { snapNum: number
         </SnapShotButton>
     );
 }
+export default SnapShot;

@@ -30,12 +30,37 @@ export type SnapshotIndexContext = {
   setSnapshotIndex?: React.Dispatch<React.SetStateAction<number>>;
 };
 
+//Component Tree taken from DeValtio dev tool
+export type ComponentTree = {
+  name: string;
+  children: object[];
+};
+
+export interface TreeNode {
+  children?: TreeNode[];
+  hooks?: {};
+  key?: any;
+  name: string | null;
+  props?: any;
+  state?: any;
+  tag?: number;
+  isExpanded?: boolean;
+};
+
+//Component tree history for context API
+export type ComponentTreeHistoryContext = {
+  componentTreeHistory: ComponentTree[] | [];
+  setComponentTreeHistory?: React.Dispatch<
+    React.SetStateAction<ComponentTree[]>
+  >;
+};
+
 export interface IState {
   name: string;
   value: any;
 }
 
-export type ISnapShot = IState[];
+export type ISnapShot = IState[] | undefined;
 
 export type ISnapShotList = ISnapShot[];
 
@@ -43,3 +68,16 @@ export interface ISnapShotContext {
   snapShotIndex: number;
   setSnapShotIndex: React.Dispatch<React.SetStateAction<number>>;
 }
+
+export interface RawDataFormat {
+  tag: number;
+  deValtioID: string;
+  index: number;
+  componentName: string;
+  hasProps: boolean;
+  hasState: boolean;
+}
+
+export type RawData = RawDataFormat[];
+
+export type RawDataContainer = RawData[];

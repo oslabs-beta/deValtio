@@ -1,282 +1,182 @@
+const DEBUG = true;
+
+const throttleDelay = 1000;
+
+// Lets us know our script was successfully injected
 console.log(`injected.js has been initiated`);
 
-const pp = stuff => JSON.stringify(stuff, null, 2);
+// disable locking down object properties for fiberNode (and any other) objects
+Object.preventExtensions = () => true;
 
-// messaging function (to communicate with content script which will send it to frontend)
+// inject deValtio hook
+if (!window.__deValtio) window.__deValtio = {};
 
+window.__deValtio.DEBUG = DEBUG;
+
+// handler object to be used for our own proxies
+const handler = {};
+
+// function to send stringified data to content script
 const sendToContentScript = (messageHead, messageBody) => {
+  if (DEBUG) console.log(`Sending ${JSON.stringify(messageHead)}: ${JSON.stringify(messageBody)}`);
   try {
     window.postMessage({deValtioMessage: [messageHead, messageBody]});
     return true;
   } catch (err) {
     console.dir(err);
+    console.log(`messageHead:`);
+    console.dir(messageHead);
+    console.log(`messageBody:`);
+    console.dir(messageBody);
     return false;
   }
 };
 
-// disable locking down object properties for fiberNode (and any other) objects
-Object.preventExtensions = () => true;
+// create postMessage method on deValtio hook
+window.__deValtio.postMessage = sendToContentScript;
 
-// DECLARATIONS GO HERE
-
-// func to get component (i.e. constructor) name
-// this returns one or two letter names in prod mode but
-// this can be adapted to still get proper component names if the site uses source maps
-// and we add source map parsing
-const getFiberNodeName = (node) => {
-  // root node
-  if (node.tag === 3) return 'fiberRoot';
-  // functional or class component
-  if (node.tag === 0 || node.tag === 1) return node.type.name;
-  // host component (renders to browser DOM)
-  if (node.tag === 5) {
-    return node.stateNode.className ? `${node.type}.${node.stateNode.className}` : node.type;
-  }
-  // everything else
-  if (typeof node.type === 'string') return node.type;
-  if (typeof node.type === 'function') return node.type.name;
-  if (typeof node.type === 'symbol') return node.type.toString();
-};
-  
-
-// DeValtioNode constructor
-
-function DeValtioNode(fiberNode, parentNode = null) {
-  this.tag = fiberNode.tag;
-  this.deValtioID = fiberNode.deValtioID;
-  this.index = fiberNode.index;
-  this.componentName = getFiberNodeName(fiberNode, parentNode);
-  this.hasProps = fiberNode.memoizedProps ? true : false;
-  this.hasState = fiberNode.memoizedState ? true : false;
-};
-
-// declare fiberRoot object
-let fiberRoot;
-
-// declare deValtioNodes array here so we can access it from browser console
-const deValtioNodes = [];
-
-const origProxy = Proxy;
-
-const objectHandler = {
-  get: (target, prop, receiver) => {
-    console.log(`target: ${target}, prop: ${prop}, receiver: ${receiver}`);
-    Reflect.get(...arguments);
+// throttle function
+const throttle = (func, delay) => {
+  let throttled;
+  return function(...params) {
+    if (!throttled) {
+      func.apply(this, params);
+      throttled = true;
+      setTimeout(() => throttled = false, delay);
+    }
   }
 };
 
-const proxyHandler = {
-  construct: (proxyObj, targetObj, handler) => {
-    let caller;
-    
-    try {
-      throw new Error();
-    } catch(err) {
-      // console.log(`err.stack is ${pp(err.stack)}`);
-      caller = err.stack.split("at ")[2].split(" (")[0];
+// main function (to be run via setTimeout since all this code is rendered before the document
+// and all its associated scripts )
+const deValtioMain = (fiberRoot) => {
+
+  // expose fiberRoot via window.__deValtio hook
+  window.__deValtio.fiberRoot = fiberRoot;
+
+  // func to get component (i.e. constructor) name
+  // this returns one or two letter names in prod mode but
+  // this can be adapted to still get proper component names if the site uses source maps
+  // and we add source map parsing
+  const getFiberNodeName = (node) => {
+    // root node
+    if (node.tag === 3) return 'fiberRoot';
+    // functional or class component
+    if (node.tag === 0 || node.tag === 1) return `${node.type?.name}`;
+    // host component (renders to browser DOM)
+    if (node.tag === 5) {
+      return node.stateNode.className ? `${node.type}.${node.stateNode.className}` : `${node.type}`;
     }
-
-    
-    
-    // console.log(`Proxy caller is: ${caller} and params are ${pp(args)}`)
-    // console.dir(args)
-    // console.dir(Reflect.ownKeys(args[1]));
-    // console.dir(args[1]['f'])
-    // console.dir(args[1].constructor)
-    // console.log(Reflect.ownKeys(args[-1]));
-    // args.forEach((arg) => {
-    //   console.log(`arg is ${arg}`);
-    //   arg = new Proxy(arg, objectHandler);
-    // });
-    // // return new origProxy(target, args, receiver);
-    return Reflect.construct(proxyObj, targetObj, handler);
-  }
-};
-
-Proxy = new origProxy(origProxy, proxyHandler);
-
-// Proxy = (target, args, receiver) => {
-//   console.log(`target: ${target}, args: ${args}, receiver: ${receiver}`);
-// Proxy = () => {
-//   console.log(`params are: ${arguments}`);
-//   // return new origProxy(arguments);
-// };
-// Proxy.prototype = origProxy.prototype;
-
-// generateDeValtioID
-const generateDeValtioID = (fiberNode, prevNode = null) => {
-  try {
-    let width = fiberNode.index;
-
-    // check if fiberNode already has deValtioID
-    fiberNode.deValtioID ? currentID = deValtionID : currentID = null;
-
-    // func to check if currentID and generatedID mismatch. If they do, throw an error
-    const checkMismatch = function(newID) {
-      if (currentID && currentID !== newID) {
-        throw new Error('Generated ID mismatch. Existing ID is ${currentID} and generated ID is ${newID');
-      }
-    }
-    
-    // detect fiberRoot (tag is 3 and return property is null)
-    if (fiberNode.return === null && fiberNode.tag === 3 && fiberNode.index === 0) {
-      fiberNode.deValtioID = '0,0';
-      checkMismatch(fiberNode.deValtioID);
-      return fiberNode.deValtioID;
-    }
-
-    // throw exception if return property has not been set and node isn't fiberRoot
-    if (fiberNode.return === null) {
-      throw new Error('node is not fiberRoot but return property is null.');
-    }
-
-    // get current depth by getting the depth of return and incrementing by one
-    // let depth = Number(fiberNode.return.deValtioID.split(':').pop().split(',')[0]) + 1;
-
-    // width is just the index property of the fiberNode
-    // let width = fiberNode.index;
-
-    // detect if current node is child of sibling
-    if (fiberNode.return.deValtioID && fiberNode.return.index > 0) {
-      const returnName = fiberNode.return.deValtioID;
-      fiberNode.deValtioID = `${returnName}:1,${width}`;
-      checkMismatch(fiberNode.deValtioID);
-      return fiberNode.deValtioID;
-    }
-
-    // get depth by parsing name of return, adding one to the last depth, and appending the width
-    let returnName = fiberNode.return.deValtioID;
-    if (prevNode && fiberNode.return !== prevNode) returnName = prevNode.deValtioID;
-    
-    const splitReturnName = returnName.split(':');
-    const returnNodeDepth = Number(splitReturnName.pop().split(',')[0]);
-    const newName = splitReturnName.join(':') ? 
-      splitReturnName.join(':') + ':' + (returnNodeDepth + 1) + ',' + width :
-      (returnNodeDepth + 1) + ',' + width;
-      
-    fiberNode.deValtioID = newName;
-    checkMismatch(fiberNode.deValtioID);
-    return fiberNode.deValtioID;
-  } catch (err) {
-    console.dir(fiberNode);
-    throw err;
-  }  
-}
-
-const hijackFiberNodePrototype = () => {
-  // check if we have a fiberRoot
-  if (!fiberRoot) return false;
-  
-  // get FiberNode prototype object
-  fiberNodePrototype = Object.getPrototypeOf(fiberRoot);
-
-  newProperties = {
-    
-    _return: {
-      value: null,
-      writable: true,
-      enumerable: false,
-      configurable: true
-    },
-
-    return: {
-      get: function() {
-        return this._return;
-      },
-      set: function(fiber) {
-        // check if return is set to null or anything else that's not a fiberNode
-        if (!(fiber instanceof fiberNodePrototype.constructor)) {
-          this._return = fiber;
-          return this;
-        }
-        
-        console.log(`return value being set on fiberNode`);
-        if (this.deValtioID) {
-          console.log(`this fiberNode already exists and has the name: ${this.deValtioID}`);
-          console.log(`the return is being set to: ${getFiberNodeName(fiber)}`);
-          console.dir(fiber);
-        }
-        this._return = fiber;
-
-        if (fiber.deValtioID) {
-          console.log(`return node has deValtioID (${fiber.deValtioID}) so pushing this to deValtioNodes`)
-          generateDeValtioID(this, fiber);
-          deValtioNodes.push(new DeValtioNode(this));
-        }
-
-        return this;
-      }
-    }
+    // everything else
+    if (typeof node.type === 'string') return node.type;
+    if (typeof node.type === 'function') return node.type?.name;
+    if (typeof node.type === 'symbol') return node.type.toString();
   };
+      
 
-  return Object.defineProperties(fiberNodePrototype, newProperties);
-};
+  // function to parse Fiber Tree
 
-document.onreadystatechange = () => {
-  if (document.readyState === 'complete') {
-
-    const getFiberRoot = () => {
-      const reactRoots = [];
-      document.querySelectorAll('*').forEach((node) => {
-        if (node._reactRootContainer) reactRoots.push(node);
-      });
-
-      if (reactRoots[0]) {
-        console.log(`React Root Found`);
-        fiberRoot = reactRoots[0]._reactRootContainer._internalRoot.current;
-        // repeating message to test comms with front end
-        setInterval(() => window.postMessage({message: 'This is a React App'}), 2000)
-      } return fiberRoot;
+  const climbTree = (node) => {
+    // this defines the basic deValtioTree object which is also each node object in that tree
+    let deValtioTree = {
+      children: []
     };
 
-    //tree parsing part.
+    // base case
+    if (!node) return deValtioTree;
 
-    // climb initial Tree, add valtioID to fiberNode properties
-    // we should only need to do this once per page load and, after that,
-    // if we hijack the fiberNode constructor we can have the React Reconciler
-    // generate DeValtioNodes on the fly.
+    // get tag
+    deValtioTree.tag = node.tag;
 
-    // valtioID format:
-    // 0,0:
-    
-    const climbFiber = (fiberNode, callback, prevNode = null) => {
-      callback(fiberNode, prevNode);
+    // get key
+    deValtioTree.key = node.key;
 
-      // climb sibling
-      try {
-        if (fiberNode.sibling) climbFiber(fiberNode.sibling, callback, fiberNode);
-      } catch (err) {
-        console.log(`Recursive call to sibling node failed. Node before failed call is:`);
-        console.dir(fiberNode);
-        throw err;
+    // get name of node
+    deValtioTree.name = getFiberNodeName(node);
+
+    // get state
+    // TO-DO: Finish this
+    deValtioTree.state = {};
+
+    // get props
+    // TO-DO: Finish this
+    deValtioTree.props = null;
+    // check if current node is a function component (tag: 0) or class component (tag: 1);
+    // if ([0, 1].includes(node.tag)) {
+    //[0,1].includes(node.tag) ? deValtioTree.props = JSON.parse(JSON.stringify(node.memoizedProps) || null) : null;
+    // };
+
+    // get hooks
+    // TO-DO: Finish this
+    deValtioTree.hooks = {};
+
+    // check if current fiberNode has a child and, if so,
+    // push it and any siblings to our children property
+    if (node.child) {
+      deValtioTree.children.push(node.child);
+
+      if (node.child.sibling) {
+        let sibling = node.child.sibling;
+        while (sibling) {
+          deValtioTree.children.push(sibling);
+          // move on to next sibling
+          sibling = sibling.sibling;
+        }
       }
-      // climb child
-      try {
-        if (fiberNode.child) climbFiber(fiberNode.child, callback, fiberNode);
-      } catch (err) {
-        console.log(`Recursive call to child node failed. Node before failed call is:`);
-        console.dir(fiberNode);
-        throw err;
-      };
+    };
+
+      // traverse children array recursively and replace all fiberNodes
+      // in the deValtioTree.children property with deValtioTrees
+      deValtioTree.children = deValtioTree.children.map(node => climbTree(node));
+
+      // return the deValtioTree object
+      return deValtioTree;
     }
 
-    
-
-    setTimeout(() => {
-      fiberRoot = getFiberRoot();
-      if (fiberRoot) {
-        climbFiber(fiberRoot, (node, prevNode) => {
-        prevNode ? generateDeValtioID(node, prevNode) : generateDeValtioID(node);
-        deValtioNodes.push(new DeValtioNode(node));
-        });
-        sendToContentScript('deValtioTree', deValtioNodes);
-        console.dir(deValtioNodes);
-        console.log(`${deValtioNodes.length} fiberNodes found.`)
-        console.log(`Number of nodes with props: ${deValtioNodes.filter(node => node.hasProps).length}`);
-        console.log(`Number of nodes with state: ${deValtioNodes.filter(node => node.hasState).length}`);
-        // console.log(`Hijacking fiberNode prototype return property...`);
-        // hijackFiberNodePrototype();
+  // throttled sendToContentScipt
+  const throttledSendToContentScript = throttle(sendToContentScript, throttleDelay);
+  
+  // if fiberRoot exists, proxy it to check for current being set.
+  handler.set = function (target, prop, value) {
+    if (prop === 'current') {
+      if (DEBUG) console.log(`current property of stateNode has been changed.`);
+      let deValtioTree = climbTree(value);
+      throttledSendToContentScript('deValtioTree', deValtioTree);
       }
-    }, 1000);
+    return Reflect.set(target, prop, value);
   }
+
+  // proxy the stateNode so that we can detect changes to fiberRoot. This avoids
+  // us having to use React DevTools and wrapping their onFiberRootCommit hook.
+  fiberRoot.current.stateNode = new Proxy(fiberRoot.current.stateNode, handler);
+
+  // initial send of component tree to front end
+  let deValtioTree = climbTree(fiberRoot);
+  sendToContentScript('deValtioTree', climbTree(deValtioTree));
+
 };
+
+
+// wait 2 seconds and then check if React is on the page. If it is, run the main function.
+setTimeout(() => {
+  const reactRoots = [];
+  let fiberRoot;
+  document.querySelectorAll('div').forEach(node => {
+    if (node._reactRootContainer) reactRoots.push(node);
+  });
+  if (reactRoots[0]) {
+    fiberRoot = reactRoots[0]._reactRootContainer._internalRoot;
+
+    // since this is a React app, we'll let the front end know
+    // let timesToSend = 5;
+    // messageInterval = setInterval(() => {
+    //   if (timesToSend === 0) {
+    //     clearInterval(messageInterval);
+    //     messageInterval = null;
+    //   }
+    //   sendToContentScript({message: 'This is a React App'})
+    //   timesToSend--;
+    // }, 2000)
+    deValtioMain(fiberRoot);
+    }
+}, 2000);

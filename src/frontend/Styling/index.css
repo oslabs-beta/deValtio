@@ -1,7 +1,11 @@
+*, ::before, ::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    margin: 0;
-    padding: 0;
-    background: #98C1D9;
+    background: #293241;
 }
 
 html,
@@ -16,6 +20,7 @@ body,
 
 
 /* css for state diff to be able to render brackets as well as change the background of current state vs previous state */
+/* this is css for the delta div */
 .jsondiffpatch-delta {
     font-family: Helvetica;
     font-size: 13px;
@@ -23,6 +28,7 @@ body,
     padding: 0 0 0 12px;
     display: inline-block;
   }
+  /* this is for any element that has not had changes in it */
   .jsondiffpatch-delta pre {
     font-family: Helvetica;
     font-size: 13px;
@@ -53,10 +59,10 @@ body,
     background: rgb(141, 51, 51);
     text-decoration: line-through;
   }
-  .jsondiffpatch-unchanged,
+  /* .jsondiffpatch-unchanged,
   .jsondiffpatch-movedestination {
     color: gray;
-  }
+  } */
   .jsondiffpatch-unchanged,
   .jsondiffpatch-movedestination > .jsondiffpatch-value {
     transition: all 0.5s;
@@ -177,6 +183,67 @@ body,
     color: white;
     font-weight: bold;
   }
+
+/* STATE TREE COMPONENT */
+.componentTree {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 20px;
+  align-items: flex-start;
+}
+.componentTreeDiff {
+  display: flex;
+  margin-right: 25px;
+  align-items: center;
+}
+
+/* STATE DIFF COMPONENT */
+/* COMPONENT TREE COMPONENT */
+/* PROXY NETWORK COMPONENT */
+/* Toggle Switch */
+.toggleSwitch {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 14px;
+}
+.toggleSwitch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.toggleSlider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+}
+.toggleSlider:before {
+  position: absolute;
+  content: '';
+  height: 18px;
+  width: 18px;
+  left: 0px;
+  bottom: -1.8px;
+  background-color: white;
+  transition: 0.4s;
+}
+input:checked + .toggleSlider {
+  background-color: #1cb5c9;
+}
+input:checked + .toggleSlider:before {
+  transform: translateX(15px);
+}
+.toggleSlider.round {
+  border-radius: 34px;
+}
+.toggleSlider.round:before {
+  border-radius: 50%;
+}
 
 /* PROXY NETWORK COMPONENT*/
 /* Dropdown selection  */

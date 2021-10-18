@@ -29,6 +29,8 @@ const SnapShots = styled.section`
     overflow-y: auto;
 `;
 
+// creates a snapshot button that is used to access the app's state at whatever index <Snapshot /> value is
+
 export const SnapShotContainer = (): JSX.Element => {
 
     const state = useContext(GlobalStateContext);

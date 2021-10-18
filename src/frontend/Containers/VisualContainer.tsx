@@ -2,9 +2,8 @@ import StateDiff from '../components/StateDiff/StateDiff';
 import ComponentTree from '../components/ComponentTree/ComponentTree';
 import ComponentGraph from '../components/ComponentGraph/ComponentGraph';
 import ProxyNetwork from '../components/ProxyNetwork/ProxyNetwork';
-import styled from 'styled-components';
-
 import { ParentSize } from '@visx/responsive';
+import styled from 'styled-components';
 
 const VisualSection = styled.section`
   height: 96vh;
@@ -15,6 +14,8 @@ const VisualSection = styled.section`
   text-align:center;
   overflow-y: auto;
 `;
+
+// conditionally renders whichever component correspondes with tabNum.  tabNum's value is changed in NavBar
 
 function VisualContainer({ tabNum }: { tabNum: number }): JSX.Element {
   return (

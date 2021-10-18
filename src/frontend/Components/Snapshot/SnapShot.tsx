@@ -19,10 +19,7 @@ const SnapShotButton = styled.button<{ snapShotIndex: number }>`
     };
 `;
 
-// const P = styled.p`
-//     margin: 0.3em;
-//     font-size: 1.2em;
-// `;
+// creates button each time a new version of the inspected app's fiber tree is recieved
 
 const SnapShot = ({ snapNum, setSnapShotIndex, value }: { snapNum: number, setSnapShotIndex: Dispatch<SetStateAction<number>>, value: number }) => {
 

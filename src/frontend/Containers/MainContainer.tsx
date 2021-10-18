@@ -2,13 +2,12 @@
 import { useState, useEffect } from 'react';
 import { SnapShotContainer } from './SnapShotContainer';
 import VisualContainer from './VisualContainer';
-import NavBar from '../Components/NavBar/navbar';
+import NavBar from '../Components/NavBar/NavBar';
 import { NotValtio } from '../Components/NotValtio';
-import styled from 'styled-components';
 import { GlobalStateContext } from '../Contexts/GlobalStateContext';
 import { SnapShotContext } from '../Contexts/SnapShotContext';
-import { fakeState } from '../../fakeState';
-import { RawDataFormat, RawData, RawDataContainer, TreeNode } from '../../Types/Types';
+import { TreeNode } from '../../Types/Types';
+import styled from 'styled-components';
 
 
 const Main = styled.main`
@@ -25,6 +24,7 @@ function MainContainer() {
   const [rawData, setRawData] = useState<TreeNode[] | []>([]);
   const [usesValtio, setUsesValtio] = useState<boolean>(false);
 
+  // place holder variable for port to be assigned to in useEffect.  
   let comms;
 
   useEffect(() => {

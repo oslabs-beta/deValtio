@@ -1,7 +1,6 @@
+import { SetStateAction, Dispatch } from "react";
 import { NavTab } from "./NavTab";
 import styled from "styled-components";
-import React from 'react';
-import { SetStateAction, Dispatch } from "react";
 
 const NavBarSection = styled.section`
   display: flex;
@@ -12,8 +11,10 @@ const NavBarSection = styled.section`
   background: #293241;
 `;
 
-const NavBar = ({ setTabNum, tabNum }: { setTabNum: Dispatch<SetStateAction<number>>, tabNum: number }): JSX.Element => {
+// creates buttons whos values are set by the setter function setTabNum. 
+// A different component is rendered in MainContainer according to what the value of tabNum is
 
+const NavBar = ({ setTabNum, tabNum }: { setTabNum: Dispatch<SetStateAction<number>>, tabNum: number }): JSX.Element => {
   return (
     <NavBarSection>
       <NavTab value={1} tabNum={tabNum} text='State Diff' setTabNum={setTabNum} />
@@ -22,6 +23,6 @@ const NavBar = ({ setTabNum, tabNum }: { setTabNum: Dispatch<SetStateAction<numb
       <NavTab value={4} tabNum={tabNum} text='Component Tree' setTabNum={setTabNum} />
     </NavBarSection >
   );
-}
+};
 
 export default NavBar;

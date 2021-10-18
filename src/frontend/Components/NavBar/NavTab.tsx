@@ -1,5 +1,5 @@
-import styled from "styled-components";
 import { SetStateAction, Dispatch } from "react";
+import styled from "styled-components";
 
 const NavTabStyled = styled.button<{ tabNum: number }>`
   background: ${props => props.value === props.tabNum ? '#E0FBFC' : '#98C1D9'};
@@ -15,21 +15,22 @@ const NavTabStyled = styled.button<{ tabNum: number }>`
   };
 `;
 
+// interface for props that are received in NavTab
 interface INavTab {
-    value: number;
-    tabNum: number;
-    setTabNum: Dispatch<SetStateAction<number>>
-    text: string;
+  value: number;
+  tabNum: number;
+  setTabNum: Dispatch<SetStateAction<number>>;
+  text: string;
 }
 
 export const NavTab = ({ value, tabNum, text, setTabNum }: INavTab) => {
 
-    const changeTab = (e: React.MouseEvent<HTMLElement>): void => {
-        setTabNum(value);
-        return;
-    };
+  const changeTab = (e: React.MouseEvent<HTMLElement>): void => {
+    setTabNum(value);
+    return;
+  };
 
-    return (
-        <NavTabStyled value={value} tabNum={tabNum} onClick={changeTab}>{text}</NavTabStyled>
-    );
+  return (
+    <NavTabStyled value={value} tabNum={tabNum} onClick={changeTab}>{text}</NavTabStyled>
+  );
 }

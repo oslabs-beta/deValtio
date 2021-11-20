@@ -218,7 +218,7 @@ const deValtioMain = (fiberRoot) => {
     }
 
   // throttled sendToContentScipt
-  const throttledSendToContentScript = throttle(sendToContentScript, throttleDelay);
+  const throttledSendToContentScript = limitRate(sendToContentScript, throttleDelay);
   
   // if fiberRoot exists, proxy it to check for current being set.
   handler.set = function (target, prop, value) {

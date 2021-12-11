@@ -1,3 +1,6 @@
+// THIS FILE IS SOLELY MEANT FOR DEVELOPMENT PURPOSES
+
+
 export default {
   statusProxy: {
     value: 'Next Player: X',

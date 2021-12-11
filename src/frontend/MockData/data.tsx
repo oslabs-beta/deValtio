@@ -1,16 +1,18 @@
+// THIS FILE IS SOLELY MEANT FOR DEVELOPMENT PURPOSES
+
 export default {
   name: 'T',
   children: [
     {
       name: 'A',
       children: [
-        { 
+        {
           name: 'A1',
         },
-        { 
+        {
           name: 'A2',
         },
-        { 
+        {
           name: 'A3',
         },
         {
@@ -37,19 +39,19 @@ export default {
         }
       ]
     },
-    { 
+    {
       name: 'Z',
     },
     {
       name: 'B',
       children: [
-        { 
+        {
           name: 'B1',
-        }, 
-        { 
+        },
+        {
           name: 'B2',
-        }, 
-        { 
+        },
+        {
           name: 'B3',
         }]
     }

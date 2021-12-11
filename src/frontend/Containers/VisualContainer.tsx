@@ -16,12 +16,13 @@ const VisualSection = styled.section`
 `;
 
 // conditionally renders whichever component correspondes with tabNum.  tabNum's value is changed in NavBar
+// PROXY NETWORK IS NOT BEING RENDERED IN BUILD BECAUSE IT CURRENTLY IS IN DEVELOPMENT
 
 function VisualContainer({ tabNum }: { tabNum: number }): JSX.Element {
   return (
     <VisualSection>
       {(tabNum === 1) && <StateDiff />}
-      {(tabNum === 2) && <ProxyNetwork />}
+      {/* {(tabNum === 2) && <ProxyNetwork />} */}
       {(tabNum === 3) && <ParentSize>
         {({ width, height }) => (
           <ComponentGraph width={width} height={height} />

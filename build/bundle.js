@@ -751,6 +751,2221 @@ var unitlessKeys = {
 
 /***/ }),
 
+/***/ "./node_modules/@use-gesture/core/actions/dist/use-gesture-core-actions.esm.js":
+/*!*************************************************************************************!*\
+  !*** ./node_modules/@use-gesture/core/actions/dist/use-gesture-core-actions.esm.js ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ConfigResolverMap": () => (/* reexport safe */ _dist_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.C),
+/* harmony export */   "EngineMap": () => (/* reexport safe */ _dist_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.E),
+/* harmony export */   "dragAction": () => (/* reexport safe */ _dist_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.e),
+/* harmony export */   "hoverAction": () => (/* reexport safe */ _dist_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.h),
+/* harmony export */   "moveAction": () => (/* reexport safe */ _dist_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.m),
+/* harmony export */   "pinchAction": () => (/* reexport safe */ _dist_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.p),
+/* harmony export */   "registerAction": () => (/* reexport safe */ _dist_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.r),
+/* harmony export */   "scrollAction": () => (/* reexport safe */ _dist_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.s),
+/* harmony export */   "wheelAction": () => (/* reexport safe */ _dist_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.w)
+/* harmony export */ });
+/* harmony import */ var _dist_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../dist/actions-da2a698c.esm.js */ "./node_modules/@use-gesture/core/dist/actions-da2a698c.esm.js");
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@use-gesture/core/dist/actions-da2a698c.esm.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@use-gesture/core/dist/actions-da2a698c.esm.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "C": () => (/* binding */ ConfigResolverMap),
+/* harmony export */   "E": () => (/* binding */ EngineMap),
+/* harmony export */   "S": () => (/* binding */ SUPPORT),
+/* harmony export */   "_": () => (/* binding */ _objectSpread2),
+/* harmony export */   "a": () => (/* binding */ _defineProperty),
+/* harmony export */   "b": () => (/* binding */ touchIds),
+/* harmony export */   "c": () => (/* binding */ chain),
+/* harmony export */   "d": () => (/* binding */ toHandlerProp),
+/* harmony export */   "e": () => (/* binding */ dragAction),
+/* harmony export */   "h": () => (/* binding */ hoverAction),
+/* harmony export */   "i": () => (/* binding */ isTouch),
+/* harmony export */   "m": () => (/* binding */ moveAction),
+/* harmony export */   "p": () => (/* binding */ pinchAction),
+/* harmony export */   "r": () => (/* binding */ registerAction),
+/* harmony export */   "s": () => (/* binding */ scrollAction),
+/* harmony export */   "t": () => (/* binding */ toDomEventType),
+/* harmony export */   "w": () => (/* binding */ wheelAction)
+/* harmony export */ });
+/* harmony import */ var _maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./maths-b2a210f4.esm.js */ "./node_modules/@use-gesture/core/dist/maths-b2a210f4.esm.js");
+
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+
+    if (enumerableOnly) {
+      symbols = symbols.filter(function (sym) {
+        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+      });
+    }
+
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function _objectSpread2(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      ownKeys(Object(source), true).forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
+const EVENT_TYPE_MAP = {
+  pointer: {
+    start: 'down',
+    change: 'move',
+    end: 'up'
+  },
+  mouse: {
+    start: 'down',
+    change: 'move',
+    end: 'up'
+  },
+  touch: {
+    start: 'start',
+    change: 'move',
+    end: 'end'
+  },
+  gesture: {
+    start: 'start',
+    change: 'change',
+    end: 'end'
+  }
+};
+
+function capitalize(string) {
+  if (!string) return '';
+  return string[0].toUpperCase() + string.slice(1);
+}
+
+function toHandlerProp(device, action = '', capture = false) {
+  const deviceProps = EVENT_TYPE_MAP[device];
+  const actionKey = deviceProps ? deviceProps[action] || action : action;
+  return 'on' + capitalize(device) + capitalize(actionKey) + (capture ? 'Capture' : '');
+}
+function toDomEventType(device, action = '') {
+  const deviceProps = EVENT_TYPE_MAP[device];
+  const actionKey = deviceProps ? deviceProps[action] || action : action;
+  return device + actionKey;
+}
+function isTouch(event) {
+  return 'touches' in event;
+}
+
+function getCurrentTargetTouchList(event) {
+  return Array.from(event.touches).filter(e => {
+    var _event$currentTarget, _event$currentTarget$;
+
+    return e.target === event.currentTarget || ((_event$currentTarget = event.currentTarget) === null || _event$currentTarget === void 0 ? void 0 : (_event$currentTarget$ = _event$currentTarget.contains) === null || _event$currentTarget$ === void 0 ? void 0 : _event$currentTarget$.call(_event$currentTarget, e.target));
+  });
+}
+
+function getTouchList(event) {
+  return event.type === 'touchend' ? event.changedTouches : event.targetTouches;
+}
+
+function getValueEvent(event) {
+  return isTouch(event) ? getTouchList(event)[0] : event;
+}
+
+function distanceAngle(P1, P2) {
+  const dx = P2.clientX - P1.clientX;
+  const dy = P2.clientY - P1.clientY;
+  const cx = (P2.clientX + P1.clientX) / 2;
+  const cy = (P2.clientY + P1.clientY) / 2;
+  const distance = Math.hypot(dx, dy);
+  const angle = -(Math.atan2(dx, dy) * 180) / Math.PI;
+  const origin = [cx, cy];
+  return {
+    angle,
+    distance,
+    origin
+  };
+}
+function touchIds(event) {
+  return getCurrentTargetTouchList(event).map(touch => touch.identifier);
+}
+function touchDistanceAngle(event, ids) {
+  const [P1, P2] = Array.from(event.touches).filter(touch => ids.includes(touch.identifier));
+  return distanceAngle(P1, P2);
+}
+function pointerId(event) {
+  const valueEvent = getValueEvent(event);
+  return isTouch(event) ? valueEvent.identifier : valueEvent.pointerId;
+}
+function pointerValues(event) {
+  const valueEvent = getValueEvent(event);
+  return [valueEvent.clientX, valueEvent.clientY];
+}
+const LINE_HEIGHT = 40;
+const PAGE_HEIGHT = 800;
+function wheelValues(event) {
+  let {
+    deltaX,
+    deltaY,
+    deltaMode
+  } = event;
+
+  if (deltaMode === 1) {
+    deltaX *= LINE_HEIGHT;
+    deltaY *= LINE_HEIGHT;
+  } else if (deltaMode === 2) {
+    deltaX *= PAGE_HEIGHT;
+    deltaY *= PAGE_HEIGHT;
+  }
+
+  return [deltaX, deltaY];
+}
+function scrollValues(event) {
+  var _ref, _ref2;
+
+  const {
+    scrollX,
+    scrollY,
+    scrollLeft,
+    scrollTop
+  } = event.currentTarget;
+  return [(_ref = scrollX !== null && scrollX !== void 0 ? scrollX : scrollLeft) !== null && _ref !== void 0 ? _ref : 0, (_ref2 = scrollY !== null && scrollY !== void 0 ? scrollY : scrollTop) !== null && _ref2 !== void 0 ? _ref2 : 0];
+}
+function getEventDetails(event) {
+  const payload = {};
+  if ('buttons' in event) payload.buttons = event.buttons;
+
+  if ('shiftKey' in event) {
+    const {
+      shiftKey,
+      altKey,
+      metaKey,
+      ctrlKey
+    } = event;
+    Object.assign(payload, {
+      shiftKey,
+      altKey,
+      metaKey,
+      ctrlKey
+    });
+  }
+
+  return payload;
+}
+
+function call(v, ...args) {
+  if (typeof v === 'function') {
+    return v(...args);
+  } else {
+    return v;
+  }
+}
+function noop() {}
+function chain(...fns) {
+  if (fns.length === 0) return noop;
+  if (fns.length === 1) return fns[0];
+  return function () {
+    let result;
+
+    for (const fn of fns) {
+      result = fn.apply(this, arguments) || result;
+    }
+
+    return result;
+  };
+}
+function assignDefault(value, fallback) {
+  return Object.assign({}, fallback, value || {});
+}
+
+const BEFORE_LAST_KINEMATICS_DELAY = 32;
+class Engine {
+  constructor(ctrl, args, key) {
+    this.ctrl = ctrl;
+    this.args = args;
+    this.key = key;
+
+    if (!this.state) {
+      this.state = {
+        values: [0, 0],
+        initial: [0, 0]
+      };
+      if (this.init) this.init();
+      this.reset();
+    }
+  }
+
+  get state() {
+    return this.ctrl.state[this.key];
+  }
+
+  set state(state) {
+    this.ctrl.state[this.key] = state;
+  }
+
+  get shared() {
+    return this.ctrl.state.shared;
+  }
+
+  get eventStore() {
+    return this.ctrl.gestureEventStores[this.key];
+  }
+
+  get timeoutStore() {
+    return this.ctrl.gestureTimeoutStores[this.key];
+  }
+
+  get config() {
+    return this.ctrl.config[this.key];
+  }
+
+  get sharedConfig() {
+    return this.ctrl.config.shared;
+  }
+
+  get handler() {
+    return this.ctrl.handlers[this.key];
+  }
+
+  reset() {
+    const {
+      state,
+      shared,
+      config,
+      ingKey,
+      args
+    } = this;
+    const {
+      transform,
+      threshold = [0, 0]
+    } = config;
+    shared[ingKey] = state._active = state.active = state._blocked = state._force = false;
+    state._step = [false, false];
+    state.intentional = false;
+    state._movement = [0, 0];
+    state._distance = [0, 0];
+    state._delta = [0, 0];
+    state._threshold = _maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__.V.sub(transform(threshold), transform([0, 0])).map(Math.abs);
+    state._bounds = [[-Infinity, Infinity], [-Infinity, Infinity]];
+    state.args = args;
+    state.axis = undefined;
+    state.memo = undefined;
+    state.elapsedTime = 0;
+    state.direction = [0, 0];
+    state.distance = [0, 0];
+    state.velocity = [0, 0];
+    state.movement = [0, 0];
+    state.delta = [0, 0];
+    state.timeStamp = 0;
+  }
+
+  start(event) {
+    const state = this.state;
+    const config = this.config;
+
+    if (!state._active) {
+      this.reset();
+      state._active = true;
+      state.target = event.target;
+      state.currentTarget = event.currentTarget;
+      state.initial = state.values;
+      state.lastOffset = config.from ? call(config.from, state) : state.offset;
+      state.offset = state.lastOffset;
+    }
+
+    state.startTime = state.timeStamp = event.timeStamp;
+  }
+
+  compute(event) {
+    const {
+      state,
+      config,
+      shared
+    } = this;
+    state.args = this.args;
+    let dt = 0;
+
+    if (event) {
+      state.event = event;
+      if (config.preventDefault && event.cancelable) state.event.preventDefault();
+      state.type = event.type;
+      shared.touches = this.ctrl.pointerIds.size || this.ctrl.touchIds.size;
+      shared.locked = !!document.pointerLockElement;
+      Object.assign(shared, getEventDetails(event));
+      shared.down = shared.pressed = shared.buttons % 2 === 1 || shared.touches > 0;
+      dt = event.timeStamp - state.timeStamp;
+      state.timeStamp = event.timeStamp;
+      state.elapsedTime = state.timeStamp - state.startTime;
+    }
+
+    if (state._active) {
+      const _absoluteDelta = state._delta.map(Math.abs);
+
+      _maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__.V.addTo(state._distance, _absoluteDelta);
+    }
+
+    const [_m0, _m1] = config.transform(state._movement);
+    const [_t0, _t1] = state._threshold;
+    let [_s0, _s1] = state._step;
+    if (_s0 === false) _s0 = Math.abs(_m0) >= _t0 && Math.sign(_m0) * _t0;
+    if (_s1 === false) _s1 = Math.abs(_m1) >= _t1 && Math.sign(_m1) * _t1;
+    state.intentional = _s0 !== false || _s1 !== false;
+    if (!state.intentional) return;
+    state._step = [_s0, _s1];
+    const movement = [0, 0];
+    movement[0] = _s0 !== false ? _m0 - _s0 : 0;
+    movement[1] = _s1 !== false ? _m1 - _s1 : 0;
+    if (this.intent) this.intent(movement);
+
+    if (state._active && !state._blocked || state.active) {
+      state.first = state._active && !state.active;
+      state.last = !state._active && state.active;
+      state.active = shared[this.ingKey] = state._active;
+
+      if (event) {
+        if (state.first) {
+          if ('bounds' in config) state._bounds = call(config.bounds, state);
+          if (this.setup) this.setup();
+        }
+
+        state.movement = movement;
+        const previousOffset = state.offset;
+        this.computeOffset();
+
+        if (!state.last || dt > BEFORE_LAST_KINEMATICS_DELAY) {
+          state.delta = _maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__.V.sub(state.offset, previousOffset);
+          const absoluteDelta = state.delta.map(Math.abs);
+          _maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__.V.addTo(state.distance, absoluteDelta);
+          state.direction = state.delta.map(Math.sign);
+
+          if (!state.first && dt > 0) {
+            state.velocity = [absoluteDelta[0] / dt, absoluteDelta[1] / dt];
+          }
+        }
+      }
+    }
+
+    const rubberband = state._active ? config.rubberband || [0, 0] : [0, 0];
+    state.offset = (0,_maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__.c)(state._bounds, state.offset, rubberband);
+    this.computeMovement();
+  }
+
+  emit() {
+    const state = this.state;
+    const shared = this.shared;
+    const config = this.config;
+    if (!state._active) this.clean();
+    if ((state._blocked || !state.intentional) && !state._force && !config.triggerAllEvents) return;
+    const memo = this.handler(_objectSpread2(_objectSpread2(_objectSpread2({}, shared), state), {}, {
+      [this.aliasKey]: state.values
+    }));
+    if (memo !== undefined) state.memo = memo;
+  }
+
+  clean() {
+    this.eventStore.clean();
+    this.timeoutStore.clean();
+  }
+
+}
+
+function selectAxis([dx, dy]) {
+  const d = Math.abs(dx) - Math.abs(dy);
+  if (d > 0) return 'x';
+  if (d < 0) return 'y';
+  return undefined;
+}
+
+function restrictVectorToAxis(v, axis) {
+  switch (axis) {
+    case 'x':
+      v[1] = 0;
+      break;
+
+    case 'y':
+      v[0] = 0;
+      break;
+  }
+}
+
+class CoordinatesEngine extends Engine {
+  constructor(...args) {
+    super(...args);
+
+    _defineProperty(this, "aliasKey", 'xy');
+  }
+
+  reset() {
+    super.reset();
+    this.state.axis = undefined;
+  }
+
+  init() {
+    this.state.offset = [0, 0];
+    this.state.lastOffset = [0, 0];
+  }
+
+  computeOffset() {
+    this.state.offset = _maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__.V.add(this.state.lastOffset, this.state.movement);
+  }
+
+  computeMovement() {
+    this.state.movement = _maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__.V.sub(this.state.offset, this.state.lastOffset);
+  }
+
+  intent(v) {
+    this.state.axis = this.state.axis || selectAxis(v);
+    this.state._blocked = (this.config.lockDirection || !!this.config.axis) && !this.state.axis || !!this.config.axis && this.config.axis !== this.state.axis;
+    if (this.state._blocked) return;
+
+    if (this.config.axis || this.config.lockDirection) {
+      restrictVectorToAxis(v, this.state.axis);
+    }
+  }
+
+}
+
+const DEFAULT_RUBBERBAND = 0.15;
+const commonConfigResolver = {
+  enabled(value = true) {
+    return value;
+  },
+
+  preventDefault(value = false) {
+    return value;
+  },
+
+  triggerAllEvents(value = false) {
+    return value;
+  },
+
+  rubberband(value = 0) {
+    switch (value) {
+      case true:
+        return [DEFAULT_RUBBERBAND, DEFAULT_RUBBERBAND];
+
+      case false:
+        return [0, 0];
+
+      default:
+        return _maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__.V.toVector(value);
+    }
+  },
+
+  from(value) {
+    if (typeof value === 'function') return value;
+    if (value != null) return _maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__.V.toVector(value);
+  },
+
+  transform(value, _k, config) {
+    return value || config.shared.transform;
+  }
+
+};
+
+if (true) {
+  Object.assign(commonConfigResolver, {
+    domTarget(value) {
+      if (value !== undefined) {
+        throw Error(`[@use-gesture]: \`domTarget\` option has been renamed to \`target\`.`);
+      }
+    },
+
+    lockDirection(value) {
+      if (value !== undefined) {
+        throw Error(`[@use-gesture]: \`lockDirection\` option has been merged with \`axis\`. Use it as in \`{ axis: 'lock' }\``);
+      }
+    },
+
+    initial(value) {
+      if (value !== undefined) {
+        throw Error(`[@use-gesture]: \`initial\` option has been renamed to \`from\`.`);
+      }
+    }
+
+  });
+}
+
+const coordinatesConfigResolver = _objectSpread2(_objectSpread2({}, commonConfigResolver), {}, {
+  axis(_v, _k, {
+    axis
+  }) {
+    this.lockDirection = axis === 'lock';
+    if (!this.lockDirection) return axis;
+  },
+
+  bounds(value = {}) {
+    if (typeof value === 'function') {
+      return state => coordinatesConfigResolver.bounds(value(state));
+    }
+
+    if ('current' in value) {
+      return () => value.current;
+    }
+
+    if (typeof HTMLElement === 'function' && value instanceof HTMLElement) {
+      return value;
+    }
+
+    const {
+      left = -Infinity,
+      right = Infinity,
+      top = -Infinity,
+      bottom = Infinity
+    } = value;
+    return [[left, right], [top, bottom]];
+  }
+
+});
+
+const DISPLACEMENT = 10;
+const KEYS_DELTA_MAP = {
+  ArrowRight: (factor = 1) => [DISPLACEMENT * factor, 0],
+  ArrowLeft: (factor = 1) => [-DISPLACEMENT * factor, 0],
+  ArrowUp: (factor = 1) => [0, -DISPLACEMENT * factor],
+  ArrowDown: (factor = 1) => [0, DISPLACEMENT * factor]
+};
+class DragEngine extends CoordinatesEngine {
+  constructor(...args) {
+    super(...args);
+
+    _defineProperty(this, "ingKey", 'dragging');
+  }
+
+  reset() {
+    super.reset();
+    const state = this.state;
+    state._pointerId = undefined;
+    state._pointerActive = false;
+    state._keyboardActive = false;
+    state._preventScroll = false;
+    state._delayed = false;
+    state.swipe = [0, 0];
+    state.tap = false;
+    state.canceled = false;
+    state.cancel = this.cancel.bind(this);
+  }
+
+  setup() {
+    const state = this.state;
+
+    if (state._bounds instanceof HTMLElement) {
+      const boundRect = state._bounds.getBoundingClientRect();
+
+      const targetRect = state.currentTarget.getBoundingClientRect();
+      const _bounds = {
+        left: boundRect.left - targetRect.left + state.offset[0],
+        right: boundRect.right - targetRect.right + state.offset[0],
+        top: boundRect.top - targetRect.top + state.offset[1],
+        bottom: boundRect.bottom - targetRect.bottom + state.offset[1]
+      };
+      state._bounds = coordinatesConfigResolver.bounds(_bounds);
+    }
+  }
+
+  cancel() {
+    const state = this.state;
+    if (state.canceled) return;
+    setTimeout(() => {
+      state.canceled = true;
+      state._active = false;
+      this.compute();
+      this.emit();
+    }, 0);
+  }
+
+  setActive() {
+    this.state._active = this.state._pointerActive || this.state._keyboardActive;
+  }
+
+  clean() {
+    this.pointerClean();
+    this.state._pointerActive = false;
+    this.state._keyboardActive = false;
+    super.clean();
+  }
+
+  pointerDown(event) {
+    if (event.buttons != null && event.buttons % 2 !== 1) return;
+    this.ctrl.setEventIds(event);
+
+    if (this.config.pointerCapture) {
+      event.target.setPointerCapture(event.pointerId);
+    }
+
+    const state = this.state;
+    const config = this.config;
+    if (state._pointerActive) return;
+    this.start(event);
+    this.setupPointer(event);
+    state._pointerId = pointerId(event);
+    state._pointerActive = true;
+    state.values = pointerValues(event);
+    state.initial = state.values;
+
+    if (config.preventScroll) {
+      this.setupScrollPrevention(event);
+    } else if (config.delay > 0) {
+      this.setupDelayTrigger(event);
+    } else {
+      this.startPointerDrag(event);
+    }
+  }
+
+  startPointerDrag(event) {
+    const state = this.state;
+    state._active = true;
+    state._preventScroll = true;
+    state._delayed = false;
+    this.compute(event);
+    this.emit();
+  }
+
+  pointerMove(event) {
+    const state = this.state;
+    const config = this.config;
+    if (!state._pointerActive) return;
+    if (state.type === event.type && event.timeStamp === state.timeStamp) return;
+    const id = pointerId(event);
+    if (state._pointerId && id !== state._pointerId) return;
+    const values = pointerValues(event);
+
+    if (document.pointerLockElement === event.target) {
+      state._delta = [event.movementX, event.movementY];
+    } else {
+      state._delta = _maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__.V.sub(values, state.values);
+      state.values = values;
+    }
+
+    _maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__.V.addTo(state._movement, state._delta);
+    this.compute(event);
+
+    if (state._delayed) {
+      this.timeoutStore.remove('dragDelay');
+      this.startPointerDrag(event);
+      return;
+    }
+
+    if (config.preventScroll && !state._preventScroll) {
+      if (state.axis) {
+        if (state.axis === config.preventScrollAxis || config.preventScrollAxis === 'xy') {
+          state._active = false;
+          this.clean();
+          return;
+        } else {
+          this.timeoutStore.remove('startPointerDrag');
+          this.startPointerDrag(event);
+          return;
+        }
+      } else {
+        return;
+      }
+    }
+
+    this.emit();
+  }
+
+  pointerUp(event) {
+    this.ctrl.setEventIds(event);
+
+    try {
+      if (this.config.pointerCapture && event.target.hasPointerCapture(event.pointerId)) {
+        ;
+        event.target.releasePointerCapture(event.pointerId);
+      }
+    } catch (_unused) {
+      if (true) {
+        console.warn(`[@use-gesture]: If you see this message, it's likely that you're using an outdated version of \`@react-three/fiber\`. \n\nPlease upgrade to the latest version.`);
+      }
+    }
+
+    const state = this.state;
+    const config = this.config;
+    if (!state._pointerActive) return;
+    const id = pointerId(event);
+    if (state._pointerId && id !== state._pointerId) return;
+    this.state._pointerActive = false;
+    this.setActive();
+    this.compute(event);
+    const [dx, dy] = state._distance;
+    state.tap = dx <= 3 && dy <= 3;
+
+    if (state.tap && config.filterTaps) {
+      state._force = true;
+    } else {
+      const [dirx, diry] = state.direction;
+      const [vx, vy] = state.velocity;
+      const [mx, my] = state.movement;
+      const [svx, svy] = config.swipe.velocity;
+      const [sx, sy] = config.swipe.distance;
+      const sdt = config.swipe.duration;
+
+      if (state.elapsedTime < sdt) {
+        if (Math.abs(vx) > svx && Math.abs(mx) > sx) state.swipe[0] = dirx;
+        if (Math.abs(vy) > svy && Math.abs(my) > sy) state.swipe[1] = diry;
+      }
+    }
+
+    this.emit();
+  }
+
+  pointerClick(event) {
+    if (!this.state.tap) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }
+
+  setupPointer(event) {
+    const config = this.config;
+    let device = config.device;
+
+    if (true) {
+      try {
+        if (device === 'pointer') {
+          const currentTarget = 'uv' in event ? event.sourceEvent.currentTarget : event.currentTarget;
+          const style = window.getComputedStyle(currentTarget);
+
+          if (style.touchAction === 'auto') {
+            console.warn(`[@use-gesture]: The drag target has its \`touch-action\` style property set to \`auto\`. It is recommended to add \`touch-action: 'none'\` so that the drag gesture behaves correctly on touch-enabled devices. For more information read this: https://use-gesture.netlify.app/docs/extras/#touch-action.\n\nThis message will only show in development mode. It won't appear in production. If this is intended, you can ignore it.`, currentTarget);
+          }
+        }
+      } catch (_unused2) {}
+    }
+
+    if (config.pointerLock) {
+      event.currentTarget.requestPointerLock();
+    }
+
+    if (!config.pointerCapture) {
+      this.eventStore.add(this.sharedConfig.window, device, 'change', this.pointerMove.bind(this));
+      this.eventStore.add(this.sharedConfig.window, device, 'end', this.pointerUp.bind(this));
+    }
+  }
+
+  pointerClean() {
+    if (this.config.pointerLock && document.pointerLockElement === this.state.currentTarget) {
+      document.exitPointerLock();
+    }
+  }
+
+  preventScroll(event) {
+    if (this.state._preventScroll && event.cancelable) {
+      event.preventDefault();
+    }
+  }
+
+  setupScrollPrevention(event) {
+    persistEvent(event);
+    this.eventStore.add(this.sharedConfig.window, 'touch', 'change', this.preventScroll.bind(this), {
+      passive: false
+    });
+    this.eventStore.add(this.sharedConfig.window, 'touch', 'end', this.clean.bind(this), {
+      passive: false
+    });
+    this.eventStore.add(this.sharedConfig.window, 'touch', 'cancel', this.clean.bind(this), {
+      passive: false
+    });
+    this.timeoutStore.add('startPointerDrag', this.startPointerDrag.bind(this), this.config.preventScroll, event);
+  }
+
+  setupDelayTrigger(event) {
+    this.state._delayed = true;
+    this.timeoutStore.add('dragDelay', this.startPointerDrag.bind(this), this.config.delay, event);
+  }
+
+  keyDown(event) {
+    const deltaFn = KEYS_DELTA_MAP[event.key];
+    const state = this.state;
+
+    if (deltaFn) {
+      const factor = event.shiftKey ? 10 : event.altKey ? 0.1 : 1;
+      state._delta = deltaFn(factor);
+      this.start(event);
+      state._keyboardActive = true;
+      _maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__.V.addTo(state._movement, state._delta);
+      this.compute(event);
+      this.emit();
+    }
+  }
+
+  keyUp(event) {
+    if (!(event.key in KEYS_DELTA_MAP)) return;
+    this.state._keyboardActive = false;
+    this.setActive();
+    this.compute(event);
+    this.emit();
+  }
+
+  bind(bindFunction) {
+    const device = this.config.device;
+    bindFunction(device, 'start', this.pointerDown.bind(this));
+
+    if (this.config.pointerCapture) {
+      bindFunction(device, 'change', this.pointerMove.bind(this));
+      bindFunction(device, 'end', this.pointerUp.bind(this));
+      bindFunction(device, 'cancel', this.pointerUp.bind(this));
+    }
+
+    bindFunction('key', 'down', this.keyDown.bind(this));
+    bindFunction('key', 'up', this.keyUp.bind(this));
+
+    if (this.config.filterTaps) {
+      bindFunction('click', '', this.pointerClick.bind(this), {
+        capture: true
+      });
+    }
+  }
+
+}
+
+function persistEvent(event) {
+  'persist' in event && typeof event.persist === 'function' && event.persist();
+}
+
+const isBrowser = typeof window !== 'undefined' && window.document && window.document.createElement;
+
+function supportsTouchEvents() {
+  return isBrowser && 'ontouchstart' in window;
+}
+
+function isTouchScreen() {
+  return supportsTouchEvents() || isBrowser && navigator.maxTouchPoints > 1;
+}
+
+function supportsPointerEvents() {
+  return isBrowser && 'onpointerdown' in window;
+}
+
+function supportsPointerLock() {
+  return isBrowser && 'exitPointerLock' in window.document;
+}
+
+function supportsGestureEvents() {
+  try {
+    return 'constructor' in GestureEvent;
+  } catch (e) {
+    return false;
+  }
+}
+
+const SUPPORT = {
+  isBrowser,
+  gesture: supportsGestureEvents(),
+  touch: supportsTouchEvents(),
+  touchscreen: isTouchScreen(),
+  pointer: supportsPointerEvents(),
+  pointerLock: supportsPointerLock()
+};
+
+const DEFAULT_PREVENT_SCROLL_DELAY = 250;
+const DEFAULT_DRAG_DELAY = 180;
+const DEFAULT_SWIPE_VELOCITY = 0.5;
+const DEFAULT_SWIPE_DISTANCE = 50;
+const DEFAULT_SWIPE_DURATION = 250;
+const dragConfigResolver = _objectSpread2(_objectSpread2({}, coordinatesConfigResolver), {}, {
+  pointerLock(_v, _k, {
+    pointer: {
+      lock = false,
+      touch = false
+    } = {}
+  }) {
+    this.useTouch = SUPPORT.touch && touch;
+    return SUPPORT.pointerLock && lock;
+  },
+
+  device(_v, _k) {
+    if (this.useTouch) return 'touch';
+    if (this.pointerLock) return 'mouse';
+    if (SUPPORT.pointer) return 'pointer';
+    if (SUPPORT.touch) return 'touch';
+    return 'mouse';
+  },
+
+  preventScroll(value = false, _k, {
+    preventScrollAxis = 'y'
+  }) {
+    if (preventScrollAxis) this.preventScrollAxis = preventScrollAxis;
+    if (!SUPPORT.touchscreen) return false;
+    if (typeof value === 'number') return value;
+    return value ? DEFAULT_PREVENT_SCROLL_DELAY : false;
+  },
+
+  pointerCapture(_v, _k, {
+    pointer: {
+      capture = true
+    } = {}
+  }) {
+    return !this.pointerLock && this.device === 'pointer' && capture;
+  },
+
+  threshold(value, _k, {
+    filterTaps = false,
+    axis = undefined
+  }) {
+    const threshold = _maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__.V.toVector(value, filterTaps ? 3 : axis ? 1 : 0);
+    this.filterTaps = filterTaps;
+    return threshold;
+  },
+
+  swipe({
+    velocity = DEFAULT_SWIPE_VELOCITY,
+    distance = DEFAULT_SWIPE_DISTANCE,
+    duration = DEFAULT_SWIPE_DURATION
+  } = {}) {
+    return {
+      velocity: this.transform(_maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__.V.toVector(velocity)),
+      distance: this.transform(_maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__.V.toVector(distance)),
+      duration
+    };
+  },
+
+  delay(value = 0) {
+    switch (value) {
+      case true:
+        return DEFAULT_DRAG_DELAY;
+
+      case false:
+        return 0;
+
+      default:
+        return value;
+    }
+  }
+
+});
+
+if (true) {
+  Object.assign(dragConfigResolver, {
+    useTouch(value) {
+      if (value !== undefined) {
+        throw Error(`[@use-gesture]: \`useTouch\` option has been renamed to \`pointer.touch\`. Use it as in \`{ pointer: { touch: true } }\`.`);
+      }
+    },
+
+    experimental_preventWindowScrollY(value) {
+      if (value !== undefined) {
+        throw Error(`[@use-gesture]: \`experimental_preventWindowScrollY\` option has been renamed to \`preventScroll\`.`);
+      }
+    },
+
+    swipeVelocity(value) {
+      if (value !== undefined) {
+        throw Error(`[@use-gesture]: \`swipeVelocity\` option has been renamed to \`swipe.velocity\`. Use it as in \`{ swipe: { velocity: 0.5 } }\`.`);
+      }
+    },
+
+    swipeDistance(value) {
+      if (value !== undefined) {
+        throw Error(`[@use-gesture]: \`swipeDistance\` option has been renamed to \`swipe.distance\`. Use it as in \`{ swipe: { distance: 50 } }\`.`);
+      }
+    },
+
+    swipeDuration(value) {
+      if (value !== undefined) {
+        throw Error(`[@use-gesture]: \`swipeDuration\` option has been renamed to \`swipe.duration\`. Use it as in \`{ swipe: { duration: 250 } }\`.`);
+      }
+    }
+
+  });
+}
+
+const SCALE_ANGLE_RATIO_INTENT_DEG = 30;
+const PINCH_WHEEL_RATIO = 36;
+class PinchEngine extends Engine {
+  constructor(...args) {
+    super(...args);
+
+    _defineProperty(this, "ingKey", 'pinching');
+
+    _defineProperty(this, "aliasKey", 'da');
+  }
+
+  init() {
+    this.state.offset = [1, 0];
+    this.state.lastOffset = [1, 0];
+    this.state._pointerEvents = new Map();
+  }
+
+  reset() {
+    super.reset();
+    const state = this.state;
+    state._touchIds = [];
+    state.canceled = false;
+    state.cancel = this.cancel.bind(this);
+    state.turns = 0;
+  }
+
+  computeOffset() {
+    const {
+      type,
+      movement,
+      lastOffset
+    } = this.state;
+
+    if (type === 'wheel') {
+      this.state.offset = _maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__.V.add(movement, lastOffset);
+    } else {
+      this.state.offset = [(1 + movement[0]) * lastOffset[0], movement[1] + lastOffset[1]];
+    }
+  }
+
+  computeMovement() {
+    const {
+      offset,
+      lastOffset
+    } = this.state;
+    this.state.movement = [offset[0] / lastOffset[0], offset[1] - lastOffset[1]];
+  }
+
+  intent(v) {
+    const state = this.state;
+
+    if (!state.axis) {
+      const axisMovementDifference = Math.abs(v[0]) * SCALE_ANGLE_RATIO_INTENT_DEG - Math.abs(v[1]);
+      if (axisMovementDifference < 0) state.axis = 'angle';else if (axisMovementDifference > 0) state.axis = 'scale';
+    }
+
+    if (this.config.lockDirection) {
+      if (state.axis === 'scale') v[1] = 0;else if (state.axis === 'angle') v[0] = 0;
+    }
+  }
+
+  cancel() {
+    const state = this.state;
+    if (state.canceled) return;
+    setTimeout(() => {
+      state.canceled = true;
+      state._active = false;
+      this.compute();
+      this.emit();
+    }, 0);
+  }
+
+  touchStart(event) {
+    this.ctrl.setEventIds(event);
+    const state = this.state;
+    const ctrlTouchIds = this.ctrl.touchIds;
+
+    if (state._active) {
+      if (state._touchIds.every(id => ctrlTouchIds.has(id))) return;
+    }
+
+    if (ctrlTouchIds.size < 2) return;
+    this.start(event);
+    state._touchIds = Array.from(ctrlTouchIds).slice(0, 2);
+    const payload = touchDistanceAngle(event, state._touchIds);
+    this.pinchStart(event, payload);
+  }
+
+  pointerStart(event) {
+    if (event.buttons != null && event.buttons % 2 !== 1) return;
+    this.ctrl.setEventIds(event);
+    event.target.setPointerCapture(event.pointerId);
+    const state = this.state;
+    const _pointerEvents = state._pointerEvents;
+    const ctrlPointerIds = this.ctrl.pointerIds;
+
+    if (state._active) {
+      if (Array.from(_pointerEvents.keys()).every(id => ctrlPointerIds.has(id))) return;
+    }
+
+    if (_pointerEvents.size < 2) {
+      _pointerEvents.set(event.pointerId, event);
+    }
+
+    if (state._pointerEvents.size < 2) return;
+    this.start(event);
+    const payload = distanceAngle(...Array.from(_pointerEvents.values()));
+    this.pinchStart(event, payload);
+  }
+
+  pinchStart(event, payload) {
+    const state = this.state;
+    state.origin = payload.origin;
+    state.values = [payload.distance, payload.angle];
+    state.initial = state.values;
+    this.compute(event);
+    this.emit();
+  }
+
+  touchMove(event) {
+    if (!this.state._active) return;
+    const payload = touchDistanceAngle(event, this.state._touchIds);
+    this.pinchMove(event, payload);
+  }
+
+  pointerMove(event) {
+    const _pointerEvents = this.state._pointerEvents;
+
+    if (_pointerEvents.has(event.pointerId)) {
+      _pointerEvents.set(event.pointerId, event);
+    }
+
+    if (!this.state._active) return;
+    const payload = distanceAngle(...Array.from(_pointerEvents.values()));
+    this.pinchMove(event, payload);
+  }
+
+  pinchMove(event, payload) {
+    const state = this.state;
+    const prev_a = state.values[1];
+    const delta_a = payload.angle - prev_a;
+    let delta_turns = 0;
+    if (Math.abs(delta_a) > 270) delta_turns += Math.sign(delta_a);
+    state.values = [payload.distance, payload.angle - 360 * delta_turns];
+    state.origin = payload.origin;
+    state.turns = delta_turns;
+    state._movement = [state.values[0] / state.initial[0] - 1, state.values[1] - state.initial[1]];
+    this.compute(event);
+    this.emit();
+  }
+
+  touchEnd(event) {
+    this.ctrl.setEventIds(event);
+    if (!this.state._active) return;
+
+    if (this.state._touchIds.some(id => !this.ctrl.touchIds.has(id))) {
+      this.state._active = false;
+      this.compute(event);
+      this.emit();
+    }
+  }
+
+  pointerEnd(event) {
+    const state = this.state;
+    this.ctrl.setEventIds(event);
+
+    try {
+      event.target.releasePointerCapture(event.pointerId);
+    } catch (_unused) {}
+
+    if (state._pointerEvents.has(event.pointerId)) {
+      state._pointerEvents.delete(event.pointerId);
+    }
+
+    if (!state._active) return;
+
+    if (state._pointerEvents.size < 2) {
+      state._active = false;
+      this.compute(event);
+      this.emit();
+    }
+  }
+
+  gestureStart(event) {
+    if (event.cancelable) event.preventDefault();
+    const state = this.state;
+    if (state._active) return;
+    this.start(event);
+    state.values = [event.scale, event.rotation];
+    state.origin = [event.clientX, event.clientY];
+    this.compute(event);
+    this.emit();
+  }
+
+  gestureMove(event) {
+    if (event.cancelable) event.preventDefault();
+    if (!this.state._active) return;
+    const state = this.state;
+    state.values = [event.scale, event.rotation];
+    state.origin = [event.clientX, event.clientY];
+    const _previousMovement = state._movement;
+    state._movement = [event.scale - 1, event.rotation];
+    state._delta = _maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__.V.sub(state._movement, _previousMovement);
+    this.compute(event);
+    this.emit();
+  }
+
+  gestureEnd(event) {
+    if (!this.state._active) return;
+    this.state._active = false;
+    this.compute(event);
+    this.emit();
+  }
+
+  wheel(event) {
+    if (!event.ctrlKey) return;
+    if (!this.state._active) this.wheelStart(event);else this.wheelChange(event);
+    this.timeoutStore.add('wheelEnd', this.wheelEnd.bind(this));
+  }
+
+  wheelStart(event) {
+    this.start(event);
+    this.wheelChange(event);
+  }
+
+  wheelChange(event) {
+    const isR3f = ('uv' in event);
+
+    if (!isR3f) {
+      if (event.cancelable) {
+        event.preventDefault();
+      }
+
+      if ( true && !event.defaultPrevented) {
+        console.warn(`[@use-gesture]: To properly support zoom on trackpads, try using the \`target\` option.\n\nThis message will only appear in development mode.`);
+      }
+    }
+
+    const state = this.state;
+    state._delta = [-wheelValues(event)[1] / PINCH_WHEEL_RATIO * state.offset[0], 0];
+    _maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__.V.addTo(state._movement, state._delta);
+    this.state.origin = [event.clientX, event.clientY];
+    this.compute(event);
+    this.emit();
+  }
+
+  wheelEnd() {
+    if (!this.state._active) return;
+    this.state._active = false;
+    this.compute();
+    this.emit();
+  }
+
+  bind(bindFunction) {
+    const device = this.config.device;
+
+    if (!!device) {
+      bindFunction(device, 'start', this[device + 'Start'].bind(this));
+      bindFunction(device, 'change', this[device + 'Move'].bind(this));
+      bindFunction(device, 'end', this[device + 'End'].bind(this));
+      bindFunction(device, 'cancel', this[device + 'End'].bind(this));
+    } else {
+      bindFunction('wheel', '', this.wheel.bind(this), {
+        passive: false
+      });
+    }
+  }
+
+}
+
+const pinchConfigResolver = _objectSpread2(_objectSpread2({}, commonConfigResolver), {}, {
+  useTouch(_v, _k, {
+    pointer: {
+      touch = false
+    } = {}
+  }) {
+    return SUPPORT.touch && touch;
+  },
+
+  device(_v, _k, config) {
+    const sharedConfig = config.shared;
+    if (sharedConfig.target && !SUPPORT.touch && SUPPORT.gesture) return 'gesture';
+    if (this.useTouch) return 'touch';
+
+    if (SUPPORT.touchscreen) {
+      if (SUPPORT.pointer) return 'pointer';
+      if (SUPPORT.touch) return 'touch';
+    }
+  },
+
+  bounds(_v, _k, {
+    scaleBounds = {},
+    angleBounds = {}
+  }) {
+    const _scaleBounds = state => {
+      const D = assignDefault(call(scaleBounds, state), {
+        min: -Infinity,
+        max: Infinity
+      });
+      return [D.min, D.max];
+    };
+
+    const _angleBounds = state => {
+      const A = assignDefault(call(angleBounds, state), {
+        min: -Infinity,
+        max: Infinity
+      });
+      return [A.min, A.max];
+    };
+
+    if (typeof scaleBounds !== 'function' && typeof angleBounds !== 'function') return [_scaleBounds(), _angleBounds()];
+    return state => [_scaleBounds(state), _angleBounds(state)];
+  },
+
+  threshold(value, _k, config) {
+    this.lockDirection = config.axis === 'lock';
+    const threshold = _maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__.V.toVector(value, this.lockDirection ? [0.1, 3] : 0);
+    return threshold;
+  }
+
+});
+
+class MoveEngine extends CoordinatesEngine {
+  constructor(...args) {
+    super(...args);
+
+    _defineProperty(this, "ingKey", 'moving');
+  }
+
+  move(event) {
+    if (this.config.mouseOnly && event.pointerType !== 'mouse') return;
+    if (!this.state._active) this.moveStart(event);else this.moveChange(event);
+    this.timeoutStore.add('moveEnd', this.moveEnd.bind(this));
+  }
+
+  moveStart(event) {
+    this.start(event);
+    const state = this.state;
+    state.values = pointerValues(event);
+    this.compute(event);
+    state.initial = state.values;
+    this.emit();
+  }
+
+  moveChange(event) {
+    if (!this.state._active) return;
+    const values = pointerValues(event);
+    const state = this.state;
+    state._delta = _maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__.V.sub(values, state.values);
+    _maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__.V.addTo(state._movement, state._delta);
+    state.values = values;
+    this.compute(event);
+    this.emit();
+  }
+
+  moveEnd(event) {
+    if (!this.state._active) return;
+    this.state._active = false;
+    this.compute(event);
+    this.emit();
+  }
+
+  bind(bindFunction) {
+    bindFunction('pointer', 'change', this.move.bind(this));
+    bindFunction('pointer', 'leave', this.moveEnd.bind(this));
+  }
+
+}
+
+const moveConfigResolver = _objectSpread2(_objectSpread2({}, coordinatesConfigResolver), {}, {
+  mouseOnly: (value = true) => value
+});
+
+class ScrollEngine extends CoordinatesEngine {
+  constructor(...args) {
+    super(...args);
+
+    _defineProperty(this, "ingKey", 'scrolling');
+  }
+
+  scroll(event) {
+    if (!this.state._active) this.start(event);
+    this.scrollChange(event);
+    this.timeoutStore.add('scrollEnd', this.scrollEnd.bind(this));
+  }
+
+  scrollChange(event) {
+    if (event.cancelable) event.preventDefault();
+    const state = this.state;
+    const values = scrollValues(event);
+    state._delta = _maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__.V.sub(values, state.values);
+    _maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__.V.addTo(state._movement, state._delta);
+    state.values = values;
+    this.compute(event);
+    this.emit();
+  }
+
+  scrollEnd() {
+    if (!this.state._active) return;
+    this.state._active = false;
+    this.compute();
+    this.emit();
+  }
+
+  bind(bindFunction) {
+    bindFunction('scroll', '', this.scroll.bind(this));
+  }
+
+}
+
+const scrollConfigResolver = coordinatesConfigResolver;
+
+class WheelEngine extends CoordinatesEngine {
+  constructor(...args) {
+    super(...args);
+
+    _defineProperty(this, "ingKey", 'wheeling');
+  }
+
+  wheel(event) {
+    if (!this.state._active) this.start(event);
+    this.wheelChange(event);
+    this.timeoutStore.add('wheelEnd', this.wheelEnd.bind(this));
+  }
+
+  wheelChange(event) {
+    const state = this.state;
+    state._delta = wheelValues(event);
+    _maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__.V.addTo(this.state._movement, state._delta);
+    this.compute(event);
+    this.emit();
+  }
+
+  wheelEnd() {
+    if (!this.state._active) return;
+    this.state._active = false;
+    this.compute();
+    this.emit();
+  }
+
+  bind(bindFunction) {
+    bindFunction('wheel', '', this.wheel.bind(this));
+  }
+
+}
+
+const wheelConfigResolver = coordinatesConfigResolver;
+
+class HoverEngine extends CoordinatesEngine {
+  constructor(...args) {
+    super(...args);
+
+    _defineProperty(this, "ingKey", 'hovering');
+  }
+
+  enter(event) {
+    if (this.config.mouseOnly && event.pointerType !== 'mouse') return;
+    this.start(event);
+    this.state.values = pointerValues(event);
+    this.compute(event);
+    this.emit();
+  }
+
+  leave(event) {
+    if (this.config.mouseOnly && event.pointerType !== 'mouse') return;
+    const state = this.state;
+    if (!state._active) return;
+    state._active = false;
+    const values = pointerValues(event);
+    state._movement = state._delta = _maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__.V.sub(values, state.values);
+    state.values = values;
+    this.compute(event);
+    state.delta = state.movement;
+    this.emit();
+  }
+
+  bind(bindFunction) {
+    bindFunction('pointer', 'enter', this.enter.bind(this));
+    bindFunction('pointer', 'leave', this.leave.bind(this));
+  }
+
+}
+
+const hoverConfigResolver = _objectSpread2(_objectSpread2({}, coordinatesConfigResolver), {}, {
+  mouseOnly: (value = true) => value
+});
+
+const EngineMap = new Map();
+const ConfigResolverMap = new Map();
+function registerAction(action) {
+  EngineMap.set(action.key, action.engine);
+  ConfigResolverMap.set(action.key, action.resolver);
+}
+const dragAction = {
+  key: 'drag',
+  engine: DragEngine,
+  resolver: dragConfigResolver
+};
+const hoverAction = {
+  key: 'hover',
+  engine: HoverEngine,
+  resolver: hoverConfigResolver
+};
+const moveAction = {
+  key: 'move',
+  engine: MoveEngine,
+  resolver: moveConfigResolver
+};
+const pinchAction = {
+  key: 'pinch',
+  engine: PinchEngine,
+  resolver: pinchConfigResolver
+};
+const scrollAction = {
+  key: 'scroll',
+  engine: ScrollEngine,
+  resolver: scrollConfigResolver
+};
+const wheelAction = {
+  key: 'wheel',
+  engine: WheelEngine,
+  resolver: wheelConfigResolver
+};
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@use-gesture/core/dist/maths-b2a210f4.esm.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@use-gesture/core/dist/maths-b2a210f4.esm.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "V": () => (/* binding */ V),
+/* harmony export */   "c": () => (/* binding */ computeRubberband),
+/* harmony export */   "r": () => (/* binding */ rubberbandIfOutOfBounds)
+/* harmony export */ });
+function clamp(v, min, max) {
+  return Math.max(min, Math.min(v, max));
+}
+const V = {
+  toVector(v, fallback) {
+    if (v === undefined) v = fallback;
+    return Array.isArray(v) ? v : [v, v];
+  },
+
+  add(v1, v2) {
+    return [v1[0] + v2[0], v1[1] + v2[1]];
+  },
+
+  sub(v1, v2) {
+    return [v1[0] - v2[0], v1[1] - v2[1]];
+  },
+
+  addTo(v1, v2) {
+    v1[0] += v2[0];
+    v1[1] += v2[1];
+  },
+
+  subTo(v1, v2) {
+    v1[0] -= v2[0];
+    v1[1] -= v2[1];
+  }
+
+};
+
+function rubberband(distance, dimension, constant) {
+  if (dimension === 0 || Math.abs(dimension) === Infinity) return Math.pow(distance, constant * 5);
+  return distance * dimension * constant / (dimension + constant * distance);
+}
+
+function rubberbandIfOutOfBounds(position, min, max, constant = 0.15) {
+  if (constant === 0) return clamp(position, min, max);
+  if (position < min) return -rubberband(min - position, max - min, constant) + min;
+  if (position > max) return +rubberband(position - max, max - min, constant) + max;
+  return position;
+}
+function computeRubberband(bounds, [Vx, Vy], [Rx, Ry]) {
+  const [[X0, X1], [Y0, Y1]] = bounds;
+  return [rubberbandIfOutOfBounds(Vx, X0, X1, Rx), rubberbandIfOutOfBounds(Vy, Y0, Y1, Ry)];
+}
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@use-gesture/core/dist/use-gesture-core.esm.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@use-gesture/core/dist/use-gesture-core.esm.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Controller": () => (/* binding */ Controller),
+/* harmony export */   "parseMergedHandlers": () => (/* binding */ parseMergedHandlers)
+/* harmony export */ });
+/* harmony import */ var _actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./actions-da2a698c.esm.js */ "./node_modules/@use-gesture/core/dist/actions-da2a698c.esm.js");
+
+
+
+function _objectWithoutPropertiesLoose(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  var sourceKeys = Object.keys(source);
+  var key, i;
+
+  for (i = 0; i < sourceKeys.length; i++) {
+    key = sourceKeys[i];
+    if (excluded.indexOf(key) >= 0) continue;
+    target[key] = source[key];
+  }
+
+  return target;
+}
+
+function _objectWithoutProperties(source, excluded) {
+  if (source == null) return {};
+  var target = _objectWithoutPropertiesLoose(source, excluded);
+  var key, i;
+
+  if (Object.getOwnPropertySymbols) {
+    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+
+    for (i = 0; i < sourceSymbolKeys.length; i++) {
+      key = sourceSymbolKeys[i];
+      if (excluded.indexOf(key) >= 0) continue;
+      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+      target[key] = source[key];
+    }
+  }
+
+  return target;
+}
+
+const identity = v => v;
+const sharedConfigResolver = {
+  target(value) {
+    if (value) {
+      return () => 'current' in value ? value.current : value;
+    }
+
+    return undefined;
+  },
+
+  enabled(value = true) {
+    return value;
+  },
+
+  window(value = _actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.S.isBrowser ? window : undefined) {
+    return value;
+  },
+
+  eventOptions({
+    passive = true,
+    capture = false
+  } = {}) {
+    return {
+      passive,
+      capture
+    };
+  },
+
+  transform(value = identity) {
+    return value;
+  }
+
+};
+
+const _excluded = ["target", "eventOptions", "window", "enabled", "transform"];
+function resolveWith(config = {}, resolvers) {
+  const result = {};
+
+  for (const [key, resolver] of Object.entries(resolvers)) switch (typeof resolver) {
+    case 'function':
+      result[key] = resolver.call(result, config[key], key, config);
+      break;
+
+    case 'object':
+      result[key] = resolveWith(config[key], resolver);
+      break;
+
+    case 'boolean':
+      if (resolver) result[key] = config[key];
+      break;
+  }
+
+  return result;
+}
+function parse(config, gestureKey) {
+  const _ref = config,
+        {
+    target,
+    eventOptions,
+    window,
+    enabled,
+    transform
+  } = _ref,
+        rest = _objectWithoutProperties(_ref, _excluded);
+
+  const _config = {
+    shared: resolveWith({
+      target,
+      eventOptions,
+      window,
+      enabled,
+      transform
+    }, sharedConfigResolver)
+  };
+
+  if (gestureKey) {
+    const resolver = _actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.C.get(gestureKey);
+    _config[gestureKey] = resolveWith((0,_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__._)({
+      shared: _config.shared
+    }, rest), resolver);
+  } else {
+    for (const key in rest) {
+      const resolver = _actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.C.get(key);
+
+      if (resolver) {
+        _config[key] = resolveWith((0,_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__._)({
+          shared: _config.shared
+        }, rest[key]), resolver);
+      } else if (true) {
+        if (!['drag', 'pinch', 'scroll', 'wheel', 'move', 'hover'].includes(key)) {
+          if (key === 'domTarget') {
+            throw Error(`[@use-gesture]: \`domTarget\` option has been renamed to \`target\`.`);
+          }
+
+          console.warn(`[@use-gesture]: Unknown config key \`${key}\` was used. Please read the documentation for further information.`);
+        }
+      }
+    }
+  }
+
+  return _config;
+}
+
+class EventStore {
+  constructor(ctrl) {
+    (0,_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.a)(this, "_listeners", []);
+
+    this._ctrl = ctrl;
+  }
+
+  add(element, device, action, handler, options) {
+    const type = (0,_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.t)(device, action);
+
+    const eventOptions = (0,_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__._)((0,_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__._)({}, this._ctrl.config.shared.eventOptions), options);
+
+    element.addEventListener(type, handler, eventOptions);
+
+    this._listeners.push(() => element.removeEventListener(type, handler, eventOptions));
+  }
+
+  clean() {
+    this._listeners.forEach(remove => remove());
+
+    this._listeners = [];
+  }
+
+}
+
+class TimeoutStore {
+  constructor() {
+    (0,_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.a)(this, "_timeouts", new Map());
+  }
+
+  add(key, callback, ms = 140, ...args) {
+    this.remove(key);
+
+    this._timeouts.set(key, window.setTimeout(callback, ms, ...args));
+  }
+
+  remove(key) {
+    const timeout = this._timeouts.get(key);
+
+    if (timeout) window.clearTimeout(timeout);
+  }
+
+  clean() {
+    this._timeouts.forEach(timeout => void window.clearTimeout(timeout));
+
+    this._timeouts.clear();
+  }
+
+}
+
+class Controller {
+  constructor(handlers) {
+    (0,_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.a)(this, "gestures", new Set());
+
+    (0,_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.a)(this, "_targetEventStore", new EventStore(this));
+
+    (0,_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.a)(this, "gestureEventStores", {});
+
+    (0,_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.a)(this, "gestureTimeoutStores", {});
+
+    (0,_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.a)(this, "handlers", {});
+
+    (0,_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.a)(this, "config", {});
+
+    (0,_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.a)(this, "pointerIds", new Set());
+
+    (0,_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.a)(this, "touchIds", new Set());
+
+    (0,_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.a)(this, "state", {
+      shared: {
+        shiftKey: false,
+        metaKey: false,
+        ctrlKey: false,
+        altKey: false
+      }
+    });
+
+    resolveGestures(this, handlers);
+  }
+
+  setEventIds(event) {
+    if ((0,_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.i)(event)) {
+      this.touchIds = new Set((0,_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.b)(event));
+    } else if ('pointerId' in event) {
+      if (event.type === 'pointerup') this.pointerIds.delete(event.pointerId);else this.pointerIds.add(event.pointerId);
+    }
+  }
+
+  applyHandlers(handlers, nativeHandlers) {
+    this.handlers = handlers;
+    this.nativeHandlers = nativeHandlers;
+  }
+
+  applyConfig(config, gestureKey) {
+    this.config = parse(config, gestureKey);
+  }
+
+  clean() {
+    this._targetEventStore.clean();
+
+    for (const key of this.gestures) {
+      this.gestureEventStores[key].clean();
+      this.gestureTimeoutStores[key].clean();
+    }
+  }
+
+  effect() {
+    if (this.config.shared.target) this.bind();
+    return () => this._targetEventStore.clean();
+  }
+
+  bind(...args) {
+    const sharedConfig = this.config.shared;
+    const eventOptions = sharedConfig.eventOptions;
+    const props = {};
+    let target;
+
+    if (sharedConfig.target) {
+      target = sharedConfig.target();
+      if (!target) return;
+    }
+
+    const bindFunction = bindToProps(props, eventOptions, !!target);
+
+    if (sharedConfig.enabled) {
+      for (const gestureKey of this.gestures) {
+        if (this.config[gestureKey].enabled) {
+          const Engine = _actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.E.get(gestureKey);
+          new Engine(this, args, gestureKey).bind(bindFunction);
+        }
+      }
+
+      for (const eventKey in this.nativeHandlers) {
+        bindFunction(eventKey, '', event => this.nativeHandlers[eventKey]((0,_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__._)((0,_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__._)({}, this.state.shared), {}, {
+          event,
+          args
+        })), undefined, true);
+      }
+    }
+
+    for (const handlerProp in props) {
+      props[handlerProp] = (0,_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.c)(...props[handlerProp]);
+    }
+
+    if (!target) return props;
+
+    for (const handlerProp in props) {
+      let eventKey = handlerProp.substr(2).toLowerCase();
+      const capture = !!~eventKey.indexOf('capture');
+      const passive = !!~eventKey.indexOf('passive');
+      if (capture || passive) eventKey = eventKey.replace(/capture|passive/g, '');
+
+      this._targetEventStore.add(target, eventKey, '', props[handlerProp], {
+        capture,
+        passive
+      });
+    }
+  }
+
+}
+
+function setupGesture(ctrl, gestureKey) {
+  ctrl.gestures.add(gestureKey);
+  ctrl.gestureEventStores[gestureKey] = new EventStore(ctrl);
+  ctrl.gestureTimeoutStores[gestureKey] = new TimeoutStore();
+}
+
+function resolveGestures(ctrl, internalHandlers) {
+  if (internalHandlers.drag) setupGesture(ctrl, 'drag');
+  if (internalHandlers.wheel) setupGesture(ctrl, 'wheel');
+  if (internalHandlers.scroll) setupGesture(ctrl, 'scroll');
+  if (internalHandlers.move) setupGesture(ctrl, 'move');
+  if (internalHandlers.pinch) setupGesture(ctrl, 'pinch');
+  if (internalHandlers.hover) setupGesture(ctrl, 'hover');
+}
+
+const bindToProps = (props, eventOptions, withPassiveOption) => (device, action, handler, options = {}, isNative = false) => {
+  var _options$capture, _options$passive;
+
+  const capture = (_options$capture = options.capture) !== null && _options$capture !== void 0 ? _options$capture : eventOptions.capture;
+  const passive = (_options$passive = options.passive) !== null && _options$passive !== void 0 ? _options$passive : eventOptions.passive;
+  let handlerProp = isNative ? device : (0,_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.d)(device, action, capture);
+  if (withPassiveOption && passive) handlerProp += 'Passive';
+  props[handlerProp] = props[handlerProp] || [];
+  props[handlerProp].push(handler);
+};
+
+const RE_NOT_NATIVE = /^on(Drag|Wheel|Scroll|Move|Pinch|Hover)/;
+
+function sortHandlers(_handlers) {
+  const native = {};
+  const handlers = {};
+  const actions = new Set();
+
+  for (let key in _handlers) {
+    if (RE_NOT_NATIVE.test(key)) {
+      actions.add(RegExp.lastMatch);
+      handlers[key] = _handlers[key];
+    } else {
+      native[key] = _handlers[key];
+    }
+  }
+
+  return [handlers, native, actions];
+}
+
+function registerGesture(actions, handlers, handlerKey, key, internalHandlers, config) {
+  if (!actions.has(handlerKey)) return;
+
+  if (!_actions_da2a698c_esm_js__WEBPACK_IMPORTED_MODULE_0__.E.has(key)) {
+    if (true) {
+      console.warn(`[@use-gesture]: You've created a custom handler that that uses the \`${key}\` gesture but isn't properly configured.\n\nPlease add \`${key}Action\` when creating your handler.`);
+    }
+
+    return;
+  }
+
+  const startKey = handlerKey + 'Start';
+  const endKey = handlerKey + 'End';
+
+  const fn = state => {
+    let memo = undefined;
+    if (state.first && startKey in handlers) handlers[startKey](state);
+    if (handlerKey in handlers) memo = handlers[handlerKey](state);
+    if (state.last && endKey in handlers) handlers[endKey](state);
+    return memo;
+  };
+
+  internalHandlers[key] = fn;
+  config[key] = config[key] || {};
+}
+
+function parseMergedHandlers(mergedHandlers, mergedConfig) {
+  const [handlers, nativeHandlers, actions] = sortHandlers(mergedHandlers);
+  const internalHandlers = {};
+  registerGesture(actions, handlers, 'onDrag', 'drag', internalHandlers, mergedConfig);
+  registerGesture(actions, handlers, 'onWheel', 'wheel', internalHandlers, mergedConfig);
+  registerGesture(actions, handlers, 'onScroll', 'scroll', internalHandlers, mergedConfig);
+  registerGesture(actions, handlers, 'onPinch', 'pinch', internalHandlers, mergedConfig);
+  registerGesture(actions, handlers, 'onMove', 'move', internalHandlers, mergedConfig);
+  registerGesture(actions, handlers, 'onHover', 'hover', internalHandlers, mergedConfig);
+  return {
+    handlers: internalHandlers,
+    config: mergedConfig,
+    nativeHandlers
+  };
+}
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@use-gesture/core/types/dist/use-gesture-core-types.esm.js":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/@use-gesture/core/types/dist/use-gesture-core-types.esm.js ***!
+  \*********************************************************************************/
+/***/ (() => {
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@use-gesture/core/utils/dist/use-gesture-core-utils.esm.js":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/@use-gesture/core/utils/dist/use-gesture-core-utils.esm.js ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "rubberbandIfOutOfBounds": () => (/* reexport safe */ _dist_maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__.r)
+/* harmony export */ });
+/* harmony import */ var _dist_maths_b2a210f4_esm_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../dist/maths-b2a210f4.esm.js */ "./node_modules/@use-gesture/core/dist/maths-b2a210f4.esm.js");
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@use-gesture/react/dist/use-gesture-react.esm.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@use-gesture/react/dist/use-gesture-react.esm.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ConfigResolverMap": () => (/* reexport safe */ _use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.ConfigResolverMap),
+/* harmony export */   "EngineMap": () => (/* reexport safe */ _use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.EngineMap),
+/* harmony export */   "dragAction": () => (/* reexport safe */ _use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.dragAction),
+/* harmony export */   "hoverAction": () => (/* reexport safe */ _use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.hoverAction),
+/* harmony export */   "moveAction": () => (/* reexport safe */ _use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.moveAction),
+/* harmony export */   "pinchAction": () => (/* reexport safe */ _use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.pinchAction),
+/* harmony export */   "registerAction": () => (/* reexport safe */ _use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.registerAction),
+/* harmony export */   "scrollAction": () => (/* reexport safe */ _use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.scrollAction),
+/* harmony export */   "wheelAction": () => (/* reexport safe */ _use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.wheelAction),
+/* harmony export */   "rubberbandIfOutOfBounds": () => (/* reexport safe */ _use_gesture_core_utils__WEBPACK_IMPORTED_MODULE_2__.rubberbandIfOutOfBounds),
+/* harmony export */   "createUseGesture": () => (/* binding */ createUseGesture),
+/* harmony export */   "useDrag": () => (/* binding */ useDrag),
+/* harmony export */   "useGesture": () => (/* binding */ useGesture),
+/* harmony export */   "useHover": () => (/* binding */ useHover),
+/* harmony export */   "useMove": () => (/* binding */ useMove),
+/* harmony export */   "usePinch": () => (/* binding */ usePinch),
+/* harmony export */   "useScroll": () => (/* binding */ useScroll),
+/* harmony export */   "useWheel": () => (/* binding */ useWheel)
+/* harmony export */ });
+/* harmony import */ var _use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @use-gesture/core/actions */ "./node_modules/@use-gesture/core/actions/dist/use-gesture-core-actions.esm.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _use_gesture_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @use-gesture/core */ "./node_modules/@use-gesture/core/dist/use-gesture-core.esm.js");
+/* harmony import */ var _use_gesture_core_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @use-gesture/core/utils */ "./node_modules/@use-gesture/core/utils/dist/use-gesture-core-utils.esm.js");
+/* harmony import */ var _use_gesture_core_types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @use-gesture/core/types */ "./node_modules/@use-gesture/core/types/dist/use-gesture-core-types.esm.js");
+/* harmony import */ var _use_gesture_core_types__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_use_gesture_core_types__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony reexport (unknown) */ var __WEBPACK_REEXPORT_OBJECT__ = {};
+/* harmony reexport (unknown) */ for(const __WEBPACK_IMPORT_KEY__ in _use_gesture_core_types__WEBPACK_IMPORTED_MODULE_3__) if(["default","createUseGesture","useDrag","useGesture","useHover","useMove","usePinch","useScroll","useWheel","ConfigResolverMap","EngineMap","dragAction","hoverAction","moveAction","pinchAction","registerAction","scrollAction","wheelAction","rubberbandIfOutOfBounds"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) __WEBPACK_REEXPORT_OBJECT__[__WEBPACK_IMPORT_KEY__] = () => _use_gesture_core_types__WEBPACK_IMPORTED_MODULE_3__[__WEBPACK_IMPORT_KEY__]
+/* harmony reexport (unknown) */ __webpack_require__.d(__webpack_exports__, __WEBPACK_REEXPORT_OBJECT__);
+
+
+
+
+
+
+
+function useRecognizers(handlers, config = {}, gestureKey, nativeHandlers) {
+  const ctrl = react__WEBPACK_IMPORTED_MODULE_1__.useMemo(() => new _use_gesture_core__WEBPACK_IMPORTED_MODULE_4__.Controller(handlers), []);
+  ctrl.applyHandlers(handlers, nativeHandlers);
+  ctrl.applyConfig(config, gestureKey);
+  react__WEBPACK_IMPORTED_MODULE_1__.useEffect(ctrl.effect.bind(ctrl));
+  react__WEBPACK_IMPORTED_MODULE_1__.useEffect(() => {
+    return ctrl.clean.bind(ctrl);
+  }, []);
+
+  if (config.target === undefined) {
+    return ctrl.bind.bind(ctrl);
+  }
+
+  return undefined;
+}
+
+function useDrag(handler, config = {}) {
+  (0,_use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.registerAction)(_use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.dragAction);
+  return useRecognizers({
+    drag: handler
+  }, config, 'drag');
+}
+
+function usePinch(handler, config = {}) {
+  (0,_use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.registerAction)(_use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.pinchAction);
+  return useRecognizers({
+    pinch: handler
+  }, config, 'pinch');
+}
+
+function useWheel(handler, config = {}) {
+  (0,_use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.registerAction)(_use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.wheelAction);
+  return useRecognizers({
+    wheel: handler
+  }, config, 'wheel');
+}
+
+function useScroll(handler, config = {}) {
+  (0,_use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.registerAction)(_use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.scrollAction);
+  return useRecognizers({
+    scroll: handler
+  }, config, 'scroll');
+}
+
+function useMove(handler, config = {}) {
+  (0,_use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.registerAction)(_use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.moveAction);
+  return useRecognizers({
+    move: handler
+  }, config, 'move');
+}
+
+function useHover(handler, config = {}) {
+  (0,_use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.registerAction)(_use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.hoverAction);
+  return useRecognizers({
+    hover: handler
+  }, config, 'hover');
+}
+
+function createUseGesture(actions) {
+  actions.forEach(_use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.registerAction);
+  return function useGesture(_handlers, _config = {}) {
+    const {
+      handlers,
+      nativeHandlers,
+      config
+    } = (0,_use_gesture_core__WEBPACK_IMPORTED_MODULE_4__.parseMergedHandlers)(_handlers, _config);
+    return useRecognizers(handlers, config, undefined, nativeHandlers);
+  };
+}
+
+function useGesture(handlers, config = {}) {
+  const hook = createUseGesture([_use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.dragAction, _use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.pinchAction, _use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.scrollAction, _use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.wheelAction, _use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.moveAction, _use_gesture_core_actions__WEBPACK_IMPORTED_MODULE_0__.hoverAction]);
+  return hook(handlers, config);
+}
+
+
+
+
+/***/ }),
+
 /***/ "./node_modules/@visx/bounds/esm/enhancers/withBoundingRects.js":
 /*!**********************************************************************!*\
   !*** ./node_modules/@visx/bounds/esm/enhancers/withBoundingRects.js ***!
@@ -2988,6 +5203,132 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+/***/ }),
+
+/***/ "./node_modules/@visx/responsive/lib/components/ParentSize.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/@visx/responsive/lib/components/ParentSize.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.default = ParentSize;
+
+var _propTypes = _interopRequireDefault(__webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js"));
+
+var _debounce = _interopRequireDefault(__webpack_require__(/*! lodash/debounce */ "./node_modules/lodash/debounce.js"));
+
+var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var _resizeObserverPolyfill = _interopRequireDefault(__webpack_require__(/*! resize-observer-polyfill */ "./node_modules/resize-observer-polyfill/dist/ResizeObserver.es.js"));
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+
+function ParentSize(_ref) {
+  var className = _ref.className,
+      children = _ref.children,
+      _ref$debounceTime = _ref.debounceTime,
+      debounceTime = _ref$debounceTime === void 0 ? 300 : _ref$debounceTime,
+      _ref$ignoreDimensions = _ref.ignoreDimensions,
+      ignoreDimensions = _ref$ignoreDimensions === void 0 ? [] : _ref$ignoreDimensions,
+      _ref$parentSizeStyles = _ref.parentSizeStyles,
+      parentSizeStyles = _ref$parentSizeStyles === void 0 ? {
+    width: '100%',
+    height: '100%'
+  } : _ref$parentSizeStyles,
+      _ref$enableDebounceLe = _ref.enableDebounceLeadingCall,
+      enableDebounceLeadingCall = _ref$enableDebounceLe === void 0 ? true : _ref$enableDebounceLe,
+      restProps = _objectWithoutPropertiesLoose(_ref, ["className", "children", "debounceTime", "ignoreDimensions", "parentSizeStyles", "enableDebounceLeadingCall"]);
+
+  var target = (0, _react.useRef)(null);
+  var animationFrameID = (0, _react.useRef)(0);
+
+  var _useState = (0, _react.useState)({
+    width: 0,
+    height: 0,
+    top: 0,
+    left: 0
+  }),
+      state = _useState[0],
+      setState = _useState[1];
+
+  var resize = (0, _react.useMemo)(function () {
+    var normalized = Array.isArray(ignoreDimensions) ? ignoreDimensions : [ignoreDimensions];
+    return (0, _debounce.default)(function (incoming) {
+      setState(function (existing) {
+        var stateKeys = Object.keys(existing);
+        var keysWithChanges = stateKeys.filter(function (key) {
+          return existing[key] !== incoming[key];
+        });
+        var shouldBail = keysWithChanges.every(function (key) {
+          return normalized.includes(key);
+        });
+        return shouldBail ? existing : incoming;
+      });
+    }, debounceTime, {
+      leading: enableDebounceLeadingCall
+    });
+  }, [debounceTime, enableDebounceLeadingCall, ignoreDimensions]);
+  (0, _react.useEffect)(function () {
+    var observer = new _resizeObserverPolyfill.default(function (entries
+    /** , observer */
+    ) {
+      if (entries === void 0) {
+        entries = [];
+      }
+
+      entries.forEach(function (entry) {
+        var _entry$contentRect = entry.contentRect,
+            left = _entry$contentRect.left,
+            top = _entry$contentRect.top,
+            width = _entry$contentRect.width,
+            height = _entry$contentRect.height;
+        animationFrameID.current = window.requestAnimationFrame(function () {
+          resize({
+            width: width,
+            height: height,
+            top: top,
+            left: left
+          });
+        });
+      });
+    });
+    if (target.current) observer.observe(target.current);
+    return function () {
+      window.cancelAnimationFrame(animationFrameID.current);
+      observer.disconnect();
+      if (resize && resize.cancel) resize.cancel();
+    };
+  }, [resize]);
+  return /*#__PURE__*/_react.default.createElement("div", _extends({
+    style: parentSizeStyles,
+    ref: target,
+    className: className
+  }, restProps), children(_extends({}, state, {
+    ref: target.current,
+    resize: resize
+  })));
+}
+
+ParentSize.propTypes = {
+  className: _propTypes.default.string,
+  debounceTime: _propTypes.default.number,
+  enableDebounceLeadingCall: _propTypes.default.bool,
+  ignoreDimensions: _propTypes.default.oneOfType([_propTypes.default.any, _propTypes.default.arrayOf(_propTypes.default.any)]),
+  children: _propTypes.default.func.isRequired
+};
 
 /***/ }),
 
@@ -7754,6 +10095,540 @@ function TooltipWithBounds(_ref) {
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,_visx_bounds__WEBPACK_IMPORTED_MODULE_2__.default)(TooltipWithBounds));
+
+/***/ }),
+
+/***/ "./node_modules/@visx/zoom/esm/Zoom.js":
+/*!*********************************************!*\
+  !*** ./node_modules/@visx/zoom/esm/Zoom.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _visx_event__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @visx/event */ "./node_modules/@visx/event/esm/localPoint.js");
+/* harmony import */ var _use_gesture_react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @use-gesture/react */ "./node_modules/@use-gesture/react/dist/use-gesture-react.esm.js");
+/* harmony import */ var _util_matrix__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./util/matrix */ "./node_modules/@visx/zoom/esm/util/matrix.js");
+
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+
+
+
+
+// default prop values
+var defaultInitialTransformMatrix = {
+  scaleX: 1,
+  scaleY: 1,
+  translateX: 0,
+  translateY: 0,
+  skewX: 0,
+  skewY: 0
+};
+
+var defaultWheelDelta = function defaultWheelDelta(event) {
+  return -event.deltaY > 0 ? {
+    scaleX: 1.1,
+    scaleY: 1.1
+  } : {
+    scaleX: 0.9,
+    scaleY: 0.9
+  };
+};
+
+var defaultPinchDelta = function defaultPinchDelta(_ref) {
+  var _ref$offset = _ref.offset,
+      s = _ref$offset[0],
+      _ref$lastOffset = _ref.lastOffset,
+      lastS = _ref$lastOffset[0];
+  return {
+    scaleX: s - lastS < 0 ? 0.9 : 1.1,
+    scaleY: s - lastS < 0 ? 0.9 : 1.1
+  };
+};
+
+function Zoom(_ref2) {
+  var _ref2$scaleXMin = _ref2.scaleXMin,
+      scaleXMin = _ref2$scaleXMin === void 0 ? 0 : _ref2$scaleXMin,
+      _ref2$scaleXMax = _ref2.scaleXMax,
+      scaleXMax = _ref2$scaleXMax === void 0 ? Infinity : _ref2$scaleXMax,
+      _ref2$scaleYMin = _ref2.scaleYMin,
+      scaleYMin = _ref2$scaleYMin === void 0 ? 0 : _ref2$scaleYMin,
+      _ref2$scaleYMax = _ref2.scaleYMax,
+      scaleYMax = _ref2$scaleYMax === void 0 ? Infinity : _ref2$scaleYMax,
+      _ref2$initialTransfor = _ref2.initialTransformMatrix,
+      initialTransformMatrix = _ref2$initialTransfor === void 0 ? defaultInitialTransformMatrix : _ref2$initialTransfor,
+      _ref2$wheelDelta = _ref2.wheelDelta,
+      wheelDelta = _ref2$wheelDelta === void 0 ? defaultWheelDelta : _ref2$wheelDelta,
+      _ref2$pinchDelta = _ref2.pinchDelta,
+      pinchDelta = _ref2$pinchDelta === void 0 ? defaultPinchDelta : _ref2$pinchDelta,
+      width = _ref2.width,
+      height = _ref2.height,
+      constrain = _ref2.constrain,
+      children = _ref2.children;
+  var containerRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(null);
+  var matrixStateRef = (0,react__WEBPACK_IMPORTED_MODULE_1__.useRef)(initialTransformMatrix);
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(initialTransformMatrix),
+      transformMatrix = _useState[0],
+      setTransformMatrixState = _useState[1];
+
+  var _useState2 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false),
+      isDragging = _useState2[0],
+      setIsDragging = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(undefined),
+      startTranslate = _useState3[0],
+      setStartTranslate = _useState3[1];
+
+  var _useState4 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(undefined),
+      startPoint = _useState4[0],
+      setStartPoint = _useState4[1];
+
+  var defaultConstrain = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function (newTransformMatrix, prevTransformMatrix) {
+    if (constrain) return constrain(newTransformMatrix, prevTransformMatrix);
+    var scaleX = newTransformMatrix.scaleX,
+        scaleY = newTransformMatrix.scaleY;
+    var shouldConstrainScaleX = scaleX > scaleXMax || scaleX < scaleXMin;
+    var shouldConstrainScaleY = scaleY > scaleYMax || scaleY < scaleYMin;
+
+    if (shouldConstrainScaleX || shouldConstrainScaleY) {
+      return prevTransformMatrix;
+    }
+
+    return newTransformMatrix;
+  }, [constrain, scaleXMin, scaleXMax, scaleYMin, scaleYMax]);
+  var setTransformMatrix = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function (newTransformMatrix) {
+    setTransformMatrixState(function (prevTransformMatrix) {
+      var updatedTransformMatrix = defaultConstrain(newTransformMatrix, prevTransformMatrix);
+      matrixStateRef.current = updatedTransformMatrix;
+      return updatedTransformMatrix;
+    });
+  }, [defaultConstrain]);
+  var applyToPoint = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function (_ref3) {
+    var x = _ref3.x,
+        y = _ref3.y;
+    return (0,_util_matrix__WEBPACK_IMPORTED_MODULE_2__.applyMatrixToPoint)(transformMatrix, {
+      x: x,
+      y: y
+    });
+  }, [transformMatrix]);
+  var applyInverseToPoint = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function (_ref4) {
+    var x = _ref4.x,
+        y = _ref4.y;
+    return (0,_util_matrix__WEBPACK_IMPORTED_MODULE_2__.applyInverseMatrixToPoint)(transformMatrix, {
+      x: x,
+      y: y
+    });
+  }, [transformMatrix]);
+  var reset = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function () {
+    setTransformMatrix(initialTransformMatrix);
+  }, [initialTransformMatrix, setTransformMatrix]);
+  var scale = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function (_ref5) {
+    var scaleX = _ref5.scaleX,
+        maybeScaleY = _ref5.scaleY,
+        point = _ref5.point;
+    var scaleY = maybeScaleY || scaleX;
+    var cleanPoint = point || {
+      x: width / 2,
+      y: height / 2
+    }; // need to use ref value instead of state here because wheel listener does not have access to latest state
+
+    var translate = (0,_util_matrix__WEBPACK_IMPORTED_MODULE_2__.applyInverseMatrixToPoint)(matrixStateRef.current, cleanPoint);
+    var nextMatrix = (0,_util_matrix__WEBPACK_IMPORTED_MODULE_2__.composeMatrices)(matrixStateRef.current, (0,_util_matrix__WEBPACK_IMPORTED_MODULE_2__.translateMatrix)(translate.x, translate.y), (0,_util_matrix__WEBPACK_IMPORTED_MODULE_2__.scaleMatrix)(scaleX, scaleY), (0,_util_matrix__WEBPACK_IMPORTED_MODULE_2__.translateMatrix)(-translate.x, -translate.y));
+    setTransformMatrix(nextMatrix);
+  }, [height, width, setTransformMatrix]);
+  var translate = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function (_ref6) {
+    var translateX = _ref6.translateX,
+        translateY = _ref6.translateY;
+    var nextMatrix = (0,_util_matrix__WEBPACK_IMPORTED_MODULE_2__.composeMatrices)(transformMatrix, (0,_util_matrix__WEBPACK_IMPORTED_MODULE_2__.translateMatrix)(translateX, translateY));
+    setTransformMatrix(nextMatrix);
+  }, [setTransformMatrix, transformMatrix]);
+  var setTranslate = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function (_ref7) {
+    var translateX = _ref7.translateX,
+        translateY = _ref7.translateY;
+
+    var nextMatrix = _extends({}, transformMatrix, {
+      translateX: translateX,
+      translateY: translateY
+    });
+
+    setTransformMatrix(nextMatrix);
+  }, [setTransformMatrix, transformMatrix]);
+  var translateTo = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function (_ref8) {
+    var x = _ref8.x,
+        y = _ref8.y;
+    var point = (0,_util_matrix__WEBPACK_IMPORTED_MODULE_2__.applyInverseMatrixToPoint)(transformMatrix, {
+      x: x,
+      y: y
+    });
+    setTranslate({
+      translateX: point.x,
+      translateY: point.y
+    });
+  }, [setTranslate, transformMatrix]);
+  var invert = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function () {
+    return (0,_util_matrix__WEBPACK_IMPORTED_MODULE_2__.inverseMatrix)(transformMatrix);
+  }, [transformMatrix]);
+  var toStringInvert = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function () {
+    var _invert = invert(),
+        translateX = _invert.translateX,
+        translateY = _invert.translateY,
+        scaleX = _invert.scaleX,
+        scaleY = _invert.scaleY,
+        skewX = _invert.skewX,
+        skewY = _invert.skewY;
+
+    return "matrix(" + scaleX + ", " + skewY + ", " + skewX + ", " + scaleY + ", " + translateX + ", " + translateY + ")";
+  }, [invert]);
+  var dragStart = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function (event) {
+    var translateX = transformMatrix.translateX,
+        translateY = transformMatrix.translateY;
+    setStartPoint((0,_visx_event__WEBPACK_IMPORTED_MODULE_3__.default)(event) || undefined);
+    setStartTranslate({
+      translateX: translateX,
+      translateY: translateY
+    });
+    setIsDragging(true);
+  }, [transformMatrix]);
+  var dragMove = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function (event, options) {
+    if (!isDragging || !startPoint || !startTranslate) return;
+    var currentPoint = (0,_visx_event__WEBPACK_IMPORTED_MODULE_3__.default)(event);
+    var dx = currentPoint ? -(startPoint.x - currentPoint.x) : -startPoint.x;
+    var dy = currentPoint ? -(startPoint.y - currentPoint.y) : -startPoint.y;
+    var translateX = startTranslate.translateX + dx;
+    if (options == null ? void 0 : options.offsetX) translateX += options == null ? void 0 : options.offsetX;
+    var translateY = startTranslate.translateY + dy;
+    if (options == null ? void 0 : options.offsetY) translateY += options == null ? void 0 : options.offsetY;
+    setTranslate({
+      translateX: translateX,
+      translateY: translateY
+    });
+  }, [isDragging, setTranslate, startPoint, startTranslate]);
+  var dragEnd = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function () {
+    setStartPoint(undefined);
+    setStartTranslate(undefined);
+    setIsDragging(false);
+  }, []);
+  var handleWheel = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function (event) {
+    event.preventDefault();
+    var point = (0,_visx_event__WEBPACK_IMPORTED_MODULE_3__.default)(event) || undefined;
+
+    var _ref9 = wheelDelta(event),
+        scaleX = _ref9.scaleX,
+        scaleY = _ref9.scaleY;
+
+    scale({
+      scaleX: scaleX,
+      scaleY: scaleY,
+      point: point
+    });
+  }, [scale, wheelDelta]);
+  var handlePinch = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function (state) {
+    var _state$origin = state.origin,
+        ox = _state$origin[0],
+        oy = _state$origin[1],
+        memo = state.memo;
+    var currentMemo = memo;
+
+    if (containerRef.current) {
+      var _currentMemo;
+
+      var _ref10 = (_currentMemo = currentMemo) != null ? _currentMemo : containerRef.current.getBoundingClientRect(),
+          top = _ref10.top,
+          left = _ref10.left;
+
+      if (!currentMemo) {
+        currentMemo = {
+          top: top,
+          left: left
+        };
+      }
+
+      var _pinchDelta = pinchDelta(state),
+          scaleX = _pinchDelta.scaleX,
+          scaleY = _pinchDelta.scaleY;
+
+      scale({
+        scaleX: scaleX,
+        scaleY: scaleY,
+        point: {
+          x: ox - left,
+          y: oy - top
+        }
+      });
+    }
+
+    return currentMemo;
+  }, [scale, pinchDelta]);
+  var toString = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function () {
+    var translateX = transformMatrix.translateX,
+        translateY = transformMatrix.translateY,
+        scaleX = transformMatrix.scaleX,
+        scaleY = transformMatrix.scaleY,
+        skewX = transformMatrix.skewX,
+        skewY = transformMatrix.skewY;
+    return "matrix(" + scaleX + ", " + skewY + ", " + skewX + ", " + scaleY + ", " + translateX + ", " + translateY + ")";
+  }, [transformMatrix]);
+  var center = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function () {
+    var centerPoint = {
+      x: width / 2,
+      y: height / 2
+    };
+    var inverseCentroid = applyInverseToPoint(centerPoint);
+    translate({
+      translateX: inverseCentroid.x - centerPoint.x,
+      translateY: inverseCentroid.y - centerPoint.y
+    });
+  }, [height, width, applyInverseToPoint, translate]);
+  var clear = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(function () {
+    setTransformMatrix((0,_util_matrix__WEBPACK_IMPORTED_MODULE_2__.identityMatrix)());
+  }, [setTransformMatrix]);
+  (0,_use_gesture_react__WEBPACK_IMPORTED_MODULE_4__.useGesture)({
+    onDragStart: function onDragStart(_ref11) {
+      var event = _ref11.event;
+      if (!(event instanceof KeyboardEvent)) dragStart(event);
+    },
+    onDrag: function onDrag(_ref12) {
+      var event = _ref12.event,
+          pinching = _ref12.pinching,
+          cancel = _ref12.cancel;
+
+      if (pinching) {
+        cancel();
+        dragEnd();
+      } else if (!(event instanceof KeyboardEvent)) {
+        dragMove(event);
+      }
+    },
+    onDragEnd: dragEnd,
+    onPinch: handlePinch,
+    onWheel: function onWheel(_ref13) {
+      var event = _ref13.event;
+      return handleWheel(event);
+    }
+  }, {
+    target: containerRef,
+    eventOptions: {
+      passive: false
+    },
+    drag: {
+      filterTaps: true
+    }
+  });
+  var zoom = {
+    initialTransformMatrix: initialTransformMatrix,
+    transformMatrix: transformMatrix,
+    isDragging: isDragging,
+    center: center,
+    clear: clear,
+    scale: scale,
+    translate: translate,
+    translateTo: translateTo,
+    setTranslate: setTranslate,
+    setTransformMatrix: setTransformMatrix,
+    reset: reset,
+    handleWheel: handleWheel,
+    handlePinch: handlePinch,
+    dragEnd: dragEnd,
+    dragMove: dragMove,
+    dragStart: dragStart,
+    toString: toString,
+    invert: invert,
+    toStringInvert: toStringInvert,
+    applyToPoint: applyToPoint,
+    applyInverseToPoint: applyInverseToPoint,
+    containerRef: containerRef
+  }; // eslint-disable-next-line react/jsx-no-useless-fragment
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.createElement(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, null, children(zoom));
+}
+
+Zoom.propTypes = {
+  width: (prop_types__WEBPACK_IMPORTED_MODULE_0___default().number.isRequired),
+  height: (prop_types__WEBPACK_IMPORTED_MODULE_0___default().number.isRequired),
+  wheelDelta: (prop_types__WEBPACK_IMPORTED_MODULE_0___default().func),
+  scaleXMin: (prop_types__WEBPACK_IMPORTED_MODULE_0___default().number),
+  scaleXMax: (prop_types__WEBPACK_IMPORTED_MODULE_0___default().number),
+  scaleYMin: (prop_types__WEBPACK_IMPORTED_MODULE_0___default().number),
+  scaleYMax: (prop_types__WEBPACK_IMPORTED_MODULE_0___default().number),
+  constrain: (prop_types__WEBPACK_IMPORTED_MODULE_0___default().func),
+  children: (prop_types__WEBPACK_IMPORTED_MODULE_0___default().func.isRequired)
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Zoom);
+
+/***/ }),
+
+/***/ "./node_modules/@visx/zoom/esm/index.js":
+/*!**********************************************!*\
+  !*** ./node_modules/@visx/zoom/esm/index.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Zoom": () => (/* reexport safe */ _Zoom__WEBPACK_IMPORTED_MODULE_0__.default),
+/* harmony export */   "identityMatrix": () => (/* reexport safe */ _util_matrix__WEBPACK_IMPORTED_MODULE_1__.identityMatrix),
+/* harmony export */   "createMatrix": () => (/* reexport safe */ _util_matrix__WEBPACK_IMPORTED_MODULE_1__.createMatrix),
+/* harmony export */   "inverseMatrix": () => (/* reexport safe */ _util_matrix__WEBPACK_IMPORTED_MODULE_1__.inverseMatrix),
+/* harmony export */   "applyMatrixToPoint": () => (/* reexport safe */ _util_matrix__WEBPACK_IMPORTED_MODULE_1__.applyMatrixToPoint),
+/* harmony export */   "applyInverseMatrixToPoint": () => (/* reexport safe */ _util_matrix__WEBPACK_IMPORTED_MODULE_1__.applyInverseMatrixToPoint),
+/* harmony export */   "scaleMatrix": () => (/* reexport safe */ _util_matrix__WEBPACK_IMPORTED_MODULE_1__.scaleMatrix),
+/* harmony export */   "translateMatrix": () => (/* reexport safe */ _util_matrix__WEBPACK_IMPORTED_MODULE_1__.translateMatrix),
+/* harmony export */   "multiplyMatrices": () => (/* reexport safe */ _util_matrix__WEBPACK_IMPORTED_MODULE_1__.multiplyMatrices),
+/* harmony export */   "composeMatrices": () => (/* reexport safe */ _util_matrix__WEBPACK_IMPORTED_MODULE_1__.composeMatrices)
+/* harmony export */ });
+/* harmony import */ var _Zoom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Zoom */ "./node_modules/@visx/zoom/esm/Zoom.js");
+/* harmony import */ var _util_matrix__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util/matrix */ "./node_modules/@visx/zoom/esm/util/matrix.js");
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@visx/zoom/esm/util/matrix.js":
+/*!****************************************************!*\
+  !*** ./node_modules/@visx/zoom/esm/util/matrix.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "identityMatrix": () => (/* binding */ identityMatrix),
+/* harmony export */   "createMatrix": () => (/* binding */ createMatrix),
+/* harmony export */   "inverseMatrix": () => (/* binding */ inverseMatrix),
+/* harmony export */   "applyMatrixToPoint": () => (/* binding */ applyMatrixToPoint),
+/* harmony export */   "applyInverseMatrixToPoint": () => (/* binding */ applyInverseMatrixToPoint),
+/* harmony export */   "scaleMatrix": () => (/* binding */ scaleMatrix),
+/* harmony export */   "translateMatrix": () => (/* binding */ translateMatrix),
+/* harmony export */   "multiplyMatrices": () => (/* binding */ multiplyMatrices),
+/* harmony export */   "composeMatrices": () => (/* binding */ composeMatrices)
+/* harmony export */ });
+function identityMatrix() {
+  return {
+    scaleX: 1,
+    scaleY: 1,
+    translateX: 0,
+    translateY: 0,
+    skewX: 0,
+    skewY: 0
+  };
+}
+function createMatrix(_ref) {
+  var _ref$scaleX = _ref.scaleX,
+      scaleX = _ref$scaleX === void 0 ? 1 : _ref$scaleX,
+      _ref$scaleY = _ref.scaleY,
+      scaleY = _ref$scaleY === void 0 ? 1 : _ref$scaleY,
+      _ref$translateX = _ref.translateX,
+      translateX = _ref$translateX === void 0 ? 0 : _ref$translateX,
+      _ref$translateY = _ref.translateY,
+      translateY = _ref$translateY === void 0 ? 0 : _ref$translateY,
+      _ref$skewX = _ref.skewX,
+      skewX = _ref$skewX === void 0 ? 0 : _ref$skewX,
+      _ref$skewY = _ref.skewY,
+      skewY = _ref$skewY === void 0 ? 0 : _ref$skewY;
+  return {
+    scaleX: scaleX,
+    scaleY: scaleY,
+    translateX: translateX,
+    translateY: translateY,
+    skewX: skewX,
+    skewY: skewY
+  };
+}
+function inverseMatrix(_ref2) {
+  var scaleX = _ref2.scaleX,
+      scaleY = _ref2.scaleY,
+      translateX = _ref2.translateX,
+      translateY = _ref2.translateY,
+      skewX = _ref2.skewX,
+      skewY = _ref2.skewY;
+  var denominator = scaleX * scaleY - skewY * skewX;
+  return {
+    scaleX: scaleY / denominator,
+    scaleY: scaleX / denominator,
+    translateX: (scaleY * translateX - skewX * translateY) / -denominator,
+    translateY: (skewY * translateX - scaleX * translateY) / denominator,
+    skewX: skewX / -denominator,
+    skewY: skewY / -denominator
+  };
+}
+function applyMatrixToPoint(matrix, _ref3) {
+  var x = _ref3.x,
+      y = _ref3.y;
+  return {
+    x: matrix.scaleX * x + matrix.skewX * y + matrix.translateX,
+    y: matrix.skewY * x + matrix.scaleY * y + matrix.translateY
+  };
+}
+function applyInverseMatrixToPoint(matrix, _ref4) {
+  var x = _ref4.x,
+      y = _ref4.y;
+  return applyMatrixToPoint(inverseMatrix(matrix), {
+    x: x,
+    y: y
+  });
+}
+function scaleMatrix(scaleX, maybeScaleY) {
+  if (maybeScaleY === void 0) {
+    maybeScaleY = undefined;
+  }
+
+  var scaleY = maybeScaleY || scaleX;
+  return createMatrix({
+    scaleX: scaleX,
+    scaleY: scaleY
+  });
+}
+function translateMatrix(translateX, translateY) {
+  return createMatrix({
+    translateX: translateX,
+    translateY: translateY
+  });
+}
+function multiplyMatrices(matrix1, matrix2) {
+  return {
+    scaleX: matrix1.scaleX * matrix2.scaleX + matrix1.skewX * matrix2.skewY,
+    scaleY: matrix1.skewY * matrix2.skewX + matrix1.scaleY * matrix2.scaleY,
+    translateX: matrix1.scaleX * matrix2.translateX + matrix1.skewX * matrix2.translateY + matrix1.translateX,
+    translateY: matrix1.skewY * matrix2.translateX + matrix1.scaleY * matrix2.translateY + matrix1.translateY,
+    skewX: matrix1.scaleX * matrix2.skewX + matrix1.skewX * matrix2.scaleY,
+    skewY: matrix1.skewY * matrix2.scaleX + matrix1.scaleY * matrix2.skewY
+  };
+}
+function composeMatrices() {
+  for (var _len = arguments.length, matrices = new Array(_len), _key = 0; _key < _len; _key++) {
+    matrices[_key] = arguments[_key];
+  }
+
+  switch (matrices.length) {
+    case 0:
+      throw new Error('composeMatrices() requires arguments: was called with no args');
+
+    case 1:
+      return matrices[0];
+
+    case 2:
+      return multiplyMatrices(matrices[0], matrices[1]);
+
+    default:
+      {
+        var matrix1 = matrices[0],
+            matrix2 = matrices[1],
+            restMatrices = matrices.slice(2);
+        var matrix = multiplyMatrices(matrix1, matrix2);
+        return composeMatrices.apply(void 0, [matrix].concat(restMatrices));
+      }
+  }
+}
 
 /***/ }),
 
@@ -56650,40 +59525,6 @@ exports.default = App;
 
 /***/ }),
 
-/***/ "./src/frontend/Components/NavBar/NavBar.tsx":
-/*!***************************************************!*\
-  !*** ./src/frontend/Components/NavBar/NavBar.tsx ***!
-  \***************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-const NavTab_1 = __webpack_require__(/*! ./NavTab */ "./src/frontend/Components/NavBar/NavTab.tsx");
-const styled_components_1 = __importDefault(__webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js"));
-const NavBarSection = styled_components_1.default.section `
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 4vh;
-  width: 99vw;
-  background: #293241;
-`;
-// creates buttons whos values are set by the setter function setTabNum. 
-// A different component is rendered in MainContainer according to what the value of tabNum is
-// PROXY NETWORK IS NOT BEING RENDERED IN BUILD BECAUSE IT CURRENTLY IS IN DEVELOPMENT
-const NavBar = ({ setTabNum, tabNum }) => {
-    return (jsx_runtime_1.jsxs(NavBarSection, { children: [jsx_runtime_1.jsx(NavTab_1.NavTab, { value: 1, tabNum: tabNum, text: 'State Diff', setTabNum: setTabNum }, void 0), jsx_runtime_1.jsx(NavTab_1.NavTab, { value: 3, tabNum: tabNum, text: 'Component Graph', setTabNum: setTabNum }, void 0), jsx_runtime_1.jsx(NavTab_1.NavTab, { value: 4, tabNum: tabNum, text: 'Component Tree', setTabNum: setTabNum }, void 0)] }, void 0));
-};
-exports.default = NavBar;
-
-
-/***/ }),
-
 /***/ "./src/frontend/Components/NavBar/NavTab.tsx":
 /*!***************************************************!*\
   !*** ./src/frontend/Components/NavBar/NavTab.tsx ***!
@@ -56720,6 +59561,38 @@ const NavTab = ({ value, tabNum, text, setTabNum }) => {
     return (jsx_runtime_1.jsx(NavTabStyled, Object.assign({ value: value, tabNum: tabNum, onClick: changeTab }, { children: text }), void 0));
 };
 exports.NavTab = NavTab;
+
+
+/***/ }),
+
+/***/ "./src/frontend/Components/NavBar/navbar.tsx":
+/*!***************************************************!*\
+  !*** ./src/frontend/Components/NavBar/navbar.tsx ***!
+  \***************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+const NavTab_1 = __webpack_require__(/*! ./NavTab */ "./src/frontend/Components/NavBar/NavTab.tsx");
+const styled_components_1 = __importDefault(__webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js"));
+const NavBarSection = styled_components_1.default.section `
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 4vh;
+  width: 100%;
+  background: green;
+  border-bottom: 2px solid #98C1D9;
+`;
+const NavBar = ({ setTabNum, tabNum }) => {
+    return (jsx_runtime_1.jsxs(NavBarSection, { children: [jsx_runtime_1.jsx(NavTab_1.NavTab, { value: 1, tabNum: tabNum, text: 'State Diff', setTabNum: setTabNum }, void 0), jsx_runtime_1.jsx(NavTab_1.NavTab, { value: 2, tabNum: tabNum, text: 'Proxy Network', setTabNum: setTabNum }, void 0), jsx_runtime_1.jsx(NavTab_1.NavTab, { value: 3, tabNum: tabNum, text: 'Component Graph', setTabNum: setTabNum }, void 0), jsx_runtime_1.jsx(NavTab_1.NavTab, { value: 4, tabNum: tabNum, text: 'Component Tree', setTabNum: setTabNum }, void 0)] }, void 0));
+};
+exports.default = NavBar;
 
 
 /***/ }),
@@ -56775,7 +59648,10 @@ const SnapShotButton = styled_components_1.default.button `
         color: #293241; 
     };
 `;
-// creates button each time a new version of the inspected app's fiber tree is recieved
+// const P = styled.p`
+//     margin: 0.3em;
+//     font-size: 1.2em;
+// `;
 const SnapShot = ({ snapNum, setSnapShotIndex, value }) => {
     const { snapShotIndex } = react_1.useContext(SnapShotContext_1.SnapShotContext);
     return (jsx_runtime_1.jsxs(SnapShotButton, Object.assign({ value: value, snapShotIndex: snapShotIndex, onClick: () => setSnapShotIndex(snapNum) }, { children: ["SnapShot ", snapNum + 1] }), void 0));
@@ -56802,11 +59678,11 @@ const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modul
 const react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const SnapShotContainer_1 = __webpack_require__(/*! ./SnapShotContainer */ "./src/frontend/Containers/SnapShotContainer.tsx");
 const VisualContainer_1 = __importDefault(__webpack_require__(/*! ./VisualContainer */ "./src/frontend/Containers/VisualContainer.tsx"));
-const NavBar_1 = __importDefault(__webpack_require__(/*! ../Components/NavBar/NavBar */ "./src/frontend/Components/NavBar/NavBar.tsx"));
+const navbar_1 = __importDefault(__webpack_require__(/*! ../Components/NavBar/navbar */ "./src/frontend/Components/NavBar/navbar.tsx"));
 const NotValtio_1 = __webpack_require__(/*! ../Components/NotValtio */ "./src/frontend/Components/NotValtio.tsx");
+const styled_components_1 = __importDefault(__webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js"));
 const GlobalStateContext_1 = __webpack_require__(/*! ../Contexts/GlobalStateContext */ "./src/frontend/Contexts/GlobalStateContext.tsx");
 const SnapShotContext_1 = __webpack_require__(/*! ../Contexts/SnapShotContext */ "./src/frontend/Contexts/SnapShotContext.ts");
-const styled_components_1 = __importDefault(__webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js"));
 const Main = styled_components_1.default.main `
   display: flex;
   flex-wrap: wrap;
@@ -56818,7 +59694,6 @@ function MainContainer() {
     const [snapShotIndex, setSnapShotIndex] = react_1.useState(0);
     const [rawData, setRawData] = react_1.useState([]);
     const [usesValtio, setUsesValtio] = react_1.useState(false);
-    // place holder variable for port to be assigned to in useEffect.  
     let comms;
     react_1.useEffect(() => {
         // get tab id of current tab
@@ -56833,7 +59708,7 @@ function MainContainer() {
         });
     }, []);
     return (jsx_runtime_1.jsx(jsx_runtime_1.Fragment, { children: usesValtio ?
-            jsx_runtime_1.jsxs(Main, { children: [jsx_runtime_1.jsx(NavBar_1.default, { setTabNum: setTabNum, tabNum: tabNum }, void 0), jsx_runtime_1.jsx(GlobalStateContext_1.GlobalStateContext.Provider, Object.assign({ value: rawData }, { children: jsx_runtime_1.jsxs(SnapShotContext_1.SnapShotContext.Provider, Object.assign({ value: { snapShotIndex, setSnapShotIndex } }, { children: [jsx_runtime_1.jsx(SnapShotContainer_1.SnapShotContainer, {}, void 0), jsx_runtime_1.jsx(VisualContainer_1.default, { tabNum: tabNum }, void 0)] }), void 0) }), void 0)] }, void 0)
+            jsx_runtime_1.jsxs(Main, { children: [jsx_runtime_1.jsx(navbar_1.default, { setTabNum: setTabNum, tabNum: tabNum }, void 0), jsx_runtime_1.jsx(GlobalStateContext_1.GlobalStateContext.Provider, Object.assign({ value: rawData }, { children: jsx_runtime_1.jsxs(SnapShotContext_1.SnapShotContext.Provider, Object.assign({ value: { snapShotIndex, setSnapShotIndex } }, { children: [jsx_runtime_1.jsx(SnapShotContainer_1.SnapShotContainer, {}, void 0), jsx_runtime_1.jsx(VisualContainer_1.default, { tabNum: tabNum }, void 0)] }), void 0) }), void 0)] }, void 0)
             :
                 jsx_runtime_1.jsx(NotValtio_1.NotValtio, {}, void 0) }, void 0));
 }
@@ -56869,7 +59744,7 @@ const Section = styled_components_1.default.section `
     height: 96vh;
     width:14vw;
     background: #293241;
-    border: 2px solid #98C1D9;
+    border-right: 2px solid #98C1D9;
     color: #98C1D9;
     text-align: center;
 `;
@@ -56879,11 +59754,10 @@ const SnapShots = styled_components_1.default.section `
     justify-content: flex-start;
     align-items: center;
     width: 100%;
-    padding: 0;
     height:100%;
+    padding: 0;
     overflow-y: auto;
 `;
-// creates a snapshot button that is used to access the app's state at whatever index <Snapshot /> value is
 const SnapShotContainer = () => {
     const state = react_1.useContext(GlobalStateContext_1.GlobalStateContext);
     const { setSnapShotIndex } = react_1.useContext(SnapShotContext_1.SnapShotContext);
@@ -56912,21 +59786,19 @@ const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modul
 const StateDiff_1 = __importDefault(__webpack_require__(/*! ../components/StateDiff/StateDiff */ "./src/frontend/components/StateDiff/StateDiff.tsx"));
 const ComponentTree_1 = __importDefault(__webpack_require__(/*! ../components/ComponentTree/ComponentTree */ "./src/frontend/components/ComponentTree/ComponentTree.tsx"));
 const ComponentGraph_1 = __importDefault(__webpack_require__(/*! ../components/ComponentGraph/ComponentGraph */ "./src/frontend/components/ComponentGraph/ComponentGraph.tsx"));
-const responsive_1 = __webpack_require__(/*! @visx/responsive */ "./node_modules/@visx/responsive/esm/index.js");
+const ProxyNetwork_1 = __importDefault(__webpack_require__(/*! ../components/ProxyNetwork/ProxyNetwork */ "./src/frontend/components/ProxyNetwork/ProxyNetwork.tsx"));
 const styled_components_1 = __importDefault(__webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js"));
+const responsive_1 = __webpack_require__(/*! @visx/responsive */ "./node_modules/@visx/responsive/esm/index.js");
 const VisualSection = styled_components_1.default.section `
   height: 96vh;
-  width: 85vw;
+  width: 85%;
   background: #293241;
   color: #98C1D9;
-  border-top: 2px solid #98C1D9;
   text-align:center;
   overflow-y: auto;
 `;
-// conditionally renders whichever component correspondes with tabNum.  tabNum's value is changed in NavBar
-// PROXY NETWORK IS NOT BEING RENDERED IN BUILD BECAUSE IT CURRENTLY IS IN DEVELOPMENT
 function VisualContainer({ tabNum }) {
-    return (jsx_runtime_1.jsxs(VisualSection, { children: [(tabNum === 1) && jsx_runtime_1.jsx(StateDiff_1.default, {}, void 0), (tabNum === 3) && jsx_runtime_1.jsx(responsive_1.ParentSize, { children: ({ width, height }) => (jsx_runtime_1.jsx(ComponentGraph_1.default, { width: width, height: height }, void 0)) }, void 0), (tabNum === 4) && jsx_runtime_1.jsx(ComponentTree_1.default, {}, void 0)] }, void 0));
+    return (jsx_runtime_1.jsxs(VisualSection, { children: [(tabNum === 1) && jsx_runtime_1.jsx(StateDiff_1.default, {}, void 0), (tabNum === 2) && jsx_runtime_1.jsx(ProxyNetwork_1.default, {}, void 0), (tabNum === 3) && jsx_runtime_1.jsx(responsive_1.ParentSize, { children: ({ width, height }) => (jsx_runtime_1.jsx(ComponentGraph_1.default, { width: width, height: height }, void 0)) }, void 0), (tabNum === 4) && jsx_runtime_1.jsx(ComponentTree_1.default, {}, void 0)] }, void 0));
 }
 exports.default = VisualContainer;
 
@@ -56969,6 +59841,57 @@ exports.snapshotIndexContext = react_1.createContext({
     snapshotIndex: 0,
 });
 exports.componentTreeHistoryContext = react_1.createContext({ componentTreeHistory: [] });
+
+
+/***/ }),
+
+/***/ "./src/frontend/MockData/proxyData.tsx":
+/*!*********************************************!*\
+  !*** ./src/frontend/MockData/proxyData.tsx ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.default = {
+    statusProxy: {
+        value: 'Next Player: X',
+        dependentOf: [],
+        dependents: ['squaresProxy', 'winnerProxy', 'nextValueProxy'],
+        components: ['End', 'Status', 'test'],
+    },
+    winnerProxy: {
+        value: null,
+        dependentOf: ['selectSquareProxy', 'statusProxy'],
+        dependents: ['squaresProxy'],
+        components: ['End'],
+    },
+    nextValueProxy: {
+        value: 'O',
+        dependentOf: ['selectSquareProxy', 'statusProxy'],
+        dependents: ['squaresProxy'],
+        components: [],
+    },
+    resetSquaresProxy: {
+        value: 0,
+        dependentOf: [],
+        dependents: ['squaresProxy'],
+        components: ['Status'],
+    },
+    selectSquareProxy: {
+        value: [null, null, null, null, null, null, null, null, null],
+        dependentOf: [],
+        dependents: ['squaresProxy', 'winnerProxy', 'nextValueProxy'],
+        components: ['Squares'],
+    },
+    squaresProxy: {
+        value: [null, null, null, null, null, null, null, null, null],
+        dependentOf: ['selectSquareProxy', 'resetSquaresProxy', 'nextValueProxy', 'winnerProxy', 'statusProxy'],
+        dependents: [],
+        components: [],
+    },
+};
 
 
 /***/ }),
@@ -57282,6 +60205,296 @@ function ComponentTree() {
                         } }, { children: "Expand" }), void 0)] }), void 0)] }), void 0));
 }
 exports.default = ComponentTree;
+
+
+/***/ }),
+
+/***/ "./src/frontend/components/ProxyNetwork/ProxyDependentOfNetwork.tsx":
+/*!**************************************************************************!*\
+  !*** ./src/frontend/components/ProxyNetwork/ProxyDependentOfNetwork.tsx ***!
+  \**************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+const group_1 = __webpack_require__(/*! @visx/group */ "./node_modules/@visx/group/esm/index.js");
+const hierarchy_1 = __webpack_require__(/*! @visx/hierarchy */ "./node_modules/@visx/hierarchy/esm/index.js");
+const gradient_1 = __webpack_require__(/*! @visx/gradient */ "./node_modules/@visx/gradient/esm/index.js");
+const zoom_1 = __webpack_require__(/*! @visx/zoom */ "./node_modules/@visx/zoom/esm/index.js");
+const d3_shape_1 = __webpack_require__(/*! d3-shape */ "./node_modules/d3-shape/src/index.js");
+const getLinkComponent_1 = __importDefault(__webpack_require__(/*! ../ComponentGraph/getLinkComponent */ "./src/frontend/components/ComponentGraph/getLinkComponent.tsx"));
+const proxyData_1 = __importDefault(__webpack_require__(/*! ../../MockData/proxyData */ "./src/frontend/MockData/proxyData.tsx"));
+const initialTransform = {
+    scaleX: 0.8,
+    scaleY: 0.8,
+    translateX: 20,
+    translateY: 50,
+    skewX: 0,
+    skewY: 0,
+};
+const defaultMargin = { top: 30, left: 30, right: 30, bottom: 70 };
+function ProxyDependentOfNetwork({ width: totalWidth, height: totalHeight, margin = defaultMargin, proxyName, }) {
+    // const { snapshotHistory } = useContext<SnapshotHistoryContext>(
+    //   snapshotHistoryContext
+    // );
+    // const { snapshotIndex } = useContext<SnapshotIndexContext>(
+    //   snapshotIndexContext
+    // );
+    //Array of proxy state names in current snapshot
+    const proxyNamesArray = Object.keys(proxyData_1.default);
+    // const proxyNamesArray = Object.keys(snapshotHistory[snapshotIndex]);
+    //Function creates dependent-of object for proxy network based on proxy item selected from drop down:
+    function ProxyDependentOf(proxy) {
+        const proxyDependentOfData = {};
+        let object;
+        if (!proxy)
+            return;
+        // if (!snapshotHistory[snapshotIndex][proxy]) {
+        if (!proxyData_1.default[proxy]) {
+            // object = snapshotHistory[snapshotIndex][proxyNamesArray[0]];
+            object = proxyData_1.default[proxyNamesArray[0]];
+            proxyDependentOfData.name = proxyNamesArray[0];
+        }
+        else {
+            // object = snapshotHistory[snapshotIndex][proxy];
+            object = proxyData_1.default[proxy];
+            proxyDependentOfData.name = proxy;
+        }
+        proxyDependentOfData.nodeDeps = [];
+        object.dependentOf.map((item) => {
+            proxyDependentOfData.nodeDeps.push({ name: item });
+        });
+        return proxyDependentOfData;
+    }
+    const data = ProxyDependentOf(proxyName);
+    const layout = 'polar';
+    const linkType = 'line';
+    const innerWidth = totalWidth - margin.left - margin.right;
+    const innerHeight = totalHeight - margin.top - margin.bottom;
+    let origin;
+    let sizeWidth;
+    let sizeHeight;
+    origin = {
+        x: innerWidth / 2,
+        y: innerHeight / 2,
+    };
+    sizeWidth = 2 * Math.PI;
+    sizeHeight = Math.min(innerWidth, innerHeight) / 2;
+    const LinkComponent = getLinkComponent_1.default({ layout, linkType });
+    return totalWidth < 10 ? null : (jsx_runtime_1.jsx("div", { children: jsx_runtime_1.jsx(zoom_1.Zoom, Object.assign({ width: totalWidth, height: totalHeight, scaleXMin: 1 / 2, scaleXMax: 4, scaleYMin: 1 / 2, scaleYMax: 4, initialTransformMatrix: initialTransform }, { children: zoom => (jsx_runtime_1.jsxs("svg", Object.assign({ width: totalWidth, height: totalHeight }, { children: [jsx_runtime_1.jsx(gradient_1.LinearGradient, { id: "proxy-gradient", from: "#F68E9A", to: "#F02D44" }, void 0), jsx_runtime_1.jsx(gradient_1.LinearGradient, { id: "dependent-gradient", from: "#98C1D9", to: "#3D5A80" }, void 0), jsx_runtime_1.jsx("defs", { children: jsx_runtime_1.jsx("marker", Object.assign({ id: "arrow", viewBox: "0 0 10 10", refX: 40, refY: "5", markerWidth: "7", markerHeight: "7", orient: "auto-start-reverse" }, { children: jsx_runtime_1.jsx("path", { d: "M 0 0 L 10 5 L 0 10 z", fill: "#7c7c7c" }, void 0) }), void 0) }, void 0), ";", jsx_runtime_1.jsx("rect", { width: totalWidth, height: totalHeight, rx: 14, fill: "#293241" }, void 0), jsx_runtime_1.jsx("g", Object.assign({ transform: zoom.toString() }, { children: jsx_runtime_1.jsx(group_1.Group, Object.assign({ top: margin.top, left: margin.left }, { children: jsx_runtime_1.jsx(hierarchy_1.Tree, Object.assign({ root: hierarchy_1.hierarchy(data, d => d.isExpanded ? null : d.nodeDeps), size: [sizeWidth, sizeHeight], separation: (a, b) => (a.parent === b.parent ? 0.55 : 0.5) / a.depth }, { children: tree => (jsx_runtime_1.jsxs(group_1.Group, Object.assign({ top: origin.y, left: origin.x }, { children: [tree.links().map((link, i) => (jsx_runtime_1.jsx(LinkComponent, { data: link, stroke: "#7c7c7c", strokeWidth: "3", fill: "none", markerStart: "url(#arrow)" }, i))), tree.descendants().map((node, key) => {
+                                            let top;
+                                            let left;
+                                            const [radialX, radialY] = d3_shape_1.pointRadial(node.x, node.y);
+                                            top = radialY;
+                                            left = radialX;
+                                            const fontSizeFunc = (name) => {
+                                                const nodeLength = name.length;
+                                                if (nodeLength < 5)
+                                                    return 19;
+                                                if (nodeLength < 10)
+                                                    return 18;
+                                                if (nodeLength < 15)
+                                                    return 16;
+                                                if (nodeLength < 20)
+                                                    return 12;
+                                                if (nodeLength < 25)
+                                                    return 11;
+                                                if (nodeLength < 30)
+                                                    return 10;
+                                                if (nodeLength < 35)
+                                                    return 7;
+                                                return 6;
+                                            };
+                                            const fontSize = fontSizeFunc(node.data.name);
+                                            return (jsx_runtime_1.jsxs(group_1.Group, Object.assign({ top: top, left: left }, { children: [node.depth === 0 && (jsx_runtime_1.jsx("circle", { fill: "url('#proxy-gradient')", r: 65 }, void 0)), node.depth !== 0 && (jsx_runtime_1.jsx("circle", { r: 65, fill: "url('#dependent-gradient')" }, void 0)), jsx_runtime_1.jsx("text", Object.assign({ dy: ".33em", fontSize: fontSize, fontFamily: "Arial", textAnchor: "middle", style: {
+                                                            pointerEvents: 'none',
+                                                            fontWeight: 'bold',
+                                                        }, fill: '#e6e6e6' }, { children: node.data.name }), void 0)] }), key));
+                                        })] }), void 0)) }), void 0) }), void 0) }), void 0), jsx_runtime_1.jsx("rect", { width: totalWidth, height: totalHeight, rx: 14, fill: "transparent", onTouchStart: zoom.dragStart, onTouchMove: zoom.dragMove, onTouchEnd: zoom.dragEnd, onMouseDown: zoom.dragStart, onMouseMove: zoom.dragMove, onMouseUp: zoom.dragEnd, onMouseLeave: () => {
+                            if (zoom.isDragging)
+                                zoom.dragEnd();
+                        } }, void 0)] }), void 0)) }), void 0) }, void 0));
+}
+exports.default = ProxyDependentOfNetwork;
+
+
+/***/ }),
+
+/***/ "./src/frontend/components/ProxyNetwork/ProxyDependentsNetwork.tsx":
+/*!*************************************************************************!*\
+  !*** ./src/frontend/components/ProxyNetwork/ProxyDependentsNetwork.tsx ***!
+  \*************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+const group_1 = __webpack_require__(/*! @visx/group */ "./node_modules/@visx/group/esm/index.js");
+const hierarchy_1 = __webpack_require__(/*! @visx/hierarchy */ "./node_modules/@visx/hierarchy/esm/index.js");
+const gradient_1 = __webpack_require__(/*! @visx/gradient */ "./node_modules/@visx/gradient/esm/index.js");
+const zoom_1 = __webpack_require__(/*! @visx/zoom */ "./node_modules/@visx/zoom/esm/index.js");
+const d3_shape_1 = __webpack_require__(/*! d3-shape */ "./node_modules/d3-shape/src/index.js");
+const getLinkComponent_1 = __importDefault(__webpack_require__(/*! ../ComponentGraph/getLinkComponent */ "./src/frontend/components/ComponentGraph/getLinkComponent.tsx"));
+const proxyData_1 = __importDefault(__webpack_require__(/*! ../../MockData/proxyData */ "./src/frontend/MockData/proxyData.tsx"));
+const initialTransform = {
+    scaleX: 0.8,
+    scaleY: 0.8,
+    translateX: 20,
+    translateY: 50,
+    skewX: 0,
+    skewY: 0,
+};
+const defaultMargin = { top: 30, left: 30, right: 30, bottom: 70 };
+function ProxyDependentsNetwork({ width: totalWidth, height: totalHeight, margin = defaultMargin, proxyName, }) {
+    // const { snapshotHistory } = useContext<SnapshotHistoryContext>(
+    //   snapshotHistoryContext
+    // );
+    // const { snapshotIndex } = useContext<SnapshotIndexContext>(
+    //   snapshotIndexContext
+    // );
+    //Array of proxy state names in current snapshot
+    const proxyNamesArray = Object.keys(proxyData_1.default);
+    // const proxyNamesArray = Object.keys(snapshotHistory[snapshotIndex]);
+    //Function creates proxy-to-dependents network based on proxy selected from drop down:
+    function ProxyDependents(proxy) {
+        const proxyDependentData = {};
+        let object;
+        if (!proxy)
+            return;
+        // if (!snapshotHistory[snapshotIndex][proxy]) {
+        if (!proxyData_1.default[proxy]) {
+            // object = snapshotHistory[snapshotIndex][proxyNamesArray[0]];
+            object = proxyData_1.default[proxyNamesArray[0]];
+            proxyDependentData.name = proxyNamesArray[0];
+        }
+        else {
+            // object = snapshotHistory[snapshotIndex][proxy];
+            object = proxyData_1.default[proxy];
+            proxyDependentData.name = proxy;
+        }
+        proxyDependentData.dependents = [];
+        object.dependents.map((item) => {
+            proxyDependentData.dependents.push({ name: item });
+        });
+        return proxyDependentData;
+    }
+    const data = ProxyDependents(proxyName);
+    const layout = 'polar';
+    const linkType = 'line';
+    const innerWidth = totalWidth - margin.left - margin.right;
+    const innerHeight = totalHeight - margin.top - margin.bottom;
+    let origin;
+    let sizeWidth;
+    let sizeHeight;
+    origin = {
+        x: innerWidth / 2,
+        y: innerHeight / 2,
+    };
+    sizeWidth = 2 * Math.PI;
+    sizeHeight = Math.min(innerWidth, innerHeight) / 2;
+    const LinkComponent = getLinkComponent_1.default({ layout, linkType });
+    return totalWidth < 10 ? null : (jsx_runtime_1.jsx("div", { children: jsx_runtime_1.jsx(zoom_1.Zoom, Object.assign({ width: totalWidth, height: totalHeight, scaleXMin: 1 / 2, scaleXMax: 4, scaleYMin: 1 / 2, scaleYMax: 4, initialTransformMatrix: initialTransform }, { children: zoom => (jsx_runtime_1.jsxs("svg", Object.assign({ width: totalWidth, height: totalHeight }, { children: [jsx_runtime_1.jsx(gradient_1.LinearGradient, { id: "proxy-gradient", from: "#F68E9A", to: "#F02D44" }, void 0), jsx_runtime_1.jsx(gradient_1.LinearGradient, { id: "dependent-gradient", from: "#98C1D9", to: "#3D5A80" }, void 0), jsx_runtime_1.jsx("defs", { children: jsx_runtime_1.jsx("marker", Object.assign({ id: "arrow", viewBox: "0 0 10 10", refX: 40, refY: "5", markerWidth: "7", markerHeight: "7", orient: "auto-start-reverse" }, { children: jsx_runtime_1.jsx("path", { d: "M 0 0 L 10 5 L 0 10 z", fill: "#7c7c7c" }, void 0) }), void 0) }, void 0), ";", jsx_runtime_1.jsx("rect", { width: totalWidth, height: totalHeight, rx: 14, fill: "#293241" }, void 0), jsx_runtime_1.jsx("g", Object.assign({ transform: zoom.toString() }, { children: jsx_runtime_1.jsx(group_1.Group, Object.assign({ top: margin.top, left: margin.left }, { children: jsx_runtime_1.jsx(hierarchy_1.Tree, Object.assign({ root: hierarchy_1.hierarchy(data, d => d.isExpanded ? null : d.dependents), size: [sizeWidth, sizeHeight], separation: (a, b) => (a.parent === b.parent ? 0.55 : 0.5) / a.depth }, { children: tree => (jsx_runtime_1.jsxs(group_1.Group, Object.assign({ top: origin.y, left: origin.x }, { children: [tree.links().map((link, i) => (jsx_runtime_1.jsx(LinkComponent, { data: link, stroke: "#7c7c7c", strokeWidth: "3", fill: "none", markerEnd: "url(#arrow)" }, i))), tree.descendants().map((node, key) => {
+                                            let top;
+                                            let left;
+                                            const [radialX, radialY] = d3_shape_1.pointRadial(node.x, node.y);
+                                            top = radialY;
+                                            left = radialX;
+                                            const fontSizeFunc = (name) => {
+                                                const nodeLength = name.length;
+                                                if (nodeLength < 5)
+                                                    return 19;
+                                                if (nodeLength < 10)
+                                                    return 18;
+                                                if (nodeLength < 15)
+                                                    return 16;
+                                                if (nodeLength < 20)
+                                                    return 12;
+                                                if (nodeLength < 25)
+                                                    return 11;
+                                                if (nodeLength < 30)
+                                                    return 10;
+                                                if (nodeLength < 35)
+                                                    return 7;
+                                                return 6;
+                                            };
+                                            const fontSize = fontSizeFunc(node.data.name);
+                                            return (jsx_runtime_1.jsxs(group_1.Group, Object.assign({ top: top, left: left }, { children: [node.depth === 0 && (jsx_runtime_1.jsx("circle", { fill: "url('#proxy-gradient')", r: 65 }, void 0)), node.depth !== 0 && (jsx_runtime_1.jsx("circle", { r: 65, fill: "url('#dependent-gradient')" }, void 0)), jsx_runtime_1.jsx("text", Object.assign({ dy: ".33em", fontSize: fontSize, fontFamily: "Arial", textAnchor: "middle", style: {
+                                                            pointerEvents: 'none',
+                                                            fontWeight: 'bold',
+                                                        }, fill: '#e6e6e6' }, { children: node.data.name }), void 0)] }), key));
+                                        })] }), void 0)) }), void 0) }), void 0) }), void 0), jsx_runtime_1.jsx("rect", { width: totalWidth, height: totalHeight, rx: 14, fill: "transparent", onTouchStart: zoom.dragStart, onTouchMove: zoom.dragMove, onTouchEnd: zoom.dragEnd, onMouseDown: zoom.dragStart, onMouseMove: zoom.dragMove, onMouseUp: zoom.dragEnd, onMouseLeave: () => {
+                            if (zoom.isDragging)
+                                zoom.dragEnd();
+                        } }, void 0)] }), void 0)) }), void 0) }, void 0));
+}
+exports.default = ProxyDependentsNetwork;
+
+
+/***/ }),
+
+/***/ "./src/frontend/components/ProxyNetwork/ProxyNetwork.tsx":
+/*!***************************************************************!*\
+  !*** ./src/frontend/components/ProxyNetwork/ProxyNetwork.tsx ***!
+  \***************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+//import { ITree } from "../../../Types/Types";
+const react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+const ParentSize_1 = __importDefault(__webpack_require__(/*! @visx/responsive/lib/components/ParentSize */ "./node_modules/@visx/responsive/lib/components/ParentSize.js"));
+const ProxyDependentOfNetwork_1 = __importDefault(__webpack_require__(/*! ./ProxyDependentOfNetwork */ "./src/frontend/components/ProxyNetwork/ProxyDependentOfNetwork.tsx"));
+const ProxyDependentsNetwork_1 = __importDefault(__webpack_require__(/*! ./ProxyDependentsNetwork */ "./src/frontend/components/ProxyNetwork/ProxyDependentsNetwork.tsx"));
+const proxyData_1 = __importDefault(__webpack_require__(/*! ../../MockData/proxyData */ "./src/frontend/MockData/proxyData.tsx"));
+function ProxyNetwork() {
+    // const { snapshotHistory } = useContext<SnapshotHistoryContext>(
+    //   snapshotHistoryContext
+    // );
+    // const { snapshotIndex } = useContext<SnapshotIndexContext>(
+    //   snapshotIndexContext
+    // );
+    const [switchToggle, setSwitchToggle] = react_1.useState(false);
+    const [proxyName, setProxyName] = react_1.useState('');
+    //Array of proxy names in current snapshot
+    const proxyNamesArray = Object.keys(proxyData_1.default);
+    // const proxyNamesArray = Object.keys(snapshotHistory[snapshotIndex]);
+    return (jsx_runtime_1.jsxs("div", Object.assign({ className: "proxyNetwork", style: { height: '95vh' } }, { children: [jsx_runtime_1.jsxs("div", Object.assign({ style: {
+                    display: 'flex',
+                    marginRight: '25px',
+                    alignItems: 'center',
+                    position: 'fixed',
+                } }, { children: [jsx_runtime_1.jsx("label", { children: "Select Proxy:" }, void 0), jsx_runtime_1.jsx("select", Object.assign({ 
+                        // Event.stopPropagation:
+                        // https://www.w3schools.com/jsref/tryit.asp?filename=tryjsref_event_stoppropagation
+                        onClick: e => e.stopPropagation(), 
+                        // Reset back to first proxy if proxy name does not exist in snapshot
+                        onChange: e => { var _a; return setProxyName(((_a = e.target) === null || _a === void 0 ? void 0 : _a.value) || proxyNamesArray[0]); }, value: proxyName, className: "dropdown" }, { children: proxyNamesArray.map((proxyName, idx) => (jsx_runtime_1.jsx("option", Object.assign({ value: proxyName }, { children: proxyName }), idx))) }), void 0), jsx_runtime_1.jsxs("h3", Object.assign({ className: "dependents", style: {
+                            color: !switchToggle ? '#1cb5c9' : '#7c7c7c',
+                            borderBottom: !switchToggle
+                                ? '1px dotted #1cb5c9'
+                                : '1px dotted #7c7c7c',
+                        } }, { children: ["Dependents", jsx_runtime_1.jsx("span", Object.assign({ className: "toolTipTest" }, { children: "Displays all proxies affected by the inspected proxy" }), void 0)] }), void 0), jsx_runtime_1.jsxs("label", Object.assign({ className: "toggleSwitch" }, { children: [jsx_runtime_1.jsx("input", { type: "checkbox", onClick: () => setSwitchToggle(!switchToggle) }, void 0), jsx_runtime_1.jsx("span", { className: "toggleSlider round" }, void 0)] }), void 0), jsx_runtime_1.jsxs("h3", Object.assign({ className: "dependentOf", style: {
+                            color: switchToggle ? '#1cb5c9' : '#7c7c7c',
+                            borderBottom: switchToggle
+                                ? '1px dotted #1cb5c9'
+                                : '1px dotted #7c7c7c',
+                        } }, { children: ["Dependent Of", jsx_runtime_1.jsx("span", Object.assign({ className: "toolTipTest" }, { children: "Displays all proxies that affect the inspected proxy" }), void 0)] }), void 0)] }), void 0), switchToggle ? (jsx_runtime_1.jsx(ParentSize_1.default, { children: ({ width, height }) => (jsx_runtime_1.jsx(ProxyDependentOfNetwork_1.default, { proxyName: proxyName || proxyNamesArray[0], width: width, height: height }, void 0)) }, void 0)) : (jsx_runtime_1.jsx(ParentSize_1.default, { children: ({ width, height }) => (jsx_runtime_1.jsx(ProxyDependentsNetwork_1.default, { proxyName: proxyName || proxyNamesArray[0], width: width, height: height }, void 0)) }, void 0))] }), void 0));
+}
+exports.default = ProxyNetwork;
 
 
 /***/ }),

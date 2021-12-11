@@ -1,6 +1,5 @@
 import { NavTab } from "./NavTab";
 import styled from "styled-components";
-import React from 'react';
 import { SetStateAction, Dispatch } from "react";
 
 const NavBarSection = styled.section`
@@ -8,8 +7,9 @@ const NavBarSection = styled.section`
   justify-content: center;
   align-items: center;
   height: 4vh;
-  width: 99vw;
-  background: #293241;
+  width: 100%;
+  background: green;
+  border-bottom: 2px solid #98C1D9;
 `;
 
 const NavBar = ({ setTabNum, tabNum }: { setTabNum: Dispatch<SetStateAction<number>>, tabNum: number }): JSX.Element => {

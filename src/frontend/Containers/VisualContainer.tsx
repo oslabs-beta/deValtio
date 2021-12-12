@@ -8,10 +8,9 @@ import { ParentSize } from '@visx/responsive';
 
 const VisualSection = styled.section`
   height: 96vh;
-  width: 85vw;
+  width: 100%;
   background: #293241;
   color: #98C1D9;
-  border-top: 2px solid #98C1D9;
   text-align:center;
   overflow-y: auto;
 `;

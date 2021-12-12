@@ -13,7 +13,7 @@ const Section = styled.section`
     height: 96vh;
     width:14vw;
     background: #293241;
-    border: 2px solid #98C1D9;
+    border-right: 2px solid #98C1D9;
     color: #98C1D9;
     text-align: center;
 `;
@@ -24,8 +24,8 @@ const SnapShots = styled.section`
     justify-content: flex-start;
     align-items: center;
     width: 100%;
-    padding: 0;
     height:100%;
+    padding: 0;
     overflow-y: auto;
 `;
 

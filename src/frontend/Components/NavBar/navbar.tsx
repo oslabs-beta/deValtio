@@ -3,13 +3,13 @@ import styled from "styled-components";
 import { SetStateAction, Dispatch } from "react";
 
 const NavBarSection = styled.section`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 4vh;
-  width: 100%;
-  background: green;
-  border-bottom: 2px solid #98C1D9;
+display: flex;
+justify-content: center;
+align-items: center;
+height: 4vh;
+width: 100%;
+background: #293241;
+border-bottom: 2px solid #98C1D9;
 `;
 
 const NavBar = ({ setTabNum, tabNum }: { setTabNum: Dispatch<SetStateAction<number>>, tabNum: number }): JSX.Element => {

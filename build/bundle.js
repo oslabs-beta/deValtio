@@ -59581,13 +59581,13 @@ const jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ "./node_modul
 const NavTab_1 = __webpack_require__(/*! ./NavTab */ "./src/frontend/Components/NavBar/NavTab.tsx");
 const styled_components_1 = __importDefault(__webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js"));
 const NavBarSection = styled_components_1.default.section `
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 4vh;
-  width: 100%;
-  background: green;
-  border-bottom: 2px solid #98C1D9;
+display: flex;
+justify-content: center;
+align-items: center;
+height: 4vh;
+width: 100%;
+background: #293241;
+border-bottom: 2px solid #98C1D9;
 `;
 const NavBar = ({ setTabNum, tabNum }) => {
     return (jsx_runtime_1.jsxs(NavBarSection, { children: [jsx_runtime_1.jsx(NavTab_1.NavTab, { value: 1, tabNum: tabNum, text: 'State Diff', setTabNum: setTabNum }, void 0), jsx_runtime_1.jsx(NavTab_1.NavTab, { value: 2, tabNum: tabNum, text: 'Proxy Network', setTabNum: setTabNum }, void 0), jsx_runtime_1.jsx(NavTab_1.NavTab, { value: 3, tabNum: tabNum, text: 'Component Graph', setTabNum: setTabNum }, void 0), jsx_runtime_1.jsx(NavTab_1.NavTab, { value: 4, tabNum: tabNum, text: 'Component Tree', setTabNum: setTabNum }, void 0)] }, void 0));
@@ -59688,6 +59688,11 @@ const Main = styled_components_1.default.main `
   flex-wrap: wrap;
   height: 100vh;
   width: 100vw;
+
+  .bod {
+    display: flex;
+    width: 100%;
+  }
 `;
 function MainContainer() {
     const [tabNum, setTabNum] = react_1.useState(1);
@@ -59707,10 +59712,9 @@ function MainContainer() {
             setUsesValtio(true);
         });
     }, []);
-    return (jsx_runtime_1.jsx(jsx_runtime_1.Fragment, { children: usesValtio ?
-            jsx_runtime_1.jsxs(Main, { children: [jsx_runtime_1.jsx(navbar_1.default, { setTabNum: setTabNum, tabNum: tabNum }, void 0), jsx_runtime_1.jsx(GlobalStateContext_1.GlobalStateContext.Provider, Object.assign({ value: rawData }, { children: jsx_runtime_1.jsxs(SnapShotContext_1.SnapShotContext.Provider, Object.assign({ value: { snapShotIndex, setSnapShotIndex } }, { children: [jsx_runtime_1.jsx(SnapShotContainer_1.SnapShotContainer, {}, void 0), jsx_runtime_1.jsx(VisualContainer_1.default, { tabNum: tabNum }, void 0)] }), void 0) }), void 0)] }, void 0)
-            :
-                jsx_runtime_1.jsx(NotValtio_1.NotValtio, {}, void 0) }, void 0));
+    if (!usesValtio)
+        return jsx_runtime_1.jsx(NotValtio_1.NotValtio, {}, void 0);
+    return (jsx_runtime_1.jsxs(Main, { children: [jsx_runtime_1.jsx(navbar_1.default, { setTabNum: setTabNum, tabNum: tabNum }, void 0), jsx_runtime_1.jsx("div", Object.assign({ className: 'bod' }, { children: jsx_runtime_1.jsx(GlobalStateContext_1.GlobalStateContext.Provider, Object.assign({ value: rawData }, { children: jsx_runtime_1.jsxs(SnapShotContext_1.SnapShotContext.Provider, Object.assign({ value: { snapShotIndex, setSnapShotIndex } }, { children: [jsx_runtime_1.jsx(SnapShotContainer_1.SnapShotContainer, {}, void 0), jsx_runtime_1.jsx(VisualContainer_1.default, { tabNum: tabNum }, void 0)] }), void 0) }), void 0) }), void 0)] }, void 0));
 }
 exports.default = MainContainer;
 
@@ -59791,7 +59795,7 @@ const styled_components_1 = __importDefault(__webpack_require__(/*! styled-compo
 const responsive_1 = __webpack_require__(/*! @visx/responsive */ "./node_modules/@visx/responsive/esm/index.js");
 const VisualSection = styled_components_1.default.section `
   height: 96vh;
-  width: 85%;
+  width: 100%;
   background: #293241;
   color: #98C1D9;
   text-align:center;

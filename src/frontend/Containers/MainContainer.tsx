@@ -16,6 +16,11 @@ const Main = styled.main`
   flex-wrap: wrap;
   height: 100vh;
   width: 100vw;
+
+  .bod {
+    display: flex;
+    width: 100%;
+  }
 `;
 
 function MainContainer() {
@@ -40,22 +45,20 @@ function MainContainer() {
     });
   }, []);
 
+  if (!usesValtio) return <NotValtio />;
+
   return (
-    <>
-      {usesValtio ?
-        <Main>
-          <NavBar setTabNum={setTabNum} tabNum={tabNum} />
-          <GlobalStateContext.Provider value={rawData}>
-            <SnapShotContext.Provider value={{ snapShotIndex, setSnapShotIndex }}>
-              <SnapShotContainer />
-              <VisualContainer tabNum={tabNum} />
-            </SnapShotContext.Provider>
-          </GlobalStateContext.Provider>
-        </Main>
-        :
-        <NotValtio />
-      }
-    </>
+    <Main>
+      <NavBar setTabNum={setTabNum} tabNum={tabNum} />
+      <div className='bod'>
+        <GlobalStateContext.Provider value={rawData}>
+          <SnapShotContext.Provider value={{ snapShotIndex, setSnapShotIndex }}>
+            <SnapShotContainer />
+            <VisualContainer tabNum={tabNum} />
+          </SnapShotContext.Provider>
+        </GlobalStateContext.Provider>
+      </div>
+    </Main>
   );
 }
 

@@ -204,9 +204,20 @@ function climbTree (node){
 
     // return the deValtioTree object
     return deValtioTree;
-  }
-  
-window.__deValtio.functions = {getFiberNodeName, getFiberNodeValtioState, climbTree};
+}
+
+function getReactRoots() {
+  const reactRoots = [];
+  let fiberRoot;
+  document.querySelectorAll('div').forEach(node => {
+    if (node._reactRootContainer) reactRoots.push(node);
+  });
+  if (reactRoots[0]) {
+    fiberRoot = reactRoots[0]._reactRootContainer._internalRoot;
+  } return reactRoots;
+};
+
+window.__deValtio.functions = {getFiberNodeName, getFiberNodeValtioState, climbTree, getReactRoots};
 
 // main function (to be run via setTimeout since all this code is rendered before the document
 // and all its associated scripts )
@@ -231,7 +242,7 @@ const deValtioMain = (fiberRoot) => {
       setTimeout( () => {
         let deValtioTree = climbTree(value.alternate);
         throttledSendToContentScript('deValtioTree', deValtioTree);
-      }, 50);
+      }, 100);
       }
     return Reflect.set(target, prop, value);
   }
@@ -250,13 +261,7 @@ const deValtioMain = (fiberRoot) => {
 
 // wait 2 seconds and then check if React is on the page. If it is, run the main function.
 setTimeout(() => {
-  const reactRoots = [];
-  let fiberRoot;
-  document.querySelectorAll('div').forEach(node => {
-    if (node._reactRootContainer) reactRoots.push(node);
-  });
-  if (reactRoots[0]) {
-    fiberRoot = reactRoots[0]._reactRootContainer._internalRoot;
+  const fiberRoot = getReactRoots()[0];
 
     // since this is a React app, we'll let the front end know
     // let timesToSend = 5;
@@ -269,5 +274,4 @@ setTimeout(() => {
     //   timesToSend--;
     // }, 2000)
     deValtioMain(fiberRoot);
-    }
-}, 2000);
+ }, 2000);

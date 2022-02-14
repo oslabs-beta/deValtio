@@ -74,6 +74,75 @@ const limitRate = (func, delay) => {
   }
 }
 
+
+// func to get component (i.e. constructor) name
+// this returns one or two letter names in prod mode but
+// this can be adapted to still get proper component names if the site uses source maps
+// and we add source map parsing
+const getFiberNodeName = (node) => {
+  // root node
+  if (node.tag === 3) return 'fiberRoot';
+  // functional or class component
+  if (node.tag === 0 || node.tag === 1) return `${node.type?.name}`;
+  // host component (renders to browser DOM)
+  if (node.tag === 5) {
+    return node.stateNode.className ? `${node.type}.${node.stateNode.className}` : `${node.type}`;
+  }
+  // everything else
+  if (node.type?.$$typeof) return Symbol.keyFor(node.type.$$typeof);
+  if (typeof node.type === 'string') return node.type;
+  if (typeof node.type === 'function') return node.type?.name;
+  if (typeof node.type === 'symbol') return node.type.toString();
+};
+
+const getFiberNodeValtioState = (node) => {
+  if (DEBUG) console.log('checking for valtio state')
+  if (!node.memoizedState) return null;
+  if (typeof node.memoizedState === 'object') {
+    let state = node.memoizedState;
+    if (DEBUG) console.log(`parsing state`);
+    while (state) {
+      if (DEBUG) console.log('Checking memoizedState');
+      if (DEBUG) console.dir(state);
+      const baseState = state.baseState;
+      const memoizedState = state.memoizedState;
+
+      // if (baseState && typeof Array.isArray(baseState) && baseState.length === 5 && baseState === memoizedState) {
+        if (baseState && typeof Array.isArray(baseState) && baseState.length === 5) {
+        if (typeof baseState[0] === 'object' 
+            && typeof baseState[1] === 'function' 
+            && typeof baseState[2] === 'function' 
+            && typeof baseState[3] === 'number') {
+          let valtioSymbols = Reflect.ownKeys(baseState[0]);
+          let valtioProxyStore;
+          let valtioGetVersionFunction;
+          for (let i = 0; i < valtioSymbols.length; i++) {
+            if (typeof valtioSymbols[i] !== 'symbol') break;
+            if (typeof baseState[0][valtioSymbols[i]] === 'function') {
+              valtioGetVersionFunction = baseState[0][valtioSymbols[i]];
+            } else {
+              valtioProxyStore = baseState[0][valtioSymbols[i]];
+            }
+          }
+          // let [valtioProxyStore, valtioGetVersionFunction] = [valtioArrValues];
+          let valtioSubscriber = baseState[2];
+          let valtioNakedStore = baseState[4];
+          let valtioState = {
+            valtioProxyStore,
+            valtioGetVersionFunction,
+            valtioSubscriber,
+            valtioNakedStore
+          };
+          window.__deValtio.valtioFound = true;
+          if (DEBUG) console.log('valtioState found');
+          return valtioState;
+        }
+      }
+      state = state.next;
+    }
+  }
+};
+
 // main function (to be run via setTimeout since all this code is rendered before the document
 // and all its associated scripts )
 const deValtioMain = (fiberRoot) => {
@@ -81,75 +150,7 @@ const deValtioMain = (fiberRoot) => {
   // expose fiberRoot via window.__deValtio hook
   window.__deValtio.fiberRoot = fiberRoot;
 
-  // func to get component (i.e. constructor) name
-  // this returns one or two letter names in prod mode but
-  // this can be adapted to still get proper component names if the site uses source maps
-  // and we add source map parsing
-  const getFiberNodeName = (node) => {
-    // root node
-    if (node.tag === 3) return 'fiberRoot';
-    // functional or class component
-    if (node.tag === 0 || node.tag === 1) return `${node.type?.name}`;
-    // host component (renders to browser DOM)
-    if (node.tag === 5) {
-      return node.stateNode.className ? `${node.type}.${node.stateNode.className}` : `${node.type}`;
-    }
-    // everything else
-    if (node.type?.$$typeof) return Symbol.keyFor(node.type.$$typeof);
-    if (typeof node.type === 'string') return node.type;
-    if (typeof node.type === 'function') return node.type?.name;
-    if (typeof node.type === 'symbol') return node.type.toString();
-  };
-
-  const getFiberNodeValtioState = (node) => {
-    if (DEBUG) console.log('checking for valtio state')
-    if (!node.memoizedState) return null;
-    if (typeof node.memoizedState === 'object') {
-      let state = node.memoizedState;
-      if (DEBUG) console.log(`parsing state`);
-      while (state) {
-        if (DEBUG) console.log('Checking memoizedState');
-        if (DEBUG) console.dir(state);
-        const baseState = state.baseState;
-        const memoizedState = state.memoizedState;
-
-        // if (baseState && typeof Array.isArray(baseState) && baseState.length === 5 && baseState === memoizedState) {
-          if (baseState && typeof Array.isArray(baseState) && baseState.length === 5) {
-          if (typeof baseState[0] === 'object' 
-              && typeof baseState[1] === 'function' 
-              && typeof baseState[2] === 'function' 
-              && typeof baseState[3] === 'number') {
-            let valtioSymbols = Reflect.ownKeys(baseState[0]);
-            let valtioProxyStore;
-            let valtioGetVersionFunction;
-            for (let i = 0; i < valtioSymbols.length; i++) {
-              if (typeof valtioSymbols[i] !== 'symbol') break;
-              if (typeof baseState[0][valtioSymbols[i]] === 'function') {
-                valtioGetVersionFunction = baseState[0][valtioSymbols[i]];
-              } else {
-                valtioProxyStore = baseState[0][valtioSymbols[i]];
-              }
-            }
-            // let [valtioProxyStore, valtioGetVersionFunction] = [valtioArrValues];
-            let valtioSubscriber = baseState[2];
-            let valtioNakedStore = baseState[4];
-            let valtioState = {
-              valtioProxyStore,
-              valtioGetVersionFunction,
-              valtioSubscriber,
-              valtioNakedStore
-            };
-            window.__deValtio.valtioFound = true;
-            if (DEBUG) console.log('valtioState found');
-            return valtioState;
-          }
-        }
-        state = state.next;
-      }
-    }
-  };
-
-  const getFiberNodeProps = (node) => {
+   const getFiberNodeProps = (node) => {
     return null;
   };
       

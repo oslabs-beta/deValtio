@@ -3,9 +3,6 @@
 // 1 - event messages (eg: "injected.js has been initiated");
 // 2 - same as 1 but now includes state being printed to the console
 // 3 - same as 2 but now includes verbose message sending <-- not recommended
-
-const { getNameOfDeclaration } = require("typescript");
-
 // 10 - same as 3 but saves deValtioStores in window.__deValtio
 const DEBUG = 10;
 
@@ -157,11 +154,13 @@ function getFiberNodeValtioState(node) {
           // let [valtioProxyStore, valtioGetVersionFunction] = [valtioArrValues];
           let valtioSubscriber = baseState[2];
           let valtioNakedStore = baseState[4];
+          let valtioStoreParentNode = node;
           let valtioState = {
             valtioProxyStore,
             valtioGetVersionFunction,
             valtioSubscriber,
             valtioNakedStore,
+            valtioStoreParentNode,
           };
           window.__deValtio.valtioFound = true;
           if (DEBUG) console.log("valtioState found");

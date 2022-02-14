@@ -79,7 +79,7 @@ const limitRate = (func, delay) => {
 // this returns one or two letter names in prod mode but
 // this can be adapted to still get proper component names if the site uses source maps
 // and we add source map parsing
-const getFiberNodeName = (node) => {
+function getFiberNodeName (node) {
   // root node
   if (node.tag === 3) return 'fiberRoot';
   // functional or class component
@@ -95,7 +95,7 @@ const getFiberNodeName = (node) => {
   if (typeof node.type === 'symbol') return node.type.toString();
 };
 
-const getFiberNodeValtioState = (node) => {
+function getFiberNodeValtioState (node) {
   if (DEBUG) console.log('checking for valtio state')
   if (!node.memoizedState) return null;
   if (typeof node.memoizedState === 'object') {
@@ -143,6 +143,71 @@ const getFiberNodeValtioState = (node) => {
   }
 };
 
+  // function to parse Fiber Tree
+
+function climbTree (node){
+  // this defines the basic deValtioTree object which is also each node object in that tree
+  let deValtioTree = {
+    children: []
+  };
+
+  // base case
+  if (!node) return deValtioTree;
+
+  // get tag
+  deValtioTree.tag = node.tag;
+
+  // get key
+  deValtioTree.key = node.key;
+
+  // get name of node
+  deValtioTree.name = getFiberNodeName(node);
+
+  // get state
+  // TO-DO: Finish this
+  deValtioTree.state = {};
+
+  let valtioStore = getFiberNodeValtioState(node);
+
+  if (valtioStore) window.__deValtio.valtioStores.push(valtioStore);
+
+  // get props
+  // TO-DO: Finish this
+  deValtioTree.props = null;
+  // check if current node is a function component (tag: 0) or class component (tag: 1);
+  // if ([0, 1].includes(node.tag)) {
+  //[0,1].includes(node.tag) ? deValtioTree.props = JSON.parse(JSON.stringify(node.memoizedProps) || null) : null;
+  // };
+
+  // get hooks
+  // TO-DO: Finish this
+  deValtioTree.hooks = {};
+
+  // check if current fiberNode has a child and, if so,
+  // push it and any siblings to our children property
+  if (node.child) {
+    deValtioTree.children.push(node.child);
+
+    if (node.child.sibling) {
+      let sibling = node.child.sibling;
+      while (sibling) {
+        deValtioTree.children.push(sibling);
+        // move on to next sibling
+        sibling = sibling.sibling;
+      }
+    }
+  };
+
+    // traverse children array recursively and replace all fiberNodes
+    // in the deValtioTree.children property with deValtioTrees
+    deValtioTree.children = deValtioTree.children.map(node => climbTree(node));
+
+    // return the deValtioTree object
+    return deValtioTree;
+  }
+  
+window.__deValtio.functions = {getFiberNodeName, getFiberNodeValtioState, climbTree};
+
 // main function (to be run via setTimeout since all this code is rendered before the document
 // and all its associated scripts )
 const deValtioMain = (fiberRoot) => {
@@ -154,69 +219,6 @@ const deValtioMain = (fiberRoot) => {
     return null;
   };
       
-
-  // function to parse Fiber Tree
-
-  const climbTree = (node) => {
-    // this defines the basic deValtioTree object which is also each node object in that tree
-    let deValtioTree = {
-      children: []
-    };
-
-    // base case
-    if (!node) return deValtioTree;
-
-    // get tag
-    deValtioTree.tag = node.tag;
-
-    // get key
-    deValtioTree.key = node.key;
-
-    // get name of node
-    deValtioTree.name = getFiberNodeName(node);
-
-    // get state
-    // TO-DO: Finish this
-    deValtioTree.state = {};
-
-    let valtioStore = getFiberNodeValtioState(node);
-
-    if (valtioStore) window.__deValtio.valtioStores.push(valtioStore);
-
-    // get props
-    // TO-DO: Finish this
-    deValtioTree.props = null;
-    // check if current node is a function component (tag: 0) or class component (tag: 1);
-    // if ([0, 1].includes(node.tag)) {
-    //[0,1].includes(node.tag) ? deValtioTree.props = JSON.parse(JSON.stringify(node.memoizedProps) || null) : null;
-    // };
-
-    // get hooks
-    // TO-DO: Finish this
-    deValtioTree.hooks = {};
-
-    // check if current fiberNode has a child and, if so,
-    // push it and any siblings to our children property
-    if (node.child) {
-      deValtioTree.children.push(node.child);
-
-      if (node.child.sibling) {
-        let sibling = node.child.sibling;
-        while (sibling) {
-          deValtioTree.children.push(sibling);
-          // move on to next sibling
-          sibling = sibling.sibling;
-        }
-      }
-    };
-
-      // traverse children array recursively and replace all fiberNodes
-      // in the deValtioTree.children property with deValtioTrees
-      deValtioTree.children = deValtioTree.children.map(node => climbTree(node));
-
-      // return the deValtioTree object
-      return deValtioTree;
-    }
 
   // throttled sendToContentScipt
   const throttledSendToContentScript = limitRate(sendToContentScript, throttleDelay);

@@ -6,6 +6,9 @@ const throttleDelay = 500;
 console.log(`injected.js has been initiated`);
 
 // disable locking down object properties for fiberNode (and any other) objects
+// this is very hacky but, since React locks down Object properties in Development mode
+// this is necessary for proxying the Fiber Root's stateNode (which enables us to see
+// whenever React tries to set a new "current" property)
 Object.preventExtensions = () => true;
 
 // inject deValtio hook
@@ -22,9 +25,12 @@ const handler = {};
 
 // function to send stringified data to content script
 const sendToContentScript = (messageHead, messageBody) => {
-  if (DEBUG) console.log(`Sending ${JSON.stringify(messageHead)}: ${JSON.stringify(messageBody)}`);
+  if (DEBUG)
+    console.log(
+      `Sending ${JSON.stringify(messageHead)}: ${JSON.stringify(messageBody)}`
+    );
   try {
-    window.postMessage({deValtioMessage: [messageHead, messageBody]});
+    window.postMessage({ deValtioMessage: [messageHead, messageBody] });
     return true;
   } catch (err) {
     console.dir(err);
@@ -42,13 +48,13 @@ window.__deValtio.postMessage = sendToContentScript;
 // throttle function
 const throttle = (func, delay) => {
   let throttled;
-  return function(...params) {
+  return function (...params) {
     if (!throttled) {
       func.apply(this, params);
       throttled = true;
-      setTimeout(() => throttled = false, delay);
+      setTimeout(() => (throttled = false), delay);
     }
-  }
+  };
 };
 
 // rate limiting function
@@ -62,7 +68,7 @@ const limitRate = (func, delay) => {
     if (waiting) {
       latest.params = params;
       return;
-    };
+    }
     if (!waiting) {
       latest.params = params;
       waiting = true;
@@ -71,54 +77,65 @@ const limitRate = (func, delay) => {
         waiting = false;
       }, delay);
     }
-  }
-}
-
+  };
+};
 
 // func to get component (i.e. constructor) name
 // this returns one or two letter names in prod mode but
 // this can be adapted to still get proper component names if the site uses source maps
 // and we add source map parsing
-function getFiberNodeName (node) {
+function getFiberNodeName(node) {
   // root node
-  if (node.tag === 3) return 'fiberRoot';
+  if (node.tag === 3) return "fiberRoot";
   // functional or class component
   if (node.tag === 0 || node.tag === 1) return `${node.type?.name}`;
   // host component (renders to browser DOM)
   if (node.tag === 5) {
-    return node.stateNode.className ? `${node.type}.${node.stateNode.className}` : `${node.type}`;
+    return node.stateNode.className
+      ? `${node.type}.${node.stateNode.className}`
+      : `${node.type}`;
   }
   // everything else
   if (node.type?.$$typeof) return Symbol.keyFor(node.type.$$typeof);
-  if (typeof node.type === 'string') return node.type;
-  if (typeof node.type === 'function') return node.type?.name;
-  if (typeof node.type === 'symbol') return node.type.toString();
-};
+  if (typeof node.type === "string") return node.type;
+  if (typeof node.type === "function") return node.type?.name;
+  if (typeof node.type === "symbol") return node.type.toString();
+}
 
-function getFiberNodeValtioState (node) {
-  if (DEBUG) console.log('checking for valtio state')
+function getFiberNodeValtioState(node) {
+  if (DEBUG) console.log("checking for valtio state");
+
   if (!node.memoizedState) return null;
-  if (typeof node.memoizedState === 'object') {
+
+  if (typeof node.memoizedState === "object") {
     let state = node.memoizedState;
+
     if (DEBUG) console.log(`parsing state`);
+
     while (state) {
-      if (DEBUG) console.log('Checking memoizedState');
+      if (DEBUG) console.log("Checking memoizedState");
       if (DEBUG) console.dir(state);
       const baseState = state.baseState;
       const memoizedState = state.memoizedState;
 
       // if (baseState && typeof Array.isArray(baseState) && baseState.length === 5 && baseState === memoizedState) {
-        if (baseState && typeof Array.isArray(baseState) && baseState.length === 5) {
-        if (typeof baseState[0] === 'object' 
-            && typeof baseState[1] === 'function' 
-            && typeof baseState[2] === 'function' 
-            && typeof baseState[3] === 'number') {
+      if (
+        baseState &&
+        typeof Array.isArray(baseState) &&
+        baseState.length === 5
+      ) {
+        if (
+          typeof baseState[0] === "object" &&
+          typeof baseState[1] === "function" &&
+          typeof baseState[2] === "function" &&
+          typeof baseState[3] === "number"
+        ) {
           let valtioSymbols = Reflect.ownKeys(baseState[0]);
           let valtioProxyStore;
           let valtioGetVersionFunction;
           for (let i = 0; i < valtioSymbols.length; i++) {
-            if (typeof valtioSymbols[i] !== 'symbol') break;
-            if (typeof baseState[0][valtioSymbols[i]] === 'function') {
+            if (typeof valtioSymbols[i] !== "symbol") break;
+            if (typeof baseState[0][valtioSymbols[i]] === "function") {
               valtioGetVersionFunction = baseState[0][valtioSymbols[i]];
             } else {
               valtioProxyStore = baseState[0][valtioSymbols[i]];
@@ -131,24 +148,24 @@ function getFiberNodeValtioState (node) {
             valtioProxyStore,
             valtioGetVersionFunction,
             valtioSubscriber,
-            valtioNakedStore
+            valtioNakedStore,
           };
           window.__deValtio.valtioFound = true;
-          if (DEBUG) console.log('valtioState found');
+          if (DEBUG) console.log("valtioState found");
           return valtioState;
         }
       }
       state = state.next;
     }
   }
-};
+}
 
-  // function to parse Fiber Tree
+// function to parse Fiber Tree
 
-function climbTree (node){
+function climbTree(node) {
   // this defines the basic deValtioTree object which is also each node object in that tree
   let deValtioTree = {
-    children: []
+    children: [],
   };
 
   // base case
@@ -197,71 +214,78 @@ function climbTree (node){
         sibling = sibling.sibling;
       }
     }
-  };
+  }
 
-    // traverse children array recursively and replace all fiberNodes
-    // in the deValtioTree.children property with deValtioTrees
-    deValtioTree.children = deValtioTree.children.map(node => climbTree(node));
+  // traverse children array recursively and replace all fiberNodes
+  // in the deValtioTree.children property with deValtioTrees
+  deValtioTree.children = deValtioTree.children.map((node) => climbTree(node));
 
-    // return the deValtioTree object
-    return deValtioTree;
+  // return the deValtioTree object
+  return deValtioTree;
 }
 
 function getFiberRoot() {
   const reactRoots = [];
   let fiberRoot;
-  
-  document.querySelectorAll('div').forEach(node => node._reactRootContainer && reactRoots.push(node));
-  
+
+  document
+    .querySelectorAll("div")
+    .forEach((node) => node._reactRootContainer && reactRoots.push(node));
+
   if (reactRoots[0]) {
     fiberRoot = reactRoots[0]._reactRootContainer._internalRoot;
-  };
-  
-  return fiberRoot;
-};
+  }
 
-window.__deValtio.functions = {getFiberNodeName, getFiberNodeValtioState, climbTree, getFiberRoot};
+  return fiberRoot;
+}
+
+window.__deValtio.functions = {
+  getFiberNodeName,
+  getFiberNodeValtioState,
+  climbTree,
+  getFiberRoot,
+};
 
 // main function (to be run via setTimeout since all this code is rendered before the document
 // and all its associated scripts )
 const deValtioMain = (fiberRoot) => {
-
   // expose fiberRoot via window.__deValtio hook
   window.__deValtio.fiberRoot = fiberRoot;
 
-   const getFiberNodeProps = (node) => {
+  const getFiberNodeProps = (node) => {
     return null;
   };
-      
 
   // throttled sendToContentScipt
-  const throttledSendToContentScript = limitRate(sendToContentScript, throttleDelay);
-  
+  const throttledSendToContentScript = limitRate(
+    sendToContentScript,
+    throttleDelay
+  );
+
   // if fiberRoot exists, proxy it to check for current being set.
   handler.set = function (target, prop, value) {
-    if (prop === 'current') {
+    if (prop === "current") {
       if (DEBUG) console.log(`current property of stateNode has been changed.`);
       if (DEBUG) console.dir(value);
-      setTimeout( () => {
+      setTimeout(() => {
         let deValtioTree = climbTree(value.alternate);
-        throttledSendToContentScript('deValtioTree', deValtioTree);
+        throttledSendToContentScript("deValtioTree", deValtioTree);
       }, 100);
-      }
+    }
     return Reflect.set(target, prop, value);
-  }
+  };
 
   // proxy the stateNode so that we can detect changes to fiberRoot. This avoids
   // us having to use React DevTools and wrapping their onFiberRootCommit hook.
   fiberRoot.current.stateNode = new Proxy(fiberRoot.current.stateNode, handler);
 
   // initial send of component tree to front end
-  setTimeout( () => {
+  setTimeout(() => {
     let deValtioTree = climbTree(fiberRoot.current);
     // sendToContentScript('deValtioTree', climbTree(deValtioTree));
-    sendToContentScript('deValtioTree', deValtioTree);
+    sendToContentScript("deValtioTree", deValtioTree);
   }, 50);
 };
-
 
 // wait 2 seconds and then check if React is on the page. If it is, run the main function.
 setTimeout(() => {

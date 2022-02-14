@@ -8,6 +8,13 @@ injectedScript.onload = function () {
 };
 (document.head || document.documentElement).appendChild(injectedScript);
 
+// messaging portion [Needs debugging / rewrite]
+// current plan:
+// use a service worker to handle message build up
+// since receiving end doesn't instantiate until
+// deValtio tab is open.
+// specify tabID in messages being sent and use an Object with tabIDs as keys
+// to keep track of which windows have deValtio running
 let comms;
 
 const sendToFrontEnd = (messageHead, messageBody) => {

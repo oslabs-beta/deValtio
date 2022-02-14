@@ -190,6 +190,7 @@ function climbTree (node){
 
     if (node.child.sibling) {
       let sibling = node.child.sibling;
+
       while (sibling) {
         deValtioTree.children.push(sibling);
         // move on to next sibling
@@ -255,8 +256,9 @@ const deValtioMain = (fiberRoot) => {
 
   // initial send of component tree to front end
   setTimeout( () => {
-    let deValtioTree = climbTree(fiberRoot.alternate);
-    sendToContentScript('deValtioTree', climbTree(deValtioTree));
+    let deValtioTree = climbTree(fiberRoot.current);
+    // sendToContentScript('deValtioTree', climbTree(deValtioTree));
+    sendToContentScript('deValtioTree', deValtioTree);
   }, 50);
 };
 

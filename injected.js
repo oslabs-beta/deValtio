@@ -3,6 +3,9 @@
 // 1 - event messages (eg: "injected.js has been initiated");
 // 2 - same as 1 but now includes state being printed to the console
 // 3 - same as 2 but now includes verbose message sending <-- not recommended
+
+const { getNameOfDeclaration } = require("typescript");
+
 // 10 - same as 3 but saves deValtioStores in window.__deValtio
 const DEBUG = 10;
 
@@ -170,8 +173,7 @@ function getFiberNodeValtioState(node) {
   }
 }
 
-// function to parse Fiber Tree
-
+// main function to parse Fiber Tree
 function climbTree(node) {
   // this defines the basic deValtioTree object which is also each node object in that tree
   let deValtioTree = {
@@ -238,6 +240,26 @@ function climbTree(node) {
   return deValtioTree;
 }
 
+function simpleClimbTree(node, callback) {
+  if (!node) return;
+
+  callback(node);
+
+  if (node.child) {
+    const children = [node.child];
+    if (node.child.sibling) {
+      let sibling = node.child.sibling;
+
+      while (sibling) {
+        children.push(sibling);
+        sibling = sibling.sibling;
+      }
+
+      children.forEach((node) => simpleClimbTree(node));
+    }
+  }
+}
+
 function getFiberRoot() {
   const reactRoots = [];
   let fiberRoot;
@@ -257,6 +279,7 @@ window.__deValtio.functions = {
   getFiberNodeName,
   getFiberNodeValtioState,
   climbTree,
+  simpleClimbTree,
   getFiberRoot,
 };
 

@@ -1,9 +1,15 @@
-const DEBUG = false;
+// DEBUG levels:
+// 0 - no debug messages in the console
+// 1 - event messages (eg: "injected.js has been initiated");
+// 2 - same as 1 but now includes state being printed to the console
+// 3 - same as 2 but now includes verbose message sending <-- not recommended
+// 10 - same as 3 but saves deValtioStores in window.__deValtio
+const DEBUG = 10;
 
-const throttleDelay = 500;
+const throttleDelay = 500; // sets rate limited to throttle communication to 500ms intervals
 
 // Lets us know our script was successfully injected
-console.log(`injected.js has been initiated`);
+if (DEBUG) console.log(`injected.js has been initiated`);
 
 // disable locking down object properties for fiberNode (and any other) objects
 // this is very hacky but, since React locks down Object properties in Development mode
@@ -18,14 +24,14 @@ window.__deValtio.DEBUG = DEBUG;
 
 window.__deValtio.valtioFound = null;
 
-window.__deValtio.valtioStores = [];
+if (DEBUG === 10) window.__deValtio.valtioStores = [];
 
 // handler object to be used for our own proxies
 const handler = {};
 
 // function to send stringified data to content script
 const sendToContentScript = (messageHead, messageBody) => {
-  if (DEBUG)
+  if (DEBUG > 2)
     console.log(
       `Sending ${JSON.stringify(messageHead)}: ${JSON.stringify(messageBody)}`
     );
@@ -34,10 +40,14 @@ const sendToContentScript = (messageHead, messageBody) => {
     return true;
   } catch (err) {
     console.dir(err);
-    console.log(`messageHead:`);
-    console.dir(messageHead);
-    console.log(`messageBody:`);
-    console.dir(messageBody);
+
+    if (DEBUG > 2) {
+      console.log(`messageHead:`);
+      console.dir(messageHead);
+      console.log(`messageBody:`);
+      console.dir(messageBody);
+    }
+
     return false;
   }
 };
@@ -114,7 +124,7 @@ function getFiberNodeValtioState(node) {
 
     while (state) {
       if (DEBUG) console.log("Checking memoizedState");
-      if (DEBUG) console.dir(state);
+      if (DEBUG > 1) console.dir(state);
       const baseState = state.baseState;
       const memoizedState = state.memoizedState;
 
@@ -186,7 +196,11 @@ function climbTree(node) {
 
   let valtioStore = getFiberNodeValtioState(node);
 
-  if (valtioStore) window.__deValtio.valtioStores.push(valtioStore);
+  // the next line is dangerous because holding on to stores is a bad idea memory-wise
+  if (DEBUG === 10 && valtioStore)
+    window.__deValtio.valtioStores.push(valtioStore);
+
+  if (valtioStore) deValtioTree.state = valtioStore.valtioNakedStore;
 
   // get props
   // TO-DO: Finish this
@@ -253,6 +267,7 @@ const deValtioMain = (fiberRoot) => {
   window.__deValtio.fiberRoot = fiberRoot;
 
   const getFiberNodeProps = (node) => {
+    // TO-DO
     return null;
   };
 
@@ -266,7 +281,7 @@ const deValtioMain = (fiberRoot) => {
   handler.set = function (target, prop, value) {
     if (prop === "current") {
       if (DEBUG) console.log(`current property of stateNode has been changed.`);
-      if (DEBUG) console.dir(value);
+      if (DEBUG > 1) console.dir(value);
       setTimeout(() => {
         let deValtioTree = climbTree(value.alternate);
         throttledSendToContentScript("deValtioTree", deValtioTree);
@@ -282,7 +297,6 @@ const deValtioMain = (fiberRoot) => {
   // initial send of component tree to front end
   setTimeout(() => {
     let deValtioTree = climbTree(fiberRoot.current);
-    // sendToContentScript('deValtioTree', climbTree(deValtioTree));
     sendToContentScript("deValtioTree", deValtioTree);
   }, 50);
 };

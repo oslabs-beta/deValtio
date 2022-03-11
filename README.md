@@ -10,11 +10,11 @@ deValtio is a Google Chrome extension that serves as a visualization and debuggi
 <h2>How to Use deValtio</h2>
 <p>Go to the Google Chrome Store, search for deValtio and click "add to Chrome”. Open your project in your favorite IDE and then start the project.</p> 
 
-<p>Once the project is up and running in the browser, open up the inspector and click on the deValtio tab. When state changes within your application, a message is sent to deValtio notifying the application of that change and a “snapshot” will be created of the react fiber tree reflecting the change. The developer is able to click on a snapshot to view the application's state at the time the snapshot was taken. The snapshot is sent across the application to the extensions’ four features: State Diff, Component Graph, Component Tree and Proxy Network.</p>
+<p>Once the project is up and running in the browser, open up the inspector and click on the deValtio tab. When state changes within your application, a message is sent to deValtio notifying the application of that change and a “snapshot” will be created of the react fiber tree reflecting the change. The developer is able to click on a snapshot to view the application's state at the time the snapshot was taken. The snapshot is sent across the application to the extension's 4 features: State Diff, Component Graph, Component Tree and Proxy Network.</p>
 
 <h2>Features</h2>
 <h4>State Diff</h4>
-<p>As the state of the application changes, State Diff visualizes the difference in state from one snapshot to the next. When the React Fiber Tree changes, a message is emitted to deValtio. When this message is received, a new “snapshot” is created. Each snapshot is an image of the fiber tree at the moment the snapshot was taken. State Diff allows the developer to switch back and forth between snapshots and view the DOM/state at the time the snapshot was taken.</p>
+<p>As the state of the application changes, State Diff visualizes the difference in state from one snapshot to the next. When the React Fiber Tree changes, a message is emitted to deValtio. When this message is received, a new snapshot is created. Each snapshot is an image of the fiber tree at the moment the snapshot was taken. State Diff allows the developer to switch back and forth between snapshots and view the DOM/state at the time the snapshot was taken.</p>
 
 <p align="center"><img src="./assets/deValtioStateDiff.png" width="75%" height="75%"></p>
 

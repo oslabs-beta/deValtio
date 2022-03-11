@@ -8,7 +8,7 @@
 deValtio is a Google Chrome extension that serves as a visualization and debugging tool for <a href="https://github.com/pmndrs/valtio">Valtio, a proxy-based state management library</a> for <a href="https://reactjs.org/">React.js</a>.
 
 <h2>How to Use deValtio</h2>
-<p>Go to the Google Chrome Store, search for deValtio and click "add to Chrome”. Open your project in your favorite IDE and then start the project.</p> 
+<p>Go to the Google Chrome Store, search for deValtio and click "add to Chrome”. Open a project in your favorite IDE and start the project.</p> 
 
 <p>Once the project is up and running in the browser, open up the inspector and click on the deValtio tab. When state changes within your application, a message is sent to deValtio notifying the application of that change and a “snapshot” will be created of the react fiber tree reflecting the change. The developer is able to click on a snapshot to view the application's state at the time the snapshot was taken. The snapshot is sent across the application to the extension's 4 features: State Diff, Component Graph, Component Tree and Proxy Network.</p>
 

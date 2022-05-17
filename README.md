@@ -1,5 +1,3 @@
-<p align='center'><a href="http://devaltio.io/">Click here to visit the deValtio website!</a></p>
-
 <p align='center'>
 <img src="./assets/deValtioLogo.png" width="40%" height="40%">
 </p>
